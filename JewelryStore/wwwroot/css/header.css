@@ -1,0 +1,23 @@
+﻿.bg-header {
+    background-color: rgba(0, 0, 0, 0.15);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.bg-gold-gradient {
+    background: linear-gradient(to right, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
+    /*background: linear-gradient(to right, #dec489, #f6e0a4, #d1b372, #e3cc97, #bf9a5e);*/
+    /*background: linear-gradient(to top,#ffffff, #FBF5B7, #BF953F, #BF953F);*/
+    height: 350px;
+}
+
+@media (min-width: 576px) {
+    .navbar-nav li {
+        border-left: 1px solid rgba(255, 255, 255, 0.3);
+    }
+}
+
+@media (max-width: 575px) {
+    .navbar-nav li {
+        border-left: none;
+    }
+}

@@ -1,0 +1,22 @@
+﻿<header>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light box-shadow position-absolute bg-header w-100">
+        <a class="navbar-brand text-white" asp-area="" asp-controller="Home" asp-action="Index">
+            <h2>Glatteis</h2>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+            <ul class="navbar-nav flex-grow-1">
+                <li class="nav-item">
+                    <a class="nav-link text-white" asp-area="" asp-controller="Catalog" asp-action="Products">Каталог</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="bg-gold-gradient d-flex align-items-center justify-content-center mb-4">
+        <h1 class="text-white">@ViewData["GoldenTitle"]</h1>
+    </div>
+</header>
