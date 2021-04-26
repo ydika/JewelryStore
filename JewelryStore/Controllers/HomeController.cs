@@ -23,11 +23,6 @@ namespace JewelryStore.Controllers
             return View();
         }
 
-        public IActionResult Catalog()
-        {
-            return View();
-        }
-
         public IActionResult Privacy()
         {
             return View();

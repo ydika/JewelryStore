@@ -14,7 +14,5 @@ namespace JewelryStore.Models
         public int ID { get; set; }
         [StringLength(100)]
         public string Name { get; set; }
-
-        public List<ModelCharacteristicValues> CharacteristicValues { get; set; }
     }
 }

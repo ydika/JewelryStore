@@ -1,0 +1,76 @@
+﻿.card-title {
+    font-size: 14px;
+    min-height: 42px;
+}
+
+.card:hover {
+    transition: 0.15s;
+    box-shadow: 0 1rem 2rem rgb(0 0 0 / 40%) !important;
+        border-radius: 10px;
+}
+
+#filters h4 {
+    padding: 10px 16px;
+    margin: 0;
+    border-bottom: 2px solid #d1b264;
+}
+
+#filters ul li {
+    padding: 10px 16px;
+    border-top: 1px solid rgba(0 0 0 / 5%);
+}
+
+    #filters ul li a span:hover {
+        transition: 0.1s;
+        color: #D1B264;
+    }
+
+.bg-sidebar {
+    z-index: 3;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: rgb(0 0 0 / 75%);
+}
+
+.open-sidebar-button {
+    z-index: 2;
+    bottom: 24px;
+    left: 24px;
+    right: 24px;
+    display: flex;
+}
+
+@media (min-width: 992px) {
+    .bg-sidebar {
+        display: none;
+    }
+
+    .open-sidebar-button {
+        display: none;
+    }
+}
+
+@media (max-width: 991px) {
+    #filters {
+        overflow-y: auto;
+        position: fixed;
+        z-index: 4;
+        left: -280px;
+        top: 0;
+        bottom: 0;
+        width: 280px;
+        padding: 0;
+        transition: .3s;
+        margin: 0;
+        padding: 16px;
+        background-color: white;
+        margin: -16px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+        #filters.opened {
+            left: 0;
+        }
+}

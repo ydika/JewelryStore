@@ -1,16 +1,16 @@
-﻿@model List<ModelJewelry>
+﻿@model CatalogViewModel
 @{
     ViewData["Title"] = "Каталог";
     ViewData["GoldenTitle"] = "Каталог";
 }
 
-<div class="row">
+<div class="row mt-4">
     <div class="col-lg-4 col-xl-3">
-        Фильтер!11!!!!11!
+        @await Html.PartialAsync("FilterContent")
     </div>
     <div class="col-lg-8 col-xl-9">
         <div class="row">
-            @foreach (var j in Model)
+            @foreach (var j in Model.Jewelries)
             {
                 <div class="col-12 col-sm-6 col-md-4 mb-4">
                     <div class="card shadow text-center h-100">
@@ -31,11 +31,6 @@
                 </div>
             }
         </div>
-        <div class="d-flex justify-content-around">
-            <a asp-action="Products">Назад</a>
-            <a asp-action="Products">Вперед</a>
-            @Html.ActionLink("Назад", "Products", new { page = (int)ViewData["PageNum"] - 1 })
-            @Html.ActionLink("Вперед", "Products", new { page = (int)ViewData["PageNum"] + 1 })
-        </div>
+        @await Html.PartialAsync("Paging")
     </div>
 </div>

@@ -1,9 +1,0 @@
-﻿.card-title {
-    font-size: 14px;
-}
-
-.card:hover {
-    transition: 0.15s;
-    box-shadow: 0 1rem 2rem rgb(0 0 0 / 40%) !important;
-    /*    border-radius: 10px;*/
-}

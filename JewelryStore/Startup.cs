@@ -63,6 +63,11 @@ namespace JewelryStore
             {
                 endpoints.MapControllerRoute(
                     name: "default",
+                    pattern: "{controller}/{jkind}/Page{currentpage:int}",
+                    defaults: new { controller = "Catalog", action = "Products", jkind = "все", currentpage = 1 });
+
+                endpoints.MapControllerRoute(
+                    name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }

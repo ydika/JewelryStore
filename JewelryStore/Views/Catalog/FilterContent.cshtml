@@ -1,0 +1,46 @@
+﻿@model CatalogViewModel
+
+    <link rel="stylesheet" href="~/inline/catalog.css" inline />
+
+<aside id="filters">
+    <div class="bg-white mb-4">
+        <h4>@ViewData["GoldenTitle"]</h4>
+        <ul class="navbar-nav flex-grow-1">
+            <li class="nav-item">
+                <a class="nav-link p-0 text-dark" asp-route-jkind="Все">
+                    <img src="/Images/Icons/all.svg" width="24" height="24">
+                    <span>Все</span>
+                </a>
+            </li>
+            @foreach (var jk in Model.JewelryKinds)
+            {
+                <li class="nav-item">
+                    <a class="nav-link p-0 text-dark" asp-route-jkind="@jk.Name">
+                        <img src="@jk.IconSrc" width="24" height="24">
+                        <span class="align-middle">@jk.Name</span>
+                    </a>
+                </li>
+            }
+        </ul>
+    </div>
+    @foreach (var jc in Model.Filter)
+    {
+        @if (jc.CharacteristicValues.Count > 0)
+        {
+            <div class="bg-white mb-4">
+                <h4>@jc.CharacteristicName</h4>
+                <ul class="navbar-nav flex-grow-1">
+                    @foreach (var jcv in jc.CharacteristicValues)
+                    {
+                        <li class="nav-item">
+                            <input type="checkbox" />
+                            <span class="align-middle">@jcv.Value</span>
+                        </li>
+                    }
+                </ul>
+            </div>
+        }
+    }
+</aside>
+<div id="showCatalogSidebar" class="position-fixed justify-content-center bg-dark text-white p-2 open-sidebar-button">Фильтры</div>
+<div id="bgCatalogSidebar" class="position-fixed bg-sidebar" style="display: none;"></div>
