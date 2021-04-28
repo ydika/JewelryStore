@@ -4,6 +4,10 @@
     ViewData["GoldenTitle"] = "Каталог";
 }
 
+@section Css {
+    <link rel="stylesheet" href="~/inline/css/catalog.css" asp-append-version="true"/>
+}
+
 <div class="row mt-4">
     <div class="col-lg-4 col-xl-3">
         @await Html.PartialAsync("FilterContent")
@@ -34,3 +38,7 @@
         @await Html.PartialAsync("Paging")
     </div>
 </div>
+
+@section Scripts {
+    <script src="~/js/site.js" asp-append-version="true"></script>
+}

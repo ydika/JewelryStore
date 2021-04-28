@@ -10,7 +10,16 @@
         <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
             <ul class="navbar-nav flex-grow-1">
                 <li class="nav-item">
-                    <a class="nav-link text-white" asp-area="" asp-controller="Catalog" asp-action="Products">Каталог</a>
+                    <a class="nav-link text-white" asp-area="" asp-controller="Catalog" asp-action="List" asp-route-jkind="All">Каталог</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" asp-area="" asp-controller="Catalog" asp-action="List" asp-route-jkind="All">Акции</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" asp-area="" asp-controller="Catalog" asp-action="List" asp-route-jkind="All">Покупателю</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" asp-area="" asp-controller="Catalog" asp-action="List" asp-route-jkind="All">О нас</a>
                 </li>
             </ul>
         </div>

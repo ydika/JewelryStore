@@ -27,22 +27,23 @@ namespace JewelryStore.Controllers
             dbContext = context;
         }
 
-        public IActionResult Products(string jkind, int currentpage)
+        [Route("[controller]/{jkind}")]
+        public IActionResult List(string jkind = "all", int currentpage = 1)
         {
             ViewData["CurrentPage"] = currentpage;
 
             List<ModelJewelry> jewelries = dbContext.Jewelries.ToList();
             List<ModelCharacteristicValues> characteristicValues = null;
 
-            if (jkind == null || jkind == "все")
+            if (jkind == null || jkind == "all")
             {
                 characteristicValues = dbContext.JewelryCharacteristics.Select(x => x.CharacteristicValues).ToList();
             }
             else
             {
-                jewelries = jewelries.Where(x => x.Kind.Name.ToLower() == jkind).ToList();
+                jewelries = jewelries.Where(x => x.Kind.EnName.ToLower() == jkind).ToList();
 
-                characteristicValues = dbContext.JewelryCharacteristics.Where(x => x.Jewelry.Kind.Name.ToLower() == jkind).Select(x => x.CharacteristicValues).ToList();
+                characteristicValues = dbContext.JewelryCharacteristics.Where(x => x.Jewelry.Kind.EnName.ToLower() == jkind).Select(x => x.CharacteristicValues).ToList();
             }
 
             ViewData["PageCount"] = (int)Math.Ceiling((decimal)jewelries.Count() / displayedProducts);

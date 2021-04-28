@@ -1,5 +1,5 @@
 ﻿<div class="d-flex justify-content-center">
-    <ul class="pagination">
+    <ul id="catalogPagination" class="pagination">
         @if ((int)ViewData["PageCount"] > 1 && (int)ViewData["PageCount"] < 14)
         {
             @for (int i = 1; i <= (int)ViewData["PageCount"]; i++)

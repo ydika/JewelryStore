@@ -1,23 +1,21 @@
 ﻿@model CatalogViewModel
 
-    <link rel="stylesheet" href="~/inline/catalog.css" inline />
-
 <aside id="filters">
     <div class="bg-white mb-4">
         <h4>@ViewData["GoldenTitle"]</h4>
         <ul class="navbar-nav flex-grow-1">
             <li class="nav-item">
-                <a class="nav-link p-0 text-dark" asp-route-jkind="Все">
-                    <img src="/Images/Icons/all.svg" width="24" height="24">
+                <a class="nav-link p-0 text-dark" asp-route-jkind="All">
+                    <img src="/images/icons/all.svg" width="24" height="24">
                     <span>Все</span>
                 </a>
             </li>
             @foreach (var jk in Model.JewelryKinds)
             {
                 <li class="nav-item">
-                    <a class="nav-link p-0 text-dark" asp-route-jkind="@jk.Name">
+                    <a class="nav-link p-0 text-dark" asp-route-jkind="@jk.EnName">
                         <img src="@jk.IconSrc" width="24" height="24">
-                        <span class="align-middle">@jk.Name</span>
+                        <span class="align-middle">@jk.RuName</span>
                     </a>
                 </li>
             }

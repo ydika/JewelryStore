@@ -12,7 +12,9 @@ namespace JewelryStore.Models
     {
         public int ID { get; set; }
         [StringLength(50)]
-        public string Name { get; set; }
+        public string RuName { get; set; }
+        [StringLength(50)]
+        public string EnName { get; set; }
         [StringLength(100)]
         public string IconSrc { get; set; }
         [StringLength(200)]

@@ -4,6 +4,7 @@
     @await Html.PartialAsync("PartialMetatag")
     <title>@ViewData["Title"] - Glatteis</title>
     @await Html.PartialAsync("PartialCss")
+    @await RenderSectionAsync("Css", required: false)
 </head>
 <body>
     @await Html.PartialAsync("PartialHeader")

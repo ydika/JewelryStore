@@ -28,10 +28,15 @@ namespace JewelryStore
 
             services.AddRouting(options => options.LowercaseUrls = true);
 
-            services.AddControllersWithViews();
+            services.AddControllersWithViews(mvcOtions =>
+            {
+                mvcOtions.EnableEndpointRouting = false;
+            });
 
             services.AddWebOptimizer(pipeline =>
             {
+                pipeline.MinifyCssFiles("/inline/css/*.css");
+                pipeline.MinifyJsFiles("/inline/js/*.js");
                 pipeline.AddCssBundle("/css/bundle.css", "/css/*.css");
                 pipeline.AddJavaScriptBundle("/js/bundle.js", "/js/*.js");
             });
@@ -55,21 +60,9 @@ namespace JewelryStore
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
-            app.UseRouting();
-
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller}/{jkind}/Page{currentpage:int}",
-                    defaults: new { controller = "Catalog", action = "Products", jkind = "все", currentpage = 1 });
-
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
-            });
+            app.UseMvcWithDefaultRoute();
         }
     }
 }
