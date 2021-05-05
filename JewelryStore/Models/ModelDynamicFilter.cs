@@ -5,12 +5,12 @@ using System.Threading.Tasks;
 
 namespace JewelryStore.Models
 {
-    public class ModelFilterContent
+    public class ModelDynamicFilter
     {
         public string CharacteristicName { get; set; }
-        public List<ModelCharacteristicValues> CharacteristicValues { get; set; }
+        public List<string> CharacteristicValues { get; set; }
 
-        public ModelFilterContent(string characteristicNames, List<ModelCharacteristicValues> characteristicValues)
+        public ModelDynamicFilter(string characteristicNames, List<string> characteristicValues)
         {
             CharacteristicName = characteristicNames;
             CharacteristicValues = characteristicValues;

@@ -5,37 +5,20 @@
 }
 
 @section Css {
-    <link rel="stylesheet" href="~/inline/css/catalog.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="~/inline/css/catalog.css" asp-append-version="true" />
 }
 
-<div class="row mt-4">
-    <div class="col-lg-4 col-xl-3">
-        @await Html.PartialAsync("FilterContent")
-    </div>
-    <div class="col-lg-8 col-xl-9">
-        <div class="row">
-            @foreach (var j in Model.Jewelries)
-            {
-                <div class="col-12 col-sm-6 col-md-4 mb-4">
-                    <div class="card shadow text-center h-100">
-                        <img class="card-img" src="@j.ImageSrc">
-                        <div class="card-body pb-0 pt-2 px-1">
-                            <div class="card-title">@j.Name</div>
-                        </div>
-                        <div class="pb-4">
-                            <div class="text-danger">
-                                от
-                                <span class="h5">
-                                    @j.Price.ToString("0.00")
-                                </span>
-                                руб.
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            }
+<div class="container">
+    <div class="row mt-4">
+        <div class="col-lg-4 col-xl-3">
+            @await Html.PartialAsync("_Filters")
         </div>
-        @await Html.PartialAsync("Paging")
+        <div class="col-lg-8 col-xl-9">
+            <div id="cards">
+                @await Html.PartialAsync("_Cards", Model.Jewelries)
+            </div>
+            <div id="paging" class="d-flex justify-content-center"></div>
+        </div>
     </div>
 </div>
 

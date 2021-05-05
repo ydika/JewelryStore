@@ -1,23 +1,54 @@
-﻿.bg-header {
-    background-color: rgba(0, 0, 0, 0.15);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+﻿.bg-gold {
+    background-color: #CDA557;
 }
 
-.bg-gold-gradient {
-    background: linear-gradient(to right, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
-    /*background: linear-gradient(to right, #dec489, #f6e0a4, #d1b372, #e3cc97, #bf9a5e);*/
-    /*background: linear-gradient(to top,#ffffff, #FBF5B7, #BF953F, #BF953F);*/
-    height: 350px;
+.nav-link {
+    position: relative;
 }
 
-@media (min-width: 576px) {
-    .navbar-nav li {
-        border-left: 1px solid rgba(255, 255, 255, 0.3);
-    }
+.navbar-collapse > ul > li{
+    padding-left: 15px;
+    padding-right: 15px;
 }
 
-@media (max-width: 575px) {
-    .navbar-nav li {
-        border-left: none;
-    }
+.navbar-collapse > ul > li:hover > a:before {
+    transition: all 0.25s ease-in;
+    opacity: 1;
+    visibility: visible;
+    left: -5px;
+}
+
+.navbar-collapse > ul > li > a:before {
+    content: "";
+    border-left-width: 2px;
+    border-left-style: solid;
+    border-left-color: white;
+    position: absolute;
+    top: 50%;
+    left: -20px;
+    transform: translateY(-50%);
+    height: 13px;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.navbar-collapse > ul > li:hover > a:after {
+    transition: all 0.25s ease-in;
+    opacity: 1;
+    visibility: visible;
+    right: -5px;
+}
+
+.navbar-collapse > ul > li > a:after {
+    content: "";
+    border-left-width: 2px;
+    border-left-style: solid;
+    border-left-color: white;
+    position: absolute;
+    top: 50%;
+    right: -20px;
+    transform: translateY(-50%);
+    height: 13px;
+    opacity: 0;
+    visibility: hidden;
 }

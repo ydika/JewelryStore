@@ -1,5 +1,5 @@
 ﻿@model CatalogViewModel
-
+@*href="javascript: undefined;"*@
 <aside id="filters">
     <div class="bg-white mb-4">
         <h4>@ViewData["GoldenTitle"]</h4>
@@ -31,8 +31,8 @@
                     @foreach (var jcv in jc.CharacteristicValues)
                     {
                         <li class="nav-item">
-                            <input type="checkbox" />
-                            <span class="align-middle">@jcv.Value</span>
+                            <input type="checkbox" value="@jcv" />
+                            <span class="align-middle">@jcv</span>
                         </li>
                     }
                 </ul>

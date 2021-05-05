@@ -1,23 +1,22 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-    @await Html.PartialAsync("PartialMetatag")
+    @await Html.PartialAsync("_Metatag")
     <title>@ViewData["Title"] - Glatteis</title>
-    @await Html.PartialAsync("PartialCss")
+    @await Html.PartialAsync("_Css")
+
     @await RenderSectionAsync("Css", required: false)
 </head>
 <body>
-    @await Html.PartialAsync("PartialHeader")
+    @await Html.PartialAsync("_Header")
 
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+    <main role="main" class="pb-3">
+        @RenderBody()
+    </main>
 
-    @await Html.PartialAsync("PartialFooter")
+    @await Html.PartialAsync("_Footer")
 
-    @await Html.PartialAsync("PartialScripts")
+    @await Html.PartialAsync("_Scripts")
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

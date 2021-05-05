@@ -1,34 +1,34 @@
-﻿<div class="d-flex justify-content-center">
-    <ul id="catalogPagination" class="pagination">
+﻿<div id="paging" class="d-flex justify-content-center">
+    <ul class="pagination">
         @if ((int)ViewData["PageCount"] > 1 && (int)ViewData["PageCount"] < 14)
         {
             @for (int i = 1; i <= (int)ViewData["PageCount"]; i++)
             {
                 <li class="page-item @(i == (int)ViewData["CurrentPage"] ? "active" : "")">
-                    <a asp-route-currentpage="@i" class="page-link">@i</a>
+                    <a href="javascript: undefined;" class="page-link"; onclick="pageclick(@i)">@i</a>
                 </li>
             }
         }
         else if ((int)ViewData["PageCount"] > 1)
         {
             <li class="page-item">
-                <a asp-route-currentpage="1" class="page-link">&laquo;</a>
+                <a asp-route-page="1" class="page-link">&laquo;</a>
             </li>
             <li class="page-item">
-                <a asp-route-currentpage="@((int)ViewData["CurrentPage"] - 10)" class="page-link">-10</a>
+                <a asp-route-page="@((int)ViewData["CurrentPage"] - 10)" class="page-link">-10</a>
             </li>
             @for (int i = (int)ViewData["CurrentPage"] - 7 < 0 ? 1 : (int)ViewData["CurrentPage"] - 7; 
                 i <= ((int)ViewData["CurrentPage"] + 7 < (int)ViewData["PageCount"] ? (int)ViewData["CurrentPage"] + 7 : (int)ViewData["PageCount"]); i++)
             {
                 <li class="page-item @(i == (int)ViewData["CurrentPage"] ? "active" : "")">
-                    <a asp-route-currentpage="@i" class="page-link">@i</a>
+                    <a asp-route-page="@i" class="page-link">@i</a>
                 </li>
             }
             <li class="page-item">
-                <a asp-route-currentpage="@((int)ViewData["CurrentPage"] + 10)" class="page-link">10+</a>
+                <a asp-route-page="@((int)ViewData["CurrentPage"] + 10)" class="page-link">10+</a>
             </li>
             <li class="page-item">
-                <a asp-route-currentpage="@((int)ViewData["PageCount"] + 1)" class="page-link">&raquo;</a>
+                <a asp-route-page="@((int)ViewData["PageCount"] + 1)" class="page-link">&raquo;</a>
             </li>
         }
     </ul>

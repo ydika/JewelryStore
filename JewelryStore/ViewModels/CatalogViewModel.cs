@@ -10,10 +10,10 @@ namespace JewelryStore.ViewModels
     {
         public List<ModelJewelry> Jewelries { get; set; }
         public List<ModelJewelryKinds> JewelryKinds { get; set; }
-        public List<ModelFilterContent> Filter { get; set; }
+        public List<ModelDynamicFilter> Filter { get; set; }
 
         public CatalogViewModel(List<ModelJewelry> jewelries, List<ModelJewelryKinds> jewelryKinds, 
-            List<ModelFilterContent> filter)
+            List<ModelDynamicFilter> filter)
         {
             Jewelries = jewelries;
             JewelryKinds = jewelryKinds;

@@ -1,4 +1,5 @@
 ﻿using JewelryStore.Models;
+using JewelryStore.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;

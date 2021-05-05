@@ -13,8 +13,12 @@ namespace JewelryStore.Models
         [Key]
         public int ID { get; set; }
 
-        public int ID_Characteristic { get; set; }
-        [ForeignKey("ID_Characteristic")]
+        public int ID_Jewelry { get; set; }
+        [ForeignKey("ID_Jewelry")]
+        public ModelJewelry Jewelry { get; set; }
+
+        public int ID_Characteristics { get; set; }
+        [ForeignKey("ID_Characteristics")]
         public ModelCharacteristics Characteristic { get; set; }
 
         [StringLength(100)]

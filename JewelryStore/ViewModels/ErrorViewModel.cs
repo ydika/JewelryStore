@@ -1,6 +1,6 @@
 using System;
 
-namespace JewelryStore.Models
+namespace JewelryStore.ViewModels
 {
     public class ErrorViewModel
     {
