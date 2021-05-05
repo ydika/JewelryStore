@@ -10,10 +10,8 @@ $("#bgCatalogSidebar").click(function () {
 
 let o = [];
 let page = 1;
-let pageCount, oldPageCount;
 
 function updateInfo() {
-    oldPageCount = pageCount;
     $.ajax({
         url: '/catalog/cards',
         type: 'POST',
