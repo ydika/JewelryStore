@@ -1,4 +1,5 @@
 ﻿using JewelryStore.Models;
+using JewelryStore.Models.DataBase;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,12 +9,12 @@ namespace JewelryStore.ViewModels
 {
     public class CatalogViewModel
     {
-        public List<ModelJewelry> Jewelries { get; set; }
-        public List<ModelJewelryKinds> JewelryKinds { get; set; }
-        public List<ModelDynamicFilter> Filter { get; set; }
+        public List<JewelryModel> Jewelries { get; set; }
+        public List<JewelryKindsModel> JewelryKinds { get; set; }
+        public List<DynamicFilterModel> Filter { get; set; }
 
-        public CatalogViewModel(List<ModelJewelry> jewelries, List<ModelJewelryKinds> jewelryKinds, 
-            List<ModelDynamicFilter> filter)
+        public CatalogViewModel(List<JewelryModel> jewelries, List<JewelryKindsModel> jewelryKinds, 
+            List<DynamicFilterModel> filter)
         {
             Jewelries = jewelries;
             JewelryKinds = jewelryKinds;

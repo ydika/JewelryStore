@@ -1,4 +1,6 @@
 ﻿using JewelryStore.Models;
+using JewelryStore.Models.Catalog;
+using JewelryStore.Models.DataBase;
 using JewelryStore.Services;
 using JewelryStore.ViewModels;
 using Microsoft.AspNetCore.Http;
@@ -18,13 +20,13 @@ namespace JewelryStore.Controllers
     {
         private DataBaseContext dbContext;
 
-        private List<ModelJewelry> jewelries = null;
-        private List<ModelCharacteristicValues> characteristicValues = null;
-        private List<ModelDynamicFilter> filter = new List<ModelDynamicFilter>();
+        private List<JewelryModel> jewelries = null;
+        private List<CharacteristicValuesModel> characteristicValues = null;
+        private List<DynamicFilterModel> filter = new List<DynamicFilterModel>();
 
         private static string jewelryKind = "all";
 
-        private int displayedProducts = 3;
+        private int displayedQuantity = 3;
 
         public CatalogController(DataBaseContext context)
         {
@@ -36,50 +38,61 @@ namespace JewelryStore.Controllers
             dbContext = context;
         }
 
-        public IActionResult Main() 
+        [Route("{jkind}")]
+        public IActionResult List(string jkind = "all")
         {
+            jewelryKind = jkind;
             return View();
         }
 
-        [Route("{jkind}")]
-        public IActionResult List(string[] o, string jkind = "all", int page = 1)
+        //[Route("{jkind}")]
+        //public IActionResult List(string[] o, string jkind = "all", int page = 1)
+        //{
+        //    jewelryKind = jkind;
+        //    jewelries = dbContext.Jewelries.ToList();
+        //    characteristicValues = null;
+
+        //    if (jkind == null || jkind == "all")
+        //    {
+        //        characteristicValues = dbContext.CharacteristicValues.ToList();
+        //    }
+        //    else
+        //    {
+        //        jewelries = jewelries.Where(x => x.Kind.EnName.ToLower() == jkind).ToList();
+
+        //        characteristicValues = dbContext.CharacteristicValues.Where(x => x.Jewelry.Kind.EnName.ToLower() == jkind).ToList();
+        //    }
+
+        //    for (int i = 0; i < o.Length; i++)
+        //    {
+        //        jewelries = jewelries.Where(x => x.CharacteristicValues.Select(x => x.Value).Contains(o[i])).ToList();
+        //    }
+
+        //    jewelries = jewelries.Skip(displayedQuantity * ((page - 1) < 0 ? 0 : page - 1)).Take(displayedQuantity).ToList();
+
+        //    foreach (var characteristic in dbContext.Characteristics.ToList())
+        //    {
+        //        filter.Add(new DynamicFilterModel(characteristic.Name, characteristicValues.Where(x => x.Characteristic.Name == characteristic.Name).Select(x => x.Value).Distinct().ToList()));
+        //    }
+
+        //    return View(new CatalogViewModel(jewelries, dbContext.JewelryKinds.ToList(), filter));
+        //}
+
+        [HttpGet]
+        [Route("[action]")]
+        public JsonResult GetCatalogFilter()
         {
-            jewelryKind = jkind;
-            jewelries = dbContext.Jewelries.ToList();
-            characteristicValues = null;
-
-            if (jkind == null || jkind == "all")
-            {
-                characteristicValues = dbContext.CharacteristicValues.ToList();
-            }
-            else
-            {
-                jewelries = jewelries.Where(x => x.Kind.EnName.ToLower() == jkind).ToList();
-
-                characteristicValues = dbContext.CharacteristicValues.Where(x => x.Jewelry.Kind.EnName.ToLower() == jkind).ToList();
-            }
-
-            for (int i = 0; i < o.Length; i++)
-            {
-                jewelries = jewelries.Where(x => x.CharacteristicValues.Select(x => x.Value).Contains(o[i])).ToList();
-            }
-
-            ViewData["CurrentPage"] = page;
-            ViewData["PageCount"] = (int)Math.Ceiling((decimal)jewelries.Count() / displayedProducts);
-
-            jewelries = jewelries.Skip(displayedProducts * ((page - 1) < 0 ? 0 : page - 1)).Take(displayedProducts).ToList();
-
             foreach (var characteristic in dbContext.Characteristics.ToList())
             {
-                filter.Add(new ModelDynamicFilter(characteristic.Name, characteristicValues.Where(x => x.Characteristic.Name == characteristic.Name).Select(x => x.Value).Distinct().ToList()));
+                filter.Add(new DynamicFilterModel(characteristic.Name, characteristicValues.Where(x => x.Characteristic.Name == characteristic.Name).Select(x => x.Value).Distinct().ToList()));
             }
 
-            return View(new CatalogViewModel(jewelries, dbContext.JewelryKinds.ToList(), filter));
+            return Json(filter);
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("[action]")]
-        public IActionResult Cards(string[] o, int page = 1)
+        public JsonResult GetJewelriesCards(string[] o, int page = 1)
         {
             jewelries = dbContext.Jewelries.ToList();
             
@@ -88,20 +101,16 @@ namespace JewelryStore.Controllers
                 jewelries = jewelries.Where(x => x.Kind.EnName.ToLower() == jewelryKind).ToList();
             }
 
-            for (int i = 0; i < o.Length; i++)
+            for (int i = 0; i < (o != null ? o.Length : 0); i++)
             {
                 jewelries = jewelries.Where(x => x.CharacteristicValues.Select(x => x.Value).Contains(o[i])).ToList();
             }
 
-            int jCount = jewelries.Count();
-            ViewData["CurrentPage"] = page;
-            ViewData["PageCount"] = (int)Math.Ceiling((decimal)jewelries.Count() / displayedProducts);
+            int pageCount = (int)Math.Ceiling((decimal)jewelries.Count() / displayedQuantity);
 
-            jewelries = jewelries.Skip(displayedProducts * ((page - 1) < 0 ? 0 : page - 1)).Take(displayedProducts).ToList();
+            jewelries = jewelries.Skip(displayedQuantity * ((page - 1) < 0 ? 0 : page - 1)).Take(displayedQuantity).ToList();
 
-            ModelCards result = new ModelCards(jewelries, jCount);
-
-            return Json(result);
+            return Json(new CardsModel(jewelries, page, pageCount));
         }
     }
 }

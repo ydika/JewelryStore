@@ -14,14 +14,12 @@
             @await Html.PartialAsync("_Filters")
         </div>
         <div class="col-lg-8 col-xl-9">
-            <div id="cards">
-                @await Html.PartialAsync("_Cards", Model.Jewelries)
-            </div>
-            <div id="paging" class="d-flex justify-content-center"></div>
+            @await Html.PartialAsync("_Cards")
+            @await Html.PartialAsync("_Paging")
         </div>
     </div>
 </div>
 
 @section Scripts {
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/catalog.js"></script>
 }

@@ -1,35 +1,7 @@
-﻿<div id="paging" class="d-flex justify-content-center">
-    <ul class="pagination">
-        @if ((int)ViewData["PageCount"] > 1 && (int)ViewData["PageCount"] < 14)
-        {
-            @for (int i = 1; i <= (int)ViewData["PageCount"]; i++)
-            {
-                <li class="page-item @(i == (int)ViewData["CurrentPage"] ? "active" : "")">
-                    <a href="javascript: undefined;" class="page-link"; onclick="pageclick(@i)">@i</a>
-                </li>
-            }
-        }
-        else if ((int)ViewData["PageCount"] > 1)
-        {
-            <li class="page-item">
-                <a asp-route-page="1" class="page-link">&laquo;</a>
-            </li>
-            <li class="page-item">
-                <a asp-route-page="@((int)ViewData["CurrentPage"] - 10)" class="page-link">-10</a>
-            </li>
-            @for (int i = (int)ViewData["CurrentPage"] - 7 < 0 ? 1 : (int)ViewData["CurrentPage"] - 7; 
-                i <= ((int)ViewData["CurrentPage"] + 7 < (int)ViewData["PageCount"] ? (int)ViewData["CurrentPage"] + 7 : (int)ViewData["PageCount"]); i++)
-            {
-                <li class="page-item @(i == (int)ViewData["CurrentPage"] ? "active" : "")">
-                    <a asp-route-page="@i" class="page-link">@i</a>
-                </li>
-            }
-            <li class="page-item">
-                <a asp-route-page="@((int)ViewData["CurrentPage"] + 10)" class="page-link">10+</a>
-            </li>
-            <li class="page-item">
-                <a asp-route-page="@((int)ViewData["PageCount"] + 1)" class="page-link">&raquo;</a>
-            </li>
-        }
+﻿<div class="d-flex justify-content-center" data-bind="if: pagesVisible">
+    <ul class="pagination" data-bind="foreach: {data: pages, as: 'number'}">
+        <li class="page-item" data-bind="css: {'active': $root.current() === number}">
+            <a href="javascript: undefined;" class="page-link" data-bind="click: $root.selectedNewPage, text: number"></a>
+        </li>
     </ul>
 </div>
