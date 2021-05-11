@@ -1,4 +1,5 @@
 ﻿using JewelryStore.Models;
+using JewelryStore.Models.DataBase;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -12,14 +13,15 @@ namespace JewelryStore.Services
     {
         private readonly IConfiguration configuration;
 
-        public DbSet<ModelBasket> Baskets { get; set; }
-        public DbSet<ModelBasketContents> BasketContents { get; set; }
-        public DbSet<ModelCharacteristics> Characteristics { get; set; }
-        public DbSet<ModelCharacteristicValues> CharacteristicValues { get; set; }
-        public DbSet<ModelDiscounts> Discounts { get; set; }
-        public DbSet<ModelJewelry> Jewelries { get; set; }
-        public DbSet<ModelJewelryKinds> JewelryKinds { get; set; }
-        public DbSet<ModelUsers> Users { get; set; }
+        public DbSet<BasketModel> Baskets { get; set; }
+        public DbSet<BasketContentsModel> BasketContents { get; set; }
+        public DbSet<CharacteristicsModel> Characteristics { get; set; }
+        public DbSet<CharacteristicValuesModel> CharacteristicValues { get; set; }
+        public DbSet<DiscountsModel> Discounts { get; set; }
+        public DbSet<JewelryModel> Jewelries { get; set; }
+        public DbSet<JewelryCharacteristicsModel> JewelryCharacteristics { get; set; }
+        public DbSet<JewelryKindsModel> JewelryKinds { get; set; }
+        public DbSet<UsersModel> Users { get; set; }
 
         public DataBaseContext(IConfiguration configuration)
         {

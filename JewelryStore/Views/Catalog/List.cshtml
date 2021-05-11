@@ -5,23 +5,21 @@
 }
 
 @section Css {
-    <link rel="stylesheet" href="~/inline/css/catalog.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/inline/css/catalog.css" />
 }
 
 <div class="container">
     <div class="row mt-4">
-        <div class="col-lg-4 col-xl-3">
+        <div id="filterSection" class="col-lg-4 col-xl-3">
             @await Html.PartialAsync("_Filters")
         </div>
-        <div class="col-lg-8 col-xl-9">
-            <div id="cards">
-                @await Html.PartialAsync("_Cards", Model.Jewelries)
-            </div>
-            <div id="paging" class="d-flex justify-content-center"></div>
+        <div id="productsSection" class="col-lg-8 col-xl-9">
+            @await Html.PartialAsync("_Cards")
+            @await Html.PartialAsync("_Paging")
         </div>
     </div>
 </div>
 
 @section Scripts {
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/inline/js/catalog.js"></script>
 }

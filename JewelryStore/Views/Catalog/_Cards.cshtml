@@ -1,26 +1,20 @@
-﻿@model List<ModelJewelry>
-
-<div class="row">
-    @foreach (var j in Model)
-    {
-        <div class="col-12 col-sm-6 col-md-4 mb-4">
-            <div class="card shadow text-center h-100">
-                <img class="card-img" src="@j.ImageSrc">
-                <div class="card-body pb-0 pt-2 px-1">
-                    <div class="card-title">@j.Name</div>
-                </div>
-                <div class="pb-4">
-                    <div class="text-danger">
-                        от
-                        <span class="h5">
-                            @j.Price.ToString("0.00")
-                        </span>
-                        руб.
-                    </div>
+﻿<div class="row" data-bind="foreach: jewelries">
+    <div class="col-12 col-sm-6 col-md-4 mb-4">
+        <div class="card shadow text-center h-100">
+            <img class="card-img" data-bind="attr:{src: imageSrc}">
+            <div class="card-body pb-0 pt-2 px-1">
+                <div class="card-title" data-bind="text: name"></div>
+            </div>
+            <div class="pb-4">
+                <div class="text-danger">
+                    от
+                    <span class="h5" data-bind="text: price"></span>
+                    руб.
                 </div>
             </div>
         </div>
-    }
+    </div>
 </div>
-
-@await Html.PartialAsync("_Paging")
+<div class="row justify-content-center" data-bind="if: jewelriesNotFound">
+    <h5>Кажется у нас нет такого товара...</h5>
+</div>

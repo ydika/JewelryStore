@@ -4,20 +4,15 @@
     @await Html.PartialAsync("_Metatag")
     <title>@ViewData["Title"] - Glatteis</title>
     @await Html.PartialAsync("_Css")
-
     @await RenderSectionAsync("Css", required: false)
 </head>
 <body>
     @await Html.PartialAsync("_Header")
-
     <main role="main" class="pb-3">
         @RenderBody()
     </main>
-
     @await Html.PartialAsync("_Footer")
-
     @await Html.PartialAsync("_Scripts")
-
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
