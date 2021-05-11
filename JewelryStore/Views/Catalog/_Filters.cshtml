@@ -1,44 +1,26 @@
-﻿@model CatalogViewModel
-@*href="javascript: undefined;"*@
-<aside id="filters">
+﻿<aside id="filters">
     <div class="bg-white mb-4">
         <h4>@ViewData["GoldenTitle"]</h4>
-        <ul class="navbar-nav flex-grow-1">
+        <ul class="navbar-nav flex-grow-1" data-bind="foreach: jewelryKinds">
             <li class="nav-item">
-                <a class="nav-link p-0 text-dark" asp-route-jkind="All">
-                    <img src="/images/icons/all.svg" width="24" height="24">
-                    <span>Все</span>
+                <a class="nav-link p-0 text-dark" data-bind="attr: {href: enName}">
+                    <img data-bind="attr:{src: iconSrc}" width="24" height="24">
+                    <span class="align-middle" data-bind="text: ruName"></span>
                 </a>
             </li>
-            @foreach (var jk in Model.JewelryKinds)
-            {
-                <li class="nav-item">
-                    <a class="nav-link p-0 text-dark" asp-route-jkind="@jk.EnName">
-                        <img src="@jk.IconSrc" width="24" height="24">
-                        <span class="align-middle">@jk.RuName</span>
-                    </a>
-                </li>
-            }
         </ul>
     </div>
-    @foreach (var jc in Model.Filter)
-    {
-        @if (jc.CharacteristicValues.Count > 0)
-        {
-            <div class="bg-white mb-4">
-                <h4>@jc.CharacteristicName</h4>
-                <ul class="navbar-nav flex-grow-1">
-                    @foreach (var jcv in jc.CharacteristicValues)
-                    {
-                        <li class="nav-item">
-                            <input type="checkbox" value="@jcv" />
-                            <span class="align-middle">@jcv</span>
-                        </li>
-                    }
-                </ul>
-            </div>
-        }
-    }
+    <div data-bind="foreach: characteristics">
+        <div class="bg-white mb-4">
+            <h4 data-bind="text: name"></h4>
+            <ul class="navbar-nav flex-grow-1" data-bind="foreach: characteristic_values">
+                <li class="nav-item">
+                    <input type="checkbox" data-bind="attr: {value: value}" />
+                    <span class="align-middle" data-bind="text: value"></span>
+                </li>
+            </ul>
+        </div>
+    </div>
 </aside>
 <div id="showCatalogSidebar" class="position-fixed justify-content-center bg-dark text-white p-2 open-sidebar-button">Фильтры</div>
 <div id="bgCatalogSidebar" class="position-fixed bg-sidebar" style="display: none;"></div>

@@ -21,28 +21,23 @@ namespace JewelryStore
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<DataBaseContext>();
 
             services.AddRouting(options => options.LowercaseUrls = true);
 
-            services.AddControllersWithViews(mvcOtions =>
-            {
-                mvcOtions.EnableEndpointRouting = false;
-            });
+            services.AddControllersWithViews(mvcOtions => mvcOtions.EnableEndpointRouting = false);
 
             services.AddWebOptimizer(pipeline =>
             {
                 pipeline.MinifyCssFiles("/inline/css/*.css");
-                pipeline.MinifyJsFiles("/inline/js/*.js");
+                //pipeline.MinifyJsFiles("/inline/js/*.js");
                 pipeline.AddCssBundle("/css/bundle.css", "/css/*.css");
                 pipeline.AddJavaScriptBundle("/js/bundle.js", "/js/*.js");
             });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -52,7 +47,7 @@ namespace JewelryStore
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+
                 app.UseHsts();
             }
             app.UseWebOptimizer();

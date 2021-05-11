@@ -40,6 +40,6 @@ namespace JewelryStore.Models.DataBase
         public string ImageSrc { get; set; }
 
         [JsonIgnore]
-        public List<CharacteristicValuesModel> CharacteristicValues { get; set; }
+        public List<JewelryCharacteristicsModel> JewelryCharacteristics { get; set; }
     }
 }

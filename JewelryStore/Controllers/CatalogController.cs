@@ -20,21 +20,12 @@ namespace JewelryStore.Controllers
     {
         private DataBaseContext dbContext;
 
-        private List<JewelryModel> jewelries = null;
-        private List<CharacteristicValuesModel> characteristicValues = null;
-        private List<DynamicFilterModel> filter = new List<DynamicFilterModel>();
-
         private static string jewelryKind = "all";
 
         private int displayedQuantity = 3;
 
         public CatalogController(DataBaseContext context)
         {
-            context.Jewelries.Include(x => x.Kind).Include(x => x.Discount).Include(x => x.CharacteristicValues).Load();
-            context.JewelryKinds.Load();
-            context.CharacteristicValues.Include(x => x.Jewelry).Load();
-            context.Characteristics.Load();
-
             dbContext = context;
         }
 
@@ -45,56 +36,25 @@ namespace JewelryStore.Controllers
             return View();
         }
 
-        //[Route("{jkind}")]
-        //public IActionResult List(string[] o, string jkind = "all", int page = 1)
-        //{
-        //    jewelryKind = jkind;
-        //    jewelries = dbContext.Jewelries.ToList();
-        //    characteristicValues = null;
-
-        //    if (jkind == null || jkind == "all")
-        //    {
-        //        characteristicValues = dbContext.CharacteristicValues.ToList();
-        //    }
-        //    else
-        //    {
-        //        jewelries = jewelries.Where(x => x.Kind.EnName.ToLower() == jkind).ToList();
-
-        //        characteristicValues = dbContext.CharacteristicValues.Where(x => x.Jewelry.Kind.EnName.ToLower() == jkind).ToList();
-        //    }
-
-        //    for (int i = 0; i < o.Length; i++)
-        //    {
-        //        jewelries = jewelries.Where(x => x.CharacteristicValues.Select(x => x.Value).Contains(o[i])).ToList();
-        //    }
-
-        //    jewelries = jewelries.Skip(displayedQuantity * ((page - 1) < 0 ? 0 : page - 1)).Take(displayedQuantity).ToList();
-
-        //    foreach (var characteristic in dbContext.Characteristics.ToList())
-        //    {
-        //        filter.Add(new DynamicFilterModel(characteristic.Name, characteristicValues.Where(x => x.Characteristic.Name == characteristic.Name).Select(x => x.Value).Distinct().ToList()));
-        //    }
-
-        //    return View(new CatalogViewModel(jewelries, dbContext.JewelryKinds.ToList(), filter));
-        //}
-
         [HttpGet]
         [Route("[action]")]
         public JsonResult GetCatalogFilter()
         {
-            foreach (var characteristic in dbContext.Characteristics.ToList())
-            {
-                filter.Add(new DynamicFilterModel(characteristic.Name, characteristicValues.Where(x => x.Characteristic.Name == characteristic.Name).Select(x => x.Value).Distinct().ToList()));
-            }
+            dbContext.JewelryKinds.Load();
+            dbContext.Characteristics.Include(x => x.CharacteristicValues).Load();
 
-            return Json(filter);
+            return Json(new FilterModel(dbContext.JewelryKinds.ToList(), 
+                dbContext.Characteristics.Where(x => x.CharacteristicValues.Count() > 0).ToList()));
         }
 
         [HttpGet]
         [Route("[action]")]
         public JsonResult GetJewelriesCards(string[] o, int page = 1)
         {
-            jewelries = dbContext.Jewelries.ToList();
+            dbContext.Jewelries.Include(x => x.Kind).Include(x => x.Discount).Load();
+            dbContext.JewelryCharacteristics.Include(x => x.Jewelry).Include(x => x.CharacteristicValues).Load();
+
+            List<JewelryModel> jewelries = dbContext.Jewelries.ToList();
             
             if (jewelryKind != null && jewelryKind != "all")
             {
@@ -103,7 +63,7 @@ namespace JewelryStore.Controllers
 
             for (int i = 0; i < (o != null ? o.Length : 0); i++)
             {
-                jewelries = jewelries.Where(x => x.CharacteristicValues.Select(x => x.Value).Contains(o[i])).ToList();
+                jewelries = jewelries.Where(x => x.JewelryCharacteristics.Select(x => x.CharacteristicValues.Value).Contains(o[i])).ToList();
             }
 
             int pageCount = (int)Math.Ceiling((decimal)jewelries.Count() / displayedQuantity);
