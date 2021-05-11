@@ -33,6 +33,7 @@ namespace JewelryStore
             {
                 pipeline.MinifyCssFiles("/inline/css/*.css");
                 //pipeline.MinifyJsFiles("/inline/js/*.js");
+
                 pipeline.AddCssBundle("/css/bundle.css", "/css/*.css");
                 pipeline.AddJavaScriptBundle("/js/bundle.js", "/js/*.js");
             });
