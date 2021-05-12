@@ -1,5 +1,4 @@
 ﻿using JewelryStore.Models;
-using JewelryStore.Models.DataBase;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;

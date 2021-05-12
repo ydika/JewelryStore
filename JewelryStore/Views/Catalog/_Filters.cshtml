@@ -1,13 +1,23 @@
-﻿<aside id="filters">
+﻿@model List<JewelryKindsModel>
+<aside id="filters">
     <div class="bg-white mb-4">
-        <h4>@ViewData["GoldenTitle"]</h4>
-        <ul class="navbar-nav flex-grow-1" data-bind="foreach: jewelryKinds">
+        <h4>Каталог</h4>
+        <ul class="navbar-nav flex-grow-1">
             <li class="nav-item">
-                <a class="nav-link p-0 text-dark" data-bind="attr: {href: enName}">
-                    <img data-bind="attr:{src: iconSrc}" width="24" height="24">
-                    <span class="align-middle" data-bind="text: ruName"></span>
+                <a class="nav-link p-0 text-dark" asp-route-jkind="all">
+                    <img src="/images/icons/all.svg" width="24" height="24">
+                    <span class="align-middle">Все</span>
                 </a>
             </li>
+            @foreach (var kind in Model)
+            {
+                <li class="nav-item">
+                    <a class="nav-link p-0 text-dark" asp-route-jkind="@kind.EnName">
+                        <img src="@kind.IconSrc" width="24" height="24">
+                        <span class="align-middle">@kind.RuName</span>
+                    </a>
+                </li>
+            }
         </ul>
     </div>
     <div data-bind="foreach: characteristics">

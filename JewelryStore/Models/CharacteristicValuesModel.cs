@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace JewelryStore.Models.DataBase
+namespace JewelryStore.Models
 {
     [Table("CharacteristicValues")]
     public class CharacteristicValuesModel

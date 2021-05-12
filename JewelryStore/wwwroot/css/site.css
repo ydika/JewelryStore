@@ -63,7 +63,7 @@ html {
 body {
     /* Margin bottom by footer height */
     margin-bottom: 60px;
-    background-image: url(/Images/Background/background.jpg);
+    background-image: url(/images/background/background.jpg);
     background-attachment: fixed;
     /*background-repeat: no-repeat;*/
     font-family: 'Roboto Slab', sans-serif;

@@ -5,15 +5,16 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace JewelryStore.Models.DataBase
+namespace JewelryStore.Models
 {
-    [Table("Discounts")]
-    public class DiscountsModel
+    [Table("Users")]
+    public class UsersModel
     {
         [Key]
         public int ID { get; set; }
-        public double Amount { get; set; }
-        [StringLength(200)]
-        public string Description { get; set; }
+        [StringLength(100)]
+        public string Login { get; set; }
+        [StringLength(40)]
+        public string Password { get; set; }
     }
 }

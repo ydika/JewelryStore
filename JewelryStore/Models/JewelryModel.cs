@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace JewelryStore.Models.DataBase
+namespace JewelryStore.Models
 {
     [Table("Jewelry")]
     public class JewelryModel
@@ -31,13 +31,14 @@ namespace JewelryStore.Models.DataBase
         [StringLength(200)]
         public string InsertedGemChar { get; set; }
         public double Price { get; set; }
-        [JsonIgnore]
         [StringLength(30)]
         public string Code { get; set; }
         [JsonIgnore]
         public int Quantity { get; set; }
         [StringLength(100)]
         public string ImageSrc { get; set; }
+        [StringLength(200)]
+        public string Url { get; set; }
 
         [JsonIgnore]
         public List<JewelryCharacteristicsModel> JewelryCharacteristics { get; set; }

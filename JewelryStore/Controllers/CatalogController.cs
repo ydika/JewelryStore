@@ -1,6 +1,4 @@
 ﻿using JewelryStore.Models;
-using JewelryStore.Models.Catalog;
-using JewelryStore.Models.DataBase;
 using JewelryStore.Services;
 using JewelryStore.ViewModels;
 using Microsoft.AspNetCore.Http;
@@ -20,8 +18,6 @@ namespace JewelryStore.Controllers
     {
         private DataBaseContext dbContext;
 
-        private static string jewelryKind = "all";
-
         private int displayedQuantity = 3;
 
         public CatalogController(DataBaseContext context)
@@ -30,9 +26,22 @@ namespace JewelryStore.Controllers
         }
 
         [Route("{jkind}")]
-        public IActionResult List(string jkind = "all")
+        public IActionResult List(string jkind)
         {
-            jewelryKind = jkind;
+            dbContext.JewelryKinds.Load();
+
+            ViewData["Title"] = "Ювелирные изделия купить";
+            if (jkind != null && jkind != "all")
+            {
+                ViewData["Title"] = dbContext.JewelryKinds.Where(x => x.EnName == jkind).Select(x => x.RuName).FirstOrDefault() + " купить";
+            }
+
+            return View(dbContext.JewelryKinds.ToList());
+        }
+
+        [Route("{jkind}/{code}")]
+        public IActionResult Item(string jkind, string code)
+        {
             return View();
         }
 
@@ -40,25 +49,23 @@ namespace JewelryStore.Controllers
         [Route("[action]")]
         public JsonResult GetCatalogFilter()
         {
-            dbContext.JewelryKinds.Load();
             dbContext.Characteristics.Include(x => x.CharacteristicValues).Load();
 
-            return Json(new FilterModel(dbContext.JewelryKinds.ToList(), 
-                dbContext.Characteristics.Where(x => x.CharacteristicValues.Count() > 0).ToList()));
+            return Json(dbContext.Characteristics.Where(x => x.CharacteristicValues.Count() > 0).ToList());
         }
 
         [HttpGet]
-        [Route("[action]")]
-        public JsonResult GetJewelriesCards(string[] o, int page = 1)
+        [Route("{jkind}/[action]")]
+        public JsonResult GetJewelriesCards(string[] o, string jkind = "all", int page = 1)
         {
             dbContext.Jewelries.Include(x => x.Kind).Include(x => x.Discount).Load();
             dbContext.JewelryCharacteristics.Include(x => x.Jewelry).Include(x => x.CharacteristicValues).Load();
 
             List<JewelryModel> jewelries = dbContext.Jewelries.ToList();
-            
-            if (jewelryKind != null && jewelryKind != "all")
+
+            if (jkind != null && jkind != "all")
             {
-                jewelries = jewelries.Where(x => x.Kind.EnName.ToLower() == jewelryKind).ToList();
+                jewelries = jewelries.Where(x => x.Kind.EnName.ToLower() == jkind).ToList();
             }
 
             for (int i = 0; i < (o != null ? o.Length : 0); i++)
@@ -70,7 +77,7 @@ namespace JewelryStore.Controllers
 
             jewelries = jewelries.Skip(displayedQuantity * ((page - 1) < 0 ? 0 : page - 1)).Take(displayedQuantity).ToList();
 
-            return Json(new CardsModel(jewelries, page, pageCount));
+            return Json(new CardsViewModel(jewelries, page, pageCount));
         }
     }
 }

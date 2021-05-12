@@ -1,13 +1,11 @@
 ﻿let filtersSection = {
-    jewelryKinds: ko.observable(),
     characteristics: ko.observable()
 };
 ko.applyBindings(filtersSection, document.getElementById('filterSection'));
 
 $.getJSON('/catalog/getcatalogfilter',
     function (data) {
-        filtersSection.jewelryKinds(data.jewelry_kinds);
-        filtersSection.characteristics(data.characteristics);
+        filtersSection.characteristics(data);
         $("input:checkbox").click(function () {
             o = [];
             $("input:checkbox:checked").each(function () {
@@ -38,7 +36,7 @@ ko.applyBindings(jewelriesSection, document.getElementById('productsSection'));
 GetJewelries();
 function GetJewelries() {
     $.ajax({
-        url: '/catalog/getjewelriescards',
+        url: document.location.pathname + '/getjewelriescards',
         type: 'GET',
         dataType: 'json',
         traditional: true,

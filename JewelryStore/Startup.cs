@@ -32,8 +32,7 @@ namespace JewelryStore
             services.AddWebOptimizer(pipeline =>
             {
                 pipeline.MinifyCssFiles("/inline/css/*.css");
-                //pipeline.MinifyJsFiles("/inline/js/*.js");
-
+                pipeline.MinifyJsFiles("/inline/js/*.js");
                 pipeline.AddCssBundle("/css/bundle.css", "/css/*.css");
                 pipeline.AddJavaScriptBundle("/js/bundle.js", "/js/*.js");
             });

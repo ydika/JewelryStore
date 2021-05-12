@@ -9,6 +9,15 @@
     border-radius: 10px;
 }
 
+a:hover {
+    text-decoration: none;
+    color: black;
+}
+
+.text-black {
+    color: black;
+}
+
 #filters h4 {
     padding: 10px 16px;
     margin: 0;

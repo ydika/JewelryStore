@@ -1,13 +1,13 @@
-﻿using JewelryStore.Models.DataBase;
+﻿using JewelryStore.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace JewelryStore.Models.Catalog
+namespace JewelryStore.ViewModels
 {
-    public class CardsModel
+    public class CardsViewModel
     {
         public List<JewelryModel> Jewelries { get; set; }
         [JsonPropertyName("current_page")]
@@ -15,7 +15,7 @@ namespace JewelryStore.Models.Catalog
         [JsonPropertyName("page_count")]
         public int PageCount { get; set; }
 
-        public CardsModel(List<JewelryModel> jewelries, int currentPage, int pageCount)
+        public CardsViewModel(List<JewelryModel> jewelries, int currentPage, int pageCount)
         {
             Jewelries = jewelries;
             CurrentPage = currentPage;
