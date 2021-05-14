@@ -5,3 +5,50 @@
 .gold-text > li > span {
     color: #CDA557;
 }
+
+.cart-plus-minus {
+    position: relative;
+    width: 76px;
+    text-align: left;
+}
+
+    .cart-plus-minus > .qtybutton {
+        border-bottom: 1px solid #e5e5e5;
+        border-right: 1px solid #e5e5e5;
+        border-top: 1px solid #e5e5e5;
+        cursor: pointer;
+        height: 23px;
+        line-height: 20px;
+        position: absolute;
+        text-align: center;
+        width: 28px;
+        line-height: 21px;
+    }
+
+    .cart-plus-minus > .cart-plus-minus-box {
+        border: 1px solid #e5e5e5;
+        height: 46px;
+        text-align: center;
+        width: 48px;
+        background: #ffffff;
+    }
+
+.quantity .cart-plus-minus {
+    display: inline-block;
+    margin-left: 15px;
+}
+
+    .quantity .cart-plus-minus > .qtybutton.dec {
+        bottom: 0;
+        right: 0;
+    }
+
+    .quantity .cart-plus-minus > .qtybutton.inc {
+        border-bottom: none;
+        top: 0;
+        right: 0;
+    }
+
+    .quantity .cart-plus-minus > .qtybutton:hover {
+        background: #ebebeb;
+    }

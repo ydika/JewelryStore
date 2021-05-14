@@ -12,7 +12,6 @@ namespace JewelryStore.Models
     public class CharacteristicValuesModel
     {
         [Key]
-        [JsonIgnore]
         public int ID { get; set; }
 
         [JsonIgnore]

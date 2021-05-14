@@ -18,8 +18,8 @@ namespace JewelryStore.Models
         [ForeignKey("ID_Jewelry")]
         public JewelryModel Jewelry { get; set; }
 
-        public int ID_Characteristic { get; set; }
-        [ForeignKey("ID_Characteristic")]
+        public int ID_CharacteristicValue { get; set; }
+        [ForeignKey("ID_CharacteristicValue")]
         public CharacteristicValuesModel CharacteristicValues { get; set; }
     }
 }

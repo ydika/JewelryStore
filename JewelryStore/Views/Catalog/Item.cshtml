@@ -1,25 +1,56 @@
-﻿@section Css {
+﻿@model ItemViewModel
+@section Css {
     <link rel="stylesheet" href="~/inline/css/item.css" />
 }
 <div class="container mt-5 mb-5">
     <div class="row">
         <div class="col-md-5 col-lg-5">
-            <img class="img-border" data-bind="attr:{src: imageSrc}" style="max-width: 100%; height: auto;" />
+            <img class="img-border" src="@Model.Jewelry.ImageSrc" style="max-width: 100%; height: auto;" />
         </div>
         <div class="col-md-7 col-lg-7">
-            <h5 data-bind="text: name"></h5>
+            <h5>@Model.Jewelry.Name</h5>
             <div>
                 <ul class="navbar-nav gold-text">
                     <li>
-                        Металл: <span>серебро</span>
+                        Код: <span>@Model.Jewelry.Code</span>
                     </li>
-                    <li>
-                        Камень: <span>фианит</span>
-                    </li>
-                    <li>
-
-                    </li>
+                    @foreach (var jc in Model.Characteristics)
+                    {
+                        <li>
+                            @jc.Name:
+                            @if (jc.Name == "Размер")
+                            {
+                                <select class="custom-select" style="max-width: 70px;">
+                                    @foreach (var jcv in jc.Value)
+                                    {
+                                        <option>@jcv.Value</option>
+                                    }
+                                </select>
+                            }
+                            else
+                            {
+                                @foreach (var jcv in jc.Value)
+                                {
+                                    <span>@jcv.Value |</span>
+                                }
+                            }
+                        </li>
+                        if (jc.Name == "Вставка")
+                        {
+                            <li>
+                                Характеристика вставки: <span>@Model.Jewelry.InsertedGemChar</span>
+                            </li>
+                        }
+                    }
                 </ul>
+                <div class="quantity">
+                    <label>Количество:</label>
+                    <div class="cart-plus-minus">
+                        <input class="cart-plus-minus-box" value="1" type="text">
+                        <div class="inc qtybutton">^</div>
+                        <div class="dec qtybutton">^^</div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
