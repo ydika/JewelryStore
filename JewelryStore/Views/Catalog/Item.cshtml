@@ -1,3 +1,29 @@
-﻿<div class="container">
-    <h1>Hello</h1>
+﻿@section Css {
+    <link rel="stylesheet" href="~/inline/css/item.css" />
+}
+<div class="container mt-5 mb-5">
+    <div class="row">
+        <div class="col-md-5 col-lg-5">
+            <img class="img-border" data-bind="attr:{src: imageSrc}" style="max-width: 100%; height: auto;" />
+        </div>
+        <div class="col-md-7 col-lg-7">
+            <h5 data-bind="text: name"></h5>
+            <div>
+                <ul class="navbar-nav gold-text">
+                    <li>
+                        Металл: <span>серебро</span>
+                    </li>
+                    <li>
+                        Камень: <span>фианит</span>
+                    </li>
+                    <li>
+
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>
+@section Scripts {
+    <script src="~/inline/js/item.js"></script>
+}

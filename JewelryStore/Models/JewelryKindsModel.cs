@@ -10,6 +10,7 @@ namespace JewelryStore.Models
     [Table("JewelryKinds")]
     public class JewelryKindsModel
     {
+        [Key]
         public int ID { get; set; }
         [StringLength(50)]
         public string RuName { get; set; }

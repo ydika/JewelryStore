@@ -14,33 +14,27 @@ namespace JewelryStore.Models
         [Key]
         public int ID { get; set; }
 
-        [JsonIgnore]
         public int ID_Kind { get; set; }
         [ForeignKey("ID_Kind")]
-        [JsonIgnore]
         public JewelryKindsModel Kind { get; set; }
 
-        [JsonIgnore]
         public int ID_Discount { get; set; }
         [ForeignKey("ID_Discount")]
         public DiscountsModel Discount { get; set; }
 
         [StringLength(100)]
         public string Name { get; set; }
-        [JsonIgnore]
         [StringLength(200)]
         public string InsertedGemChar { get; set; }
         public double Price { get; set; }
         [StringLength(30)]
         public string Code { get; set; }
-        [JsonIgnore]
         public int Quantity { get; set; }
         [StringLength(100)]
         public string ImageSrc { get; set; }
         [StringLength(200)]
         public string Url { get; set; }
 
-        [JsonIgnore]
         public List<JewelryCharacteristicsModel> JewelryCharacteristics { get; set; }
     }
 }

@@ -40,7 +40,7 @@ namespace JewelryStore.Controllers
         }
 
         [Route("{jkind}/{code}")]
-        public IActionResult Item(string jkind, string code)
+        public IActionResult Item()
         {
             return View();
         }
@@ -58,7 +58,7 @@ namespace JewelryStore.Controllers
         [Route("{jkind}/[action]")]
         public JsonResult GetJewelriesCards(string[] o, string jkind = "all", int page = 1)
         {
-            dbContext.Jewelries.Include(x => x.Kind).Include(x => x.Discount).Load();
+            dbContext.Jewelries.Include(x => x.Kind).Include(x => x.Discount).Include(x => x.JewelryCharacteristics).Load();
             dbContext.JewelryCharacteristics.Include(x => x.Jewelry).Include(x => x.CharacteristicValues).Load();
 
             List<JewelryModel> jewelries = dbContext.Jewelries.ToList();
@@ -78,6 +78,16 @@ namespace JewelryStore.Controllers
             jewelries = jewelries.Skip(displayedQuantity * ((page - 1) < 0 ? 0 : page - 1)).Take(displayedQuantity).ToList();
 
             return Json(new CardsViewModel(jewelries, page, pageCount));
+        }
+
+        [HttpGet]
+        [Route("{jkind}/{code}/[action]")]
+        public JsonResult GetItem(string jkind, string code)
+        {
+            dbContext.Jewelries.Include(x => x.Kind).Include(x => x.Discount).Load();
+            dbContext.JewelryCharacteristics.Include(x => x.Jewelry).Include(x => x.CharacteristicValues).Load();
+
+            return Json(dbContext.Jewelries.Where(x => x.Code == code).FirstOrDefault());
         }
     }
 }

@@ -12,12 +12,13 @@ namespace JewelryStore.Models
     public class CharacteristicValuesModel
     {
         [Key]
+        [JsonIgnore]
         public int ID { get; set; }
 
         [JsonIgnore]
         public int ID_Characteristic { get; set; }
-        [ForeignKey("ID_Characteristic")]
         [JsonIgnore]
+        [ForeignKey("ID_Characteristic")]
         public CharacteristicsModel Characteristic { get; set; }
 
         [StringLength(100)]
