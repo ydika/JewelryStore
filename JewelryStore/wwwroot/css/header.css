@@ -6,49 +6,49 @@
     position: relative;
 }
 
-.navbar-collapse > ul > li{
+.navbar-collapse > ul > li {
     padding-left: 15px;
     padding-right: 15px;
 }
 
-.navbar-collapse > ul > li:hover > a:before {
-    transition: all 0.25s ease-in;
-    opacity: 1;
-    visibility: visible;
-    left: -5px;
-}
+    .navbar-collapse > ul > li:hover > a:before {
+        transition: all 0.25s ease-in;
+        opacity: 1;
+        visibility: visible;
+        left: -5px;
+    }
 
-.navbar-collapse > ul > li > a:before {
-    content: "";
-    border-left-width: 2px;
-    border-left-style: solid;
-    border-left-color: white;
-    position: absolute;
-    top: 50%;
-    left: -20px;
-    transform: translateY(-50%);
-    height: 13px;
-    opacity: 0;
-    visibility: hidden;
-}
+    .navbar-collapse > ul > li > a:before {
+        content: "";
+        border-left-width: 2px;
+        border-left-style: solid;
+        border-left-color: white;
+        position: absolute;
+        top: 50%;
+        left: -20px;
+        transform: translateY(-50%);
+        height: 13px;
+        opacity: 0;
+        visibility: hidden;
+    }
 
-.navbar-collapse > ul > li:hover > a:after {
-    transition: all 0.25s ease-in;
-    opacity: 1;
-    visibility: visible;
-    right: -5px;
-}
+    .navbar-collapse > ul > li:hover > a:after {
+        transition: all 0.25s ease-in;
+        opacity: 1;
+        visibility: visible;
+        right: -5px;
+    }
 
-.navbar-collapse > ul > li > a:after {
-    content: "";
-    border-left-width: 2px;
-    border-left-style: solid;
-    border-left-color: white;
-    position: absolute;
-    top: 50%;
-    right: -20px;
-    transform: translateY(-50%);
-    height: 13px;
-    opacity: 0;
-    visibility: hidden;
-}
+    .navbar-collapse > ul > li > a:after {
+        content: "";
+        border-left-width: 2px;
+        border-left-style: solid;
+        border-left-color: white;
+        position: absolute;
+        top: 50%;
+        right: -20px;
+        transform: translateY(-50%);
+        height: 13px;
+        opacity: 0;
+        visibility: hidden;
+    }

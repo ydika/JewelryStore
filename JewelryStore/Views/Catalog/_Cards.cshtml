@@ -1,20 +1,20 @@
 ﻿<div class="row" data-bind="foreach: jewelries">
     <div class="col-12 col-sm-6 col-md-4 mb-4">
-        <a class="text-black" data-bind="attr:{href: url}">
-            <div class="card shadow text-center h-100">
-                <img class="card-img" data-bind="attr:{src: imageSrc}">
-                <div class="card-body pb-0 pt-2 px-1">
-                    <div class="card-title" data-bind="text: name"></div>
-                </div>
-                <div class="pb-4">
-                    <div class="text-danger">
-                        от
-                        <span class="h5" data-bind="text: price"></span>
-                        руб.
-                    </div>
+        <div class="jewelry-card">
+            <div class="card-image">
+                <img data-bind="attr:{src: imageSrc}" />
+                <div class="card-shadow"></div>
+                <div class="actions">
+                    <div class="add-to-cart">К</div>
                 </div>
             </div>
-        </a>
+            <div class="card-content">
+                <h6>
+                    <a class="text-black" data-bind="attr:{href: url}, text: name"></a>
+                </h6>
+            </div>
+            <div class="card-price" data-bind="text: 'Br ' + price"></div>
+        </div>
     </div>
 </div>
 <div class="row justify-content-center" data-bind="if: jewelriesNotFound">
