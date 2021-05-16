@@ -1,5 +1,5 @@
 ﻿<div class="row" data-bind="foreach: jewelries">
-    <div class="col-12 col-sm-6 col-md-4 mb-4">
+    <div class="col-12 col-sm-6 col-xl-4 mb-4">
         <div class="jewelry-card">
             <div class="card-image">
                 <img data-bind="attr:{src: imageSrc}" />
@@ -13,7 +13,9 @@
                     <a class="text-black" data-bind="attr:{href: url}, text: name"></a>
                 </h6>
             </div>
-            <div class="card-price" data-bind="text: 'Br ' + price"></div>
+            <div class="card-price">
+                <span data-bind="text: 'Br ' + price"></span>
+            </div>
         </div>
     </div>
 </div>

@@ -1,7 +1,7 @@
-﻿<div class="d-flex justify-content-center" data-bind="if: pagesVisible">
-    <ul class="pagination" data-bind="foreach: {data: pages, as: 'number'}">
-        <li class="page-item" data-bind="css: {'active': $root.current() === number}">
-            <a href="javascript: undefined;" class="page-link" data-bind="click: $root.selectedNewPage, text: number"></a>
+﻿<div class="d-flex" data-bind="if: pagesVisible">
+    <ul class="pagination-box" data-bind="foreach: {data: pages, as: 'number'}">
+        <li data-bind="css: {'active': $root.current() === number}">
+            <a class="text-black" href="javascript: undefined;" data-bind="click: $root.selectedNewPage, text: number"></a>
         </li>
     </ul>
 </div>

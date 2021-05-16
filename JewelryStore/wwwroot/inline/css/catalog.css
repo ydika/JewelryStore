@@ -1,6 +1,11 @@
 ﻿.jewelry-card {
     border: 1px solid #E5E5E5;
     background-color: white;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    text-align: center;
 }
 
     .jewelry-card:hover {
@@ -50,7 +55,10 @@
 
 .card-content {
     padding: 0 10px;
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1 0 auto;
 }
 
     .card-content a {
@@ -67,22 +75,48 @@
             color: #CDA557;
         }
 
-        .card-content a::after {
-            content: "";
-            position: absolute;
-            width: 90%;
-            height: 1px;
-            background: #2E2E2E;
-            left: 50%;
-            margin-left: -45%;
-            bottom: 0;
-        }
-
 .card-price {
-    text-align: center;
-    padding: 0 20px 20px;
+    padding-bottom: 10px;
+    position: relative;
     font-size: 16px;
 }
+
+    .card-price span::before {
+        content: "";
+        position: absolute;
+        width: 90%;
+        height: 1px;
+        background: #2E2E2E;
+        left: 50%;
+        margin-left: -45%;
+        top: -10px;
+    }
+
+.pagination-box {
+    padding: 0px;
+}
+
+    .pagination-box li {
+        display: inline-block;
+    }
+
+        .pagination-box li > a {
+            padding: 10px 15px;
+            text-decoration: none;
+            background-color: white;
+            border: 1px solid #E5E5E5;
+        }
+
+        .pagination-box li.active > a {
+            background-color: #CDA557;
+            color: #ffffff;
+        }
+
+        .pagination-box li:hover > a {
+            transition: all 0.3s ease-in;
+            background-color: #CDA557;
+            color: #ffffff;
+        }
 
 .text-black {
     color: black;
