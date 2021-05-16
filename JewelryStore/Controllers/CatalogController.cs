@@ -18,7 +18,7 @@ namespace JewelryStore.Controllers
     {
         private DataBaseContext dbContext;
 
-        private int displayedQuantity = 12;
+        private int displayedQuantity = 1;
 
         public CatalogController(DataBaseContext context)
         {

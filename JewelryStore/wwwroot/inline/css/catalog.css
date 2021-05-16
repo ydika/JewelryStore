@@ -109,17 +109,21 @@
 
         .pagination-box li.active > a {
             background-color: #CDA557;
-            color: #ffffff;
+            color: white;
         }
 
         .pagination-box li:hover > a {
             transition: all 0.3s ease-in;
             background-color: #CDA557;
-            color: #ffffff;
+            color: white;
         }
 
 .text-black {
     color: black;
+}
+
+.border-gray {
+    border: 1px solid #E5E5E5;
 }
 
 #filters h4 {
@@ -130,7 +134,7 @@
 
 #filters ul li {
     padding: 10px 16px;
-    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    border-top: 1px solid #F2F2F2;
 }
 
     #filters ul li a span:hover {

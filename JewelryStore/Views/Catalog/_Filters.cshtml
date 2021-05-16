@@ -1,6 +1,6 @@
 ﻿@model List<JewelryKindsModel>
 <aside id="filters">
-    <div class="bg-white mb-4">
+    <div class="bg-white border-gray mb-4">
         <h4>Каталог</h4>
         <ul class="navbar-nav flex-grow-1">
             <li class="nav-item">
@@ -21,7 +21,7 @@
         </ul>
     </div>
     <div data-bind="foreach: characteristics">
-        <div class="bg-white mb-4">
+        <div class="bg-white border-gray mb-4">
             <h4 data-bind="text: name"></h4>
             <ul class="navbar-nav flex-grow-1" data-bind="foreach: characteristic_values">
                 <li class="nav-item">

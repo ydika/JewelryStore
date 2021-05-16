@@ -1,5 +1,5 @@
 ﻿.img-border {
-    border: 1px solid #e5e5e5;
+    border: 1px solid #E5E5E5;
 }
 
 .gold-text > li > span {
@@ -13,9 +13,9 @@
 }
 
     .cart-plus-minus > .qtybutton {
-        border-bottom: 1px solid #e5e5e5;
-        border-right: 1px solid #e5e5e5;
-        border-top: 1px solid #e5e5e5;
+        border-bottom: 1px solid #E5E5E5;
+        border-right: 1px solid #E5E5E5;
+        border-top: 1px solid #E5E5E5;
         cursor: pointer;
         height: 23px;
         line-height: 20px;
@@ -26,11 +26,11 @@
     }
 
     .cart-plus-minus > .cart-plus-minus-box {
-        border: 1px solid #e5e5e5;
+        border: 1px solid #E5E5E5;
         height: 46px;
         text-align: center;
         width: 48px;
-        background: #ffffff;
+        background: white;
     }
 
 .quantity .cart-plus-minus {
@@ -50,5 +50,5 @@
     }
 
     .quantity .cart-plus-minus > .qtybutton:hover {
-        background: #ebebeb;
+        background: #EBEBEB;
     }

@@ -1,4 +1,7 @@
-﻿let filtersSection = {
+﻿let o = [];
+let currentPage = 1;
+
+let filtersSection = {
     characteristics: ko.observable()
 };
 ko.applyBindings(filtersSection, document.getElementById('filterSection'));
@@ -17,9 +20,6 @@ $.getJSON('/catalog/getcatalogfilter',
     }
 );
 
-let o = [];
-let currentPage = 1;
-
 let jewelriesSection = {
     jewelries: ko.observable(),
     jewelriesNotFound: ko.observable(),
@@ -29,7 +29,7 @@ let jewelriesSection = {
     selectedNewPage: function NewPage(a) {
         currentPage = a;
         GetJewelries();
-        goUp();
+        ScrollUp();
     }
 };
 ko.applyBindings(jewelriesSection, document.getElementById('productsSection'));
@@ -43,21 +43,27 @@ function GetJewelries() {
         traditional: true,
         data: { 'o': o, 'page': currentPage },
         success: function (data) {
-            pageNumbers = [];
-            for (let i = 1; i < data.page_count + 1; i++) {
-                pageNumbers.push(i);
-            }
             jewelriesSection
                 .jewelries(data.jewelries)
                 .jewelriesNotFound(data.jewelries.length > 0 ? false : true)
                 .current(data.current_page)
-                .pages(pageNumbers)
-                .pagesVisible(pageNumbers.length > 1 ? true : false);
+                .pages(PageRange(currentPage, data.page_count))
+                .pagesVisible(data.page_count > 1 ? true : false);
         }
     });
 }
 
-function goUp() {
+function PageRange(current, count) {
+    numbers = [];
+    count++;
+    for (let i = count - 3 < current ? count - 5 : (current - 2 > 0 ? current - 2 : 1); i < (current < 3 ? 6 : (current + 3 < count ? current + 3 : count)); i++) {
+        numbers.push(i);
+    }
+    return numbers;
+}
+
+var timeOut;
+function ScrollUp() {
     var top = Math.max(document.body.scrollTop, document.documentElement.scrollTop);
     if (top > 0) {
         window.scrollBy(0, -100);
