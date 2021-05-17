@@ -25,6 +25,7 @@ let jewelriesSection = {
     jewelriesNotFound: ko.observable(),
     current: ko.observable(),
     pages: ko.observable(),
+    pageCount: ko.observable(),
     pagesVisible: ko.observable(),
     selectedNewPage: function NewPage(a) {
         currentPage = a;
@@ -48,6 +49,7 @@ function GetJewelries() {
                 .jewelriesNotFound(data.jewelries.length > 0 ? false : true)
                 .current(data.current_page)
                 .pages(PageRange(currentPage, data.page_count))
+                .pageCount(data.page_count)
                 .pagesVisible(data.page_count > 1 ? true : false);
         }
     });

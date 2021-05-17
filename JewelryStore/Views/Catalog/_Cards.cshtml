@@ -2,10 +2,14 @@
     <div class="col-12 col-sm-6 col-xl-4 mb-4">
         <div class="jewelry-card">
             <div class="card-image">
-                <img data-bind="attr:{src: imageSrc}" />
+                <img data-bind="attr:{src: imageSrc, alt: name}" />
                 <div class="card-shadow"></div>
                 <div class="actions">
-                    <div class="add-to-cart">К</div>
+                    <a href="javascript: undefined;" title="В корзину">
+                        <div class="add-to-cart">
+                            <img src="~/images/icons/shopping-bag.svg" />
+                        </div>
+                    </a>
                 </div>
             </div>
             <div class="card-content">

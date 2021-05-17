@@ -4,7 +4,7 @@
         <h4>Каталог</h4>
         <ul class="navbar-nav flex-grow-1">
             <li class="nav-item">
-                <a class="nav-link p-0 text-dark" asp-route-jkind="all">
+                <a class="nav-link p-0 text-dark" asp-route-jkind="all" title="Все изделия">
                     <img src="/images/icons/all.svg" width="24" height="24">
                     <span class="align-middle">Все</span>
                 </a>
@@ -12,7 +12,7 @@
             @foreach (var kind in Model)
             {
                 <li class="nav-item">
-                    <a class="nav-link p-0 text-dark" asp-route-jkind="@kind.EnName">
+                    <a class="nav-link p-0 text-dark" asp-route-jkind="@kind.EnName" title="@kind.RuName">
                         <img src="@kind.IconSrc" width="24" height="24">
                         <span class="align-middle">@kind.RuName</span>
                     </a>

@@ -49,9 +49,22 @@
 
 .add-to-cart {
     opacity: 0;
+    width: 30px;
+    height: 30px;
+    background-color: black;
     transform: translate(15px, -50px);
     transition: 1s ease-in-out;
 }
+
+    .add-to-cart > img {
+        width: 17px;
+        height: 15px;
+    }
+
+    .add-to-cart:hover {
+        transition: 0.5s ease;
+        background-color: #CDA557;
+    }
 
 .card-content {
     padding: 0 10px;
@@ -97,26 +110,36 @@
 }
 
     .pagination-box li {
+        cursor: pointer;
         display: inline-block;
+        position: relative;
+        padding: 21px 21px;
+        background-color: white;
+        border: 1.08px solid #E5E5E5;
     }
 
-        .pagination-box li > a {
-            padding: 10px 15px;
+        .pagination-box li > span {
+            position: absolute;
+            transform: translate(-50%,-50%);
             text-decoration: none;
-            background-color: white;
-            border: 1px solid #E5E5E5;
         }
 
-        .pagination-box li.active > a {
+        .pagination-box li.active {
             background-color: #CDA557;
-            color: white;
         }
 
-        .pagination-box li:hover > a {
+            .pagination-box li.active > span {
+                color: white;
+            }
+
+        .pagination-box li:hover {
             transition: all 0.3s ease-in;
             background-color: #CDA557;
-            color: white;
         }
+
+            .pagination-box li:hover > span {
+                color: white;
+            }
 
 .text-black {
     color: black;
