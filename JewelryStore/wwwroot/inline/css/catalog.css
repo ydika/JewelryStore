@@ -118,7 +118,8 @@
         border: 1.08px solid #E5E5E5;
     }
 
-        .pagination-box li > span {
+        .pagination-box li > a {
+            padding: 10px 17px;
             position: absolute;
             transform: translate(-50%,-50%);
             text-decoration: none;
@@ -126,20 +127,14 @@
 
         .pagination-box li.active {
             background-color: #CDA557;
+            color: white;
         }
-
-            .pagination-box li.active > span {
-                color: white;
-            }
 
         .pagination-box li:hover {
             transition: all 0.3s ease-in;
             background-color: #CDA557;
+            color: white;
         }
-
-            .pagination-box li:hover > span {
-                color: white;
-            }
 
 .text-black {
     color: black;

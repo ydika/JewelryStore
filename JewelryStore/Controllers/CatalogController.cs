@@ -26,12 +26,12 @@ namespace JewelryStore.Controllers
         }
 
         [Route("{jkind}")]
-        public IActionResult List(string jkind)
+        public IActionResult List(string jkind = "all")
         {
             dbContext.JewelryKinds.Load();
 
             ViewData["Title"] = "Ювелирные изделия купить";
-            if (jkind != null && jkind != "all")
+            if (jkind != "all")
             {
                 ViewData["Title"] = dbContext.JewelryKinds.Where(x => x.EnName == jkind).Select(x => x.RuName).FirstOrDefault() + " купить";
             }
@@ -83,12 +83,12 @@ namespace JewelryStore.Controllers
 
             List<JewelryModel> jewelries = dbContext.Jewelries.ToList();
 
-            if (jkind != null && jkind != "all")
+            if (jkind != "all")
             {
                 jewelries = jewelries.Where(x => x.Kind.EnName.ToLower() == jkind).ToList();
             }
 
-            for (int i = 0; i < (o != null ? o.Length : 0); i++)
+            for (int i = 0; i < o.Length; i++)
             {
                 jewelries = jewelries.Where(x => x.JewelryCharacteristics.Select(x => x.CharacteristicValues.Value).Contains(o[i])).ToList();
             }

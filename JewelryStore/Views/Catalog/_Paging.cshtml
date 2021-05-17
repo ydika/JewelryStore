@@ -1,15 +1,15 @@
 ﻿<div class="d-flex justify-content-center" data-bind="if: pagesVisible">
     <ul class="pagination-box">
-        <li data-bind="click: selectedNewPage(1)">
-            <span class="text-black">❮❮</span>
+        <li>
+            <a class="text-black" data-bind="click: function(){selectedNewPage(1)}">❮❮</a>
         </li>
         <!-- ko foreach: {data: pages, as: 'number'} -->
-        <li data-bind="css: {'active': $root.current() === number}, click: $root.selectedNewPage">
-            <span class="text-black" data-bind="text: number"></span>
+        <li data-bind="css: {'active': $root.current() === number}">
+            <a class="text-black" data-bind="click: $root.selectedNewPage, text: number"></a>
         </li>
         <!-- /ko -->
-        <li data-bind="click: function(){selectedNewPage(pageCount())}">
-            <span class="text-black">❯❯</span>
+        <li>
+            <a class="text-black" data-bind="click: function(){selectedNewPage(pageCount())}">❯❯</a>
         </li>
     </ul>
 </div>
