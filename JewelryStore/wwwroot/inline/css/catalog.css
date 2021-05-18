@@ -1,5 +1,5 @@
 ﻿.jewelry-card {
-    border: 1px solid #E5E5E5;
+    border: 1px solid #e5e5e5;
     background-color: white;
     position: relative;
     display: flex;
@@ -10,7 +10,7 @@
 
     .jewelry-card:hover {
         transition: 0.25s ease-in;
-        border-color: #CDA557;
+        border-color: #d8a247;
     }
 
 .card-image {
@@ -18,10 +18,14 @@
 }
 
     .card-image > img {
+        transition: 0.5s ease-in;
+        transform: scale(0.8);
         width: 100%;
     }
 
-    .card-image:hover .card-shadow {
+    .card-image:hover > img {
+        transition: 0.5s ease-in;
+        transform: scale(1);
         opacity: 1;
     }
 
@@ -29,17 +33,6 @@
         opacity: 1;
         transform: translate(0, 0);
     }
-
-.card-shadow {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.1);
-    opacity: 0;
-    transition: 0.5s ease-in-out;
-}
 
 .actions {
     bottom: 15px;
@@ -53,7 +46,7 @@
     height: 30px;
     background-color: black;
     transform: translate(15px, -50px);
-    transition: 1s ease-in-out;
+    transition: 0.5s ease-in-out;
 }
 
     .add-to-cart > img {
@@ -62,8 +55,8 @@
     }
 
     .add-to-cart:hover {
-        transition: 0.5s ease;
-        background-color: #CDA557;
+        transition: 0.5s ease-in-out;
+        background-color: #d8a247;
     }
 
 .card-content {
@@ -85,7 +78,7 @@
         .card-content a:hover {
             transition: 0.25s ease-in;
             text-decoration: none;
-            color: #CDA557;
+            color: #d8a247;
         }
 
 .card-price {
@@ -99,7 +92,7 @@
         position: absolute;
         width: 90%;
         height: 1px;
-        background: #2E2E2E;
+        background: black;
         left: 50%;
         margin-left: -45%;
         top: -10px;
@@ -115,7 +108,7 @@
         position: relative;
         padding: 21px 21px;
         background-color: white;
-        border: 1.08px solid #E5E5E5;
+        border: 1.08px solid #e5e5e5;
     }
 
         .pagination-box li > a {
@@ -126,13 +119,13 @@
         }
 
         .pagination-box li.active {
-            background-color: #CDA557;
+            background-color: #d8a247;
             color: white;
         }
 
         .pagination-box li:hover {
             transition: all 0.3s ease-in;
-            background-color: #CDA557;
+            background-color: #d8a247;
             color: white;
         }
 
@@ -140,24 +133,44 @@
     color: black;
 }
 
-.border-gray {
-    border: 1px solid #E5E5E5;
+.filter-block {
+    border: 1px solid #e5e5e5;
+    background-color: white;
 }
 
-#filters h4 {
+    .filter-block h5:before {
+        content: "";
+        background-color: #d8a247;
+        width: 70px;
+        height: 2px;
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+    }
+
+.filter-block-category {
+    border: 1px solid #e5e5e5;
+    background-color: white;
+}
+
+.filter-block-name {
+    background-color: #d8a247;
+}
+
+#filters h5 {
     padding: 10px 16px;
     margin: 0;
-    border-bottom: 2px solid #CDA557;
+    position: relative;
 }
 
 #filters ul li {
     padding: 10px 16px;
-    border-top: 1px solid #F2F2F2;
+    border-top: 1px solid #f2f2f2;
 }
 
     #filters ul li a span:hover {
         transition: 0.1s;
-        color: #CDA557;
+        color: #d8a247;
     }
 
 .bg-sidebar {
@@ -199,9 +212,7 @@
         padding: 0;
         transition: .3s;
         margin: 0;
-        padding: 16px;
         background-color: white;
-        margin: -16px;
         border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     }
 
