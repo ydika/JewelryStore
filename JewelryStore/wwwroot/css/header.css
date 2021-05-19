@@ -1,54 +1,86 @@
-﻿.bg-gold {
+﻿header {
     background-color: #d8a247;
+    padding: 16px;
 }
+
+.header-content, .brand-name {
+    display: flex;
+    align-items: center;
+}
+
+.header-content, .site-navigation {
+    justify-content: center;
+}
+
+.header-content {
+    flex-wrap: wrap;
+}
+
+.brand-name, .nav-link {
+    color: white !important;
+}
+
+.brand-name {
+    text-decoration: none;
+}
+
+    .brand-name > span {
+        font-size: 32px;
+        margin-bottom: .5rem;
+        line-height: 1.2;
+    }
 
 .nav-link {
     position: relative;
 }
 
-.navbar-collapse > ul > li {
-    padding-left: 15px;
-    padding-right: 15px;
+.site-navigation {
+    margin-bottom: 8px;
 }
 
-    .navbar-collapse > ul > li:hover > a:before {
-        transition: all 0.25s ease-in;
-        opacity: 1;
-        visibility: visible;
-        left: -5px;
-    }
+.header-content > ul > li > a:before, .header-content > ul > li > a:after {
+    content: "";
+    border-left-width: 2px;
+    border-left-style: solid;
+    border-left-color: white;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 13px;
+    opacity: 0;
+    visibility: hidden;
+}
 
-    .navbar-collapse > ul > li > a:before {
-        content: "";
-        border-left-width: 2px;
-        border-left-style: solid;
-        border-left-color: white;
-        position: absolute;
-        top: 50%;
-        left: -20px;
-        transform: translateY(-50%);
-        height: 13px;
-        opacity: 0;
-        visibility: hidden;
-    }
+.header-content > ul > li:hover > a:before, .header-content > ul > li:hover > a:after {
+    transition: all 0.25s ease-in;
+    opacity: 1;
+    visibility: visible;
+}
 
-    .navbar-collapse > ul > li:hover > a:after {
-        transition: all 0.25s ease-in;
-        opacity: 1;
-        visibility: visible;
-        right: -5px;
-    }
+.header-content > ul > li:hover > a:before {
+    left: 0px;
+}
 
-    .navbar-collapse > ul > li > a:after {
-        content: "";
-        border-left-width: 2px;
-        border-left-style: solid;
-        border-left-color: white;
-        position: absolute;
-        top: 50%;
-        right: -20px;
-        transform: translateY(-50%);
-        height: 13px;
-        opacity: 0;
-        visibility: hidden;
+.header-content > ul > li > a:before {
+    left: -15px;
+}
+
+.header-content > ul > li:hover > a:after {
+    right: 0px;
+}
+
+.header-content > ul > li > a:after {
+    right: -15px;
+}
+
+@media (max-width: 991px) {
+    .brand-name {
+        margin-right: 0px;
     }
+}
+
+@media (min-width: 992px) {
+    .brand-name {
+        margin-right: 15px;
+    }
+}

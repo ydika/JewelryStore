@@ -19,7 +19,7 @@
 
     .card-image > img {
         transition: 0.5s ease-in;
-        transform: scale(0.8);
+        transform: scale(0.85);
         width: 100%;
     }
 
@@ -55,7 +55,7 @@
     }
 
     .add-to-cart:hover {
-        transition: 0.5s ease-in-out;
+        transition: 0.25s ease;
         background-color: #d8a247;
     }
 
