@@ -16,7 +16,7 @@ namespace JewelryStore.Controllers
     [Route("[controller]")]
     public class CatalogController : Controller
     {
-        private DataBaseContext dbContext;
+        private readonly DataBaseContext dbContext;
 
         private int displayedQuantity = 12;
 

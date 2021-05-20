@@ -1,4 +1,36 @@
-﻿let o = [];
+﻿////window.onload = function () {
+////    window.setTimeout(
+////        function () {
+////            window.addEventListener(
+////                "popstate",
+////                function (e) {
+////                    $.ajax({
+////                        url: document.location.pathname + '/getjewelriescards',
+////                        type: 'GET',
+////                        dataType: 'json',
+////                        traditional: true,
+////                        data: { 'o': o, 'page': new URLSearchParams(document.location.search).get('page') },
+////                        success: function (data) {
+////                            jewelriesSection
+////                                .jewelries(data.jewelries)
+////                                .jewelriesNotFound(data.jewelries.length > 0 ? false : true)
+////                                .current(data.current_page)
+////                                .pages(PageRange(currentPage, data.page_count))
+////                                .pageCount(data.page_count)
+////                                .pagesVisible(data.page_count > 1 ? true : false);
+////                            if (oldPage != currentPage) {
+////                                window.scrollTo(0, 0);
+////                            }
+////                        }
+////                    });
+////                    e.preventDefault();
+////                },
+////                false
+////            );
+////        },
+////    );
+////}
+let o = [];
 let currentPage = 1;
 
 let filtersSection = {
@@ -28,9 +60,11 @@ let jewelriesSection = {
     pageCount: ko.observable(),
     pagesVisible: ko.observable(),
     selectedNewPage: function NewPage(a) {
-        currentPage = a;
-        GetJewelries();
-        ScrollUp();
+        if (currentPage != a) {
+            currentPage = a;
+            window.scrollTo(0, 0);
+            GetJewelries();
+        }
     }
 };
 ko.applyBindings(jewelriesSection, document.getElementById('productsSection'));
@@ -51,6 +85,7 @@ function GetJewelries() {
                 .pages(PageRange(currentPage, data.page_count))
                 .pageCount(data.page_count)
                 .pagesVisible(data.page_count > 1 ? true : false);
+/*                history.pushState({ 'currentPage': currentPage, 'o': o }, '', `?page=${currentPage}`);*/
         }
     });
 }
@@ -62,23 +97,12 @@ function PageRange(current, count) {
             numbers.push(i);
         }
     }
-    else
-    {
+    else {
         for (var i = 1; i <= count; i++) {
             numbers.push(i);
         }
     }
-
     return numbers;
-}
-
-var timeOut;
-function ScrollUp() {
-    var top = Math.max(document.body.scrollTop, document.documentElement.scrollTop);
-    if (top > 0) {
-        window.scrollBy(0, -100);
-        timeOut = setTimeout('ScrollUp()', 20);
-    } else clearTimeout(timeOut);
 }
 
 $("#showCatalogSidebar").click(function () {

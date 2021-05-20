@@ -77,7 +77,6 @@
 
         .card-content a:hover {
             transition: 0.25s ease-in;
-            text-decoration: none;
             color: #d8a247;
         }
 
@@ -115,17 +114,23 @@
             padding: 10px 17px;
             position: absolute;
             transform: translate(-50%,-50%);
-            text-decoration: none;
         }
 
         .pagination-box li.active {
             background-color: #d8a247;
+        }
+
+        .pagination-box li.active > a {
             color: white;
         }
 
         .pagination-box li:hover {
             transition: all 0.3s ease-in;
             background-color: #d8a247;
+        }
+
+        .pagination-box li:hover > a {
+            transition: all 0.3s ease-in;
             color: white;
         }
 

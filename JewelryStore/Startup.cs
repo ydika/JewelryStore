@@ -8,6 +8,8 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Encodings.Web;
+using System.Text.Unicode;
 using System.Threading.Tasks;
 
 namespace JewelryStore
@@ -27,7 +29,8 @@ namespace JewelryStore
 
             services.AddRouting(options => options.LowercaseUrls = true);
 
-            services.AddControllersWithViews(mvcOtions => mvcOtions.EnableEndpointRouting = false);
+            services.AddControllersWithViews(mvcOtions => mvcOtions.EnableEndpointRouting = false)
+                .AddJsonOptions(options => options.JsonSerializerOptions.Encoder = JavaScriptEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.Cyrillic));
 
             services.AddWebOptimizer(pipeline =>
             {
