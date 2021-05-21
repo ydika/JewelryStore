@@ -13,7 +13,7 @@ namespace JewelryStore.Models
         [Key]
         public int ID { get; set; }
         [StringLength(100)]
-        public string Login { get; set; }
+        public string Email { get; set; }
         [StringLength(40)]
         public string Password { get; set; }
     }

@@ -1,0 +1,32 @@
+﻿@model LoginModel
+@section Css {
+    <link rel="stylesheet" href="~/inline/css/register-login.css" />
+}
+<div class="container d-flex mt-3">
+    <div class="login-form w-50 m-auto">
+        <h4 class="login-title">Вход в аккаунт</h4>
+        <form asp-action="Login" asp-controller="Account" asp-anti-forgery="true">
+            <div class="row login-content">
+                <div class="validation" asp-validation-summary="ModelOnly"></div>
+                <div class="col-12 col-md-12">
+                    <label asp-for="Email">Введите Email</label>
+                    <input type="text" asp-for="Email" />
+                    <span asp-validation-for="Email" />
+                </div>
+                <div class="col-12">
+                    <label asp-for="Password">Введите пароль</label>
+                    <input asp-for="Password" />
+                    <span asp-validation-for="Password" />
+                </div>
+                <div class="col-md-12">
+                    <input type="submit" value="Войти" class="accept-register" />
+                </div>
+                <a asp-action="Registration" asp-controller="Account" class="m-auto">У вас нет аккаунта?</a>
+            </div>
+        </form>
+    </div>
+</div>
+@section Scripts{
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}

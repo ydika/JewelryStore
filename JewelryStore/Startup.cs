@@ -1,4 +1,5 @@
 using JewelryStore.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -26,6 +27,12 @@ namespace JewelryStore
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<DataBaseContext>();
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
+                });
 
             services.AddRouting(options => options.LowercaseUrls = true);
 
@@ -58,6 +65,7 @@ namespace JewelryStore
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseMvcWithDefaultRoute();

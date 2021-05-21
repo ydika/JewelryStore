@@ -25,17 +25,31 @@
                 <a href="javascript: undefined;" id="user" data-bs-toggle="dropdown" aria-expanded="false">
                     <img src="/images/icons/user.svg" alt="Аккаунт">
                 </a>
-                <ul class="dropdown-menu text-small" aria-labelledby="user">
-                    <li>
-                        <a href="javascript: undefined;" class="dropdown-item">Профиль</a>
-                    </li>
-                    <li>
-                        <a href="javascript: undefined;" class="dropdown-item">Настройки</a>
-                    </li>
-                    <li>
-                        <a  href="javascript: undefined;" class="dropdown-item">Выйти</a>
-                    </li>
-                </ul>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <ul class="dropdown-menu text-small" aria-labelledby="user">
+                        <li>
+                            <a href="javascript: undefined;" class="dropdown-item">Профиль</a>
+                        </li>
+                        <li>
+                            <a href="javascript: undefined;" class="dropdown-item">Настройки</a>
+                        </li>
+                        <li>
+                            <a asp-action="Logout" asp-controller="Account" class="dropdown-item">Выйти</a>
+                        </li>
+                    </ul>
+                }
+                else
+                {
+                    <ul class="dropdown-menu text-small" aria-labelledby="user">
+                        <li>
+                            <a asp-action="Login" asp-controller="Account" class="dropdown-item">Войти</a>
+                        </li>
+                        <li>
+                            <a asp-action="Register" asp-controller="Account" class="dropdown-item">Регистрация</a>
+                        </li>
+                    </ul>
+                }
             </div>
         </div>
     </div>
