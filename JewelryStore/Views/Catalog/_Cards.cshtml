@@ -1,25 +1,21 @@
 ﻿<div class="row" data-bind="foreach: jewelries">
     <div class="col-12 col-sm-6 col-xl-4 mb-4">
-        <div class="jewelry-card">
+        <a class="text-black jewelry-card" title="Посмотреть подробнее" data-bind="attr:{href: url}">
             <div class="card-image">
                 <img data-bind="attr:{src: imageSrc, alt: name}" />
                 <div class="actions">
-                    <a href="javascript: undefined;" title="В корзину">
-                        <div class="add-to-cart">
-                            <img src="~/images/icons/shopping-bag.svg" />
-                        </div>
-                    </a>
+                    <div class="add-to-cart" data-bind="click: function(){AddToCart(id)}">
+                        <img src="~/images/icons/shopping-bag.svg" />
+                    </div>
                 </div>
             </div>
             <div class="card-content">
-                <h6>
-                    <a class="text-black" title="Посмотреть подробнее" data-bind="attr:{href: url}, text: name"></a>
-                </h6>
+                <h6 data-bind="text: name"></h6>
             </div>
             <div class="card-price">
                 <span data-bind="text: 'Br ' + price"></span>
             </div>
-        </div>
+        </a>
     </div>
 </div>
 <div class="row justify-content-center" data-bind="if: jewelriesNotFound">

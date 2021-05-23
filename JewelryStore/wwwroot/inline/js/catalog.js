@@ -90,6 +90,18 @@ function GetJewelries() {
     });
 }
 
+function AddToCart(value) {
+    $.ajax({
+        url: '/cart/add',
+        type: 'POST',
+        dataType: 'json',
+        data: { 'jewelryid': value },
+        success: function (data) {
+            
+        }
+    });
+}
+
 function PageRange(current, count) {
     numbers = [];
     if (count > 5) {

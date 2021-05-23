@@ -1,8 +1,10 @@
+using JewelryStore.Models;
 using JewelryStore.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -27,6 +29,8 @@ namespace JewelryStore
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<DataBaseContext>();
+
+            services.AddIdentity<UserModel, IdentityRole>().AddEntityFrameworkStores<DataBaseContext>();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>

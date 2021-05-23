@@ -1,9 +1,46 @@
-﻿.img-border {
+﻿.item-img {
     border: 1px solid #E5E5E5;
+    width: 100%;
 }
 
-.gold-text > li > span {
-    color: #CDA557;
+.item-characteristic {
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    background-color: white;
+    height: 100%;
+    border: 1px solid #e5e5e5;
+}
+
+.item-title {
+    margin-bottom: 20px;
+}
+
+.item-gold-characterisitc > li {
+    margin-bottom: 5px;
+}
+
+    .item-gold-characterisitc > li > span {
+        color: #d8a247;
+    }
+
+.form-select {
+    display: inline-block;
+    max-width: 80px;
+}
+
+    .form-select:focus {
+        border-color: #d8a247;
+        box-shadow: none;
+    }
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+input[type='number'] {
+    -moz-appearance: textfield;
 }
 
 .cart-plus-minus {
@@ -13,16 +50,15 @@
 }
 
     .cart-plus-minus > .qtybutton {
+        transition: 0.25s ease-in;
         border-bottom: 1px solid #E5E5E5;
         border-right: 1px solid #E5E5E5;
         border-top: 1px solid #E5E5E5;
         cursor: pointer;
         height: 23px;
-        line-height: 20px;
         position: absolute;
         text-align: center;
         width: 28px;
-        line-height: 21px;
     }
 
     .cart-plus-minus > .cart-plus-minus-box {
@@ -30,7 +66,6 @@
         height: 46px;
         text-align: center;
         width: 48px;
-        background: white;
     }
 
 .quantity .cart-plus-minus {
@@ -43,12 +78,52 @@
         right: 0;
     }
 
+        .quantity .cart-plus-minus > .qtybutton.dec:before {
+            content: '-';
+        }
+
     .quantity .cart-plus-minus > .qtybutton.inc {
         border-bottom: none;
         top: 0;
         right: 0;
     }
 
+        .quantity .cart-plus-minus > .qtybutton.inc:before {
+            content: '+';
+        }
+
     .quantity .cart-plus-minus > .qtybutton:hover {
+        transition: 0.25s ease-in;
         background: #EBEBEB;
     }
+
+.form-control:focus {
+    border-color: #d8a247;
+}
+
+.item-buttons {
+    display: flex;
+    flex: 1 0 auto;
+    align-items: flex-end;
+}
+
+    .item-buttons > div {
+        display: inline-block;
+        margin-top: 20px;
+    }
+
+        .item-buttons > div.cart {
+            background-color: #333333;
+        }
+
+            .item-buttons > div.cart > a {
+                transition: 0.3s ease-in;
+                display: block;
+                color: white;
+                padding: 10px 15px;
+            }
+
+                .item-buttons > div.cart > a:hover {
+                    transition: 0.3s ease-in;
+                    background-color: #d8a247;
+                }

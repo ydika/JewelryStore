@@ -17,6 +17,6 @@ namespace JewelryStore.Models
         public string Name { get; set; }
 
         [JsonPropertyName("characteristic_values")]
-        public List<CharacteristicValuesModel> CharacteristicValues { get; set; }
+        public List<CharacteristicValueModel> CharacteristicValues { get; set; }
     }
 }

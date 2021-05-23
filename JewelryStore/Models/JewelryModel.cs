@@ -23,7 +23,7 @@ namespace JewelryStore.Models
         [JsonIgnore]
         public int ID_Discount { get; set; }
         [ForeignKey("ID_Discount")]
-        public DiscountsModel Discount { get; set; }
+        public DiscountModel Discount { get; set; }
 
         [StringLength(100)]
         public string Name { get; set; }

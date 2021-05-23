@@ -47,8 +47,8 @@ namespace JewelryStore.Controllers
             dbContext.Characteristics.Include(x => x.CharacteristicValues).Load();
 
             JewelryModel jewelry = dbContext.Jewelries.Where(x => x.Code == code).FirstOrDefault();
-            List<ItemCharacteristicsViewModel> itemCharacteristics = new List<ItemCharacteristicsViewModel>();
-            List<CharacteristicValuesModel> characteristicValues = null;
+            List<ItemCharacteristics> itemCharacteristics = new List<ItemCharacteristics>();
+            List<CharacteristicValueModel> characteristicValues = null;
             foreach (var characteristic in dbContext.Characteristics.ToList())
             {
                 if (characteristic.CharacteristicValues.Count() > 0)
@@ -56,7 +56,7 @@ namespace JewelryStore.Controllers
                     characteristicValues = jewelry.JewelryCharacteristics.Select(x => x.CharacteristicValues).Where(x => x.Characteristic.Name == characteristic.Name).ToList();
                     if (characteristicValues.Count() > 0)
                     {
-                        itemCharacteristics.Add(new ItemCharacteristicsViewModel(characteristic.Name,
+                        itemCharacteristics.Add(new ItemCharacteristics(characteristic.Name,
                                         jewelry.JewelryCharacteristics.Select(x => x.CharacteristicValues).Where(x => x.Characteristic.Name == characteristic.Name).ToList()));  
                     }
                 }

@@ -1,4 +1,5 @@
 ﻿using JewelryStore.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -8,19 +9,17 @@ using System.Threading.Tasks;
 
 namespace JewelryStore.Services
 {
-    public class DataBaseContext : DbContext
+    public class DataBaseContext : IdentityDbContext<UserModel>
     {
         private readonly IConfiguration configuration;
 
-        public DbSet<BasketModel> Baskets { get; set; }
-        public DbSet<BasketContentsModel> BasketContents { get; set; }
+        public DbSet<CartModel> Cart { get; set; }
         public DbSet<CharacteristicsModel> Characteristics { get; set; }
-        public DbSet<CharacteristicValuesModel> CharacteristicValues { get; set; }
-        public DbSet<DiscountsModel> Discounts { get; set; }
+        public DbSet<CharacteristicValueModel> CharacteristicValues { get; set; }
+        public DbSet<DiscountModel> Discounts { get; set; }
         public DbSet<JewelryModel> Jewelries { get; set; }
         public DbSet<JewelryCharacteristicsModel> JewelryCharacteristics { get; set; }
         public DbSet<JewelryKindsModel> JewelryKinds { get; set; }
-        public DbSet<UsersModel> Users { get; set; }
 
         public DataBaseContext(IConfiguration configuration)
         {

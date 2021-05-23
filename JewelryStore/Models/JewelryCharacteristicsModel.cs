@@ -20,6 +20,6 @@ namespace JewelryStore.Models
 
         public int ID_CharacteristicValue { get; set; }
         [ForeignKey("ID_CharacteristicValue")]
-        public CharacteristicValuesModel CharacteristicValues { get; set; }
+        public CharacteristicValueModel CharacteristicValues { get; set; }
     }
 }

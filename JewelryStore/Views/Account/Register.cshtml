@@ -1,11 +1,11 @@
-﻿@model RegisterModel
+﻿@model RegisterViewModel
 @section Css {
     <link rel="stylesheet" href="~/inline/css/register-login.css" />
 }
 <div class="container d-flex mt-3">
-    <div class="login-form w-50 m-auto">
+    <div class="login-form m-auto">
         <h4 class="login-title">Регистрация аккаунта</h4>
-        <form asp-action="Register" asp-controller="Account" asp-anti-forgery="true">
+        <form asp-controller="Account" asp-action="Register">
             <div class="row login-content">
                 <div class="validation" asp-validation-summary="ModelOnly"></div>
                 <div class="col-md-6 col-12">
@@ -19,9 +19,9 @@
                     <span asp-validation-for="Password" />
                 </div>
                 <div class="col-md-12">
-                    <label asp-for="ConfirmPassword">Повторите пароль</label>
-                    <input asp-for="ConfirmPassword" />
-                    <span asp-validation-for="ConfirmPassword" />
+                    <label asp-for="PasswordConfirm">Повторите пароль</label>
+                    <input asp-for="PasswordConfirm" />
+                    <span asp-validation-for="PasswordConfirm" />
                 </div>
                 <div class="col-12">
                     <input type="submit" value="Подтвердить" class="accept-register" />
@@ -30,7 +30,6 @@
         </form>
     </div>
 </div>
-@section Scripts{
-    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
 }

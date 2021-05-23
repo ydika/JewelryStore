@@ -1,4 +1,5 @@
-﻿.jewelry-card {
+﻿/*--------------card--------------*/
+.jewelry-card {
     border: 1px solid #e5e5e5;
     background-color: white;
     position: relative;
@@ -41,6 +42,9 @@
 }
 
 .add-to-cart {
+    display: flex;
+    justify-content:center;
+    align-items: center;
     opacity: 0;
     width: 30px;
     height: 30px;
@@ -50,8 +54,8 @@
 }
 
     .add-to-cart > img {
-        width: 17px;
-        height: 15px;
+        width: 16px;
+        height: 14px;
     }
 
     .add-to-cart:hover {
@@ -65,22 +69,19 @@
     justify-content: center;
     align-items: center;
     flex: 1 0 auto;
+    color: #2E2E2E;
+    margin: 15px 0 5px;
+    padding-bottom: 8px;
+    position: relative;
 }
 
-    .card-content a {
-        color: #2E2E2E;
-        margin: 15px 0 5px;
-        padding-bottom: 8px;
-        display: block;
-        position: relative;
+    .card-content:hover {
+        transition: 0.25s ease-in;
+        color: #d8a247;
     }
 
-        .card-content a:hover {
-            transition: 0.25s ease-in;
-            color: #d8a247;
-        }
-
 .card-price {
+    color: black;
     padding-bottom: 10px;
     position: relative;
     font-size: 16px;
@@ -97,6 +98,7 @@
         top: -10px;
     }
 
+/*--------------paging--------------*/
 .pagination-box {
     padding: 0px;
 }
@@ -120,24 +122,25 @@
             background-color: #d8a247;
         }
 
-        .pagination-box li.active > a {
-            color: white;
-        }
+            .pagination-box li.active > a {
+                color: white;
+            }
 
         .pagination-box li:hover {
             transition: all 0.3s ease-in;
             background-color: #d8a247;
         }
 
-        .pagination-box li:hover > a {
-            transition: all 0.3s ease-in;
-            color: white;
-        }
+            .pagination-box li:hover > a {
+                transition: all 0.3s ease-in;
+                color: white;
+            }
 
 .text-black {
     color: black;
 }
 
+/*--------------filter--------------*/
 .filter-block {
     border: 1px solid #e5e5e5;
     background-color: white;

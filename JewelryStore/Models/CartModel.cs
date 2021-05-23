@@ -7,21 +7,29 @@ using System.Threading.Tasks;
 
 namespace JewelryStore.Models
 {
-    [Table("BasketContents")]
-    public class BasketContentsModel
+    [Table("Cart")]
+    public class CartModel
     {
         [Key]
         public int ID { get; set; }
+
+        public string ID_User { get; set; }
+        [ForeignKey("ID_User")]
+        public UserModel User { get; set; }
 
         public int ID_Jewelry { get; set; }
         [ForeignKey("ID_Jewelry")]
         public JewelryModel Jewelry { get; set; }
 
-        public int ID_Basket { get; set; }
-        [ForeignKey("ID_Basket")]
-        public BasketModel Basket { get; set; }
-
         public DateTime DateOfPlacement { get; set; }
         public int Quantity { get; set; }
+
+        public CartModel(string iD_User, int iD_Jewelry, DateTime dateOfPlacement, int quantity)
+        {
+            ID_User = iD_User;
+            ID_Jewelry = iD_Jewelry;
+            DateOfPlacement = dateOfPlacement;
+            Quantity = quantity;
+        }
     }
 }

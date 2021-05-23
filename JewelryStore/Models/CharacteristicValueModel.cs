@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace JewelryStore.Models
 {
     [Table("CharacteristicValues")]
-    public class CharacteristicValuesModel
+    public class CharacteristicValueModel
     {
         [Key]
         public int ID { get; set; }

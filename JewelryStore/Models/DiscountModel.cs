@@ -7,14 +7,13 @@ using System.Threading.Tasks;
 
 namespace JewelryStore.Models
 {
-    [Table("Basket")]
-    public class BasketModel
+    [Table("Discounts")]
+    public class DiscountModel
     {
         [Key]
         public int ID { get; set; }
-
-        public int ID_User { get; set; }
-        [ForeignKey("ID_User")]
-        public UsersModel User { get; set; }
+        public double Amount { get; set; }
+        [StringLength(200)]
+        public string Description { get; set; }
     }
 }
