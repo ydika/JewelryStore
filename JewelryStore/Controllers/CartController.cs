@@ -1,10 +1,12 @@
 ﻿using JewelryStore.Models;
 using JewelryStore.Services;
 using JewelryStore.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,37 +27,79 @@ namespace JewelryStore.Controllers
             _userManager = userManager;
         }
 
-        [Route("[action]")]
+        [Authorize]
         public IActionResult Cart()
         {
             return View();
         }
 
-        [HttpPost]
+        [HttpGet]
+        [Authorize]
         [Route("[action]")]
-        public void Add(int jewelryid)
+        public JsonResult GetCart()
         {
-            JewelryModel jewelry = dbContext.Jewelries.FirstOrDefault(x => x.ID == jewelryid);
+            dbContext.Cart.Include(x => x.Jewelry).Load();
+            return Json(dbContext.Cart.Where(x => x.ID_User == _userManager.GetUserId(User)).OrderBy(x => x.ID).ToList());
+        }
 
-            var coincidence = dbContext.Cart.FirstOrDefault(x => x.ID_User == _userManager.GetUserId(User) && x.ID_Jewelry == jewelryid);
+        [HttpGet]
+        [Authorize]
+        [Route("[action]")]
+        public async Task<JsonResult> ChangeQuantity(int jewelryid, int quantity)
+        {
+            await dbContext.Cart.Include(x => x.Jewelry).LoadAsync();
+
+            CartModel coincidence = dbContext.Cart.FirstOrDefault(x => x.ID_User == _userManager.GetUserId(User) && x.ID_Jewelry == jewelryid);
             if (coincidence != null)
             {
-                coincidence.Quantity++;
+                coincidence.Quantity = quantity;
+                coincidence.TotalPrice = coincidence.Quantity * coincidence.Jewelry.Price;
+                await dbContext.SaveChangesAsync();
             }
-            else
-            {
-                dbContext.Cart.Add(new CartModel(_userManager.GetUserId(User), jewelry.ID, DateTime.Now, 1));
-            }
-            dbContext.SaveChanges();
+            
+            return Json(dbContext.Cart.Where(x => x.ID_User == _userManager.GetUserId(User)).OrderBy(x => x.ID).ToList());
         }
 
         [HttpPost]
+        [Authorize]
         [Route("[action]")]
-        public void Remove(int jewelryid)
+        public async Task<JsonResult> Add(int jewelryid, int count = 1)
         {
+            await dbContext.Cart.Include(x => x.Jewelry).LoadAsync();
+
             JewelryModel jewelry = dbContext.Jewelries.FirstOrDefault(x => x.ID == jewelryid);
 
-            if (jewelry != null) dbContext.Remove(jewelry);
+            CartModel coincidence = dbContext.Cart.FirstOrDefault(x => x.ID_User == _userManager.GetUserId(User) && x.ID_Jewelry == jewelryid);
+            if (coincidence != null)
+            {
+                coincidence.Quantity += count;
+                await dbContext.SaveChangesAsync();
+            }
+            else
+            {
+                dbContext.Cart.Add(new CartModel(_userManager.GetUserId(User), jewelry.ID, DateTime.Now, 1, jewelry.Price));
+                await dbContext.SaveChangesAsync();
+            }
+
+            return Json(dbContext.Cart.Where(x => x.ID_User == _userManager.GetUserId(User)).OrderBy(x => x.ID).ToList());
+        }
+
+        [HttpPost]
+        [Authorize]
+        [Route("[action]")]
+        public async Task<JsonResult> Remove(int jewelryid)
+        {
+            await dbContext.Cart.Include(x => x.Jewelry).LoadAsync();
+
+            CartModel coincidence = dbContext.Cart.FirstOrDefault(x => x.ID_User == _userManager.GetUserId(User) && x.ID_Jewelry == jewelryid);
+
+            if (coincidence != null)
+            { 
+                dbContext.Cart.Remove(coincidence);
+                await dbContext.SaveChangesAsync();
+            }
+
+            return Json(dbContext.Cart.Where(x => x.ID_User == _userManager.GetUserId(User)).OrderBy(x => x.ID).ToList());
         }
     }
 }

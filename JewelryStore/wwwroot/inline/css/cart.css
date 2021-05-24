@@ -1,0 +1,103 @@
+﻿.cart {
+    background-color: white;
+    padding: 30px;
+    box-shadow: 1px 1px 5px 5px rgba(0, 0, 0, 0.1);
+}
+
+.title > h3 {
+    color: #555555;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+    .title > h3::before {
+        content: "";
+        background-color: #d8a247;
+        width: 70px;
+        height: 2px;
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+    }
+
+table {
+    width: 100%;
+    border-spacing: 0px;
+    font-size: 14px;
+}
+
+@media (max-width: 767px) {
+    .cart {
+        padding: 20px;
+    }
+
+    table {
+        font-size: 12px;
+    }
+
+    .cart-plus-minus {
+        width: 58px;
+    }
+
+        .cart-plus-minus > .cart-plus-minus-box {
+            height: 36px;
+            width: 36px;
+        }
+
+        .cart-plus-minus > .qtybutton {
+            height: 18px;
+            width: 22px;
+        }
+}
+
+@media (max-width: 575px) {
+    .cart {
+        padding: 9px;
+    }
+
+    table {
+        font-size: 10px;
+    }
+
+    .cart-item-delete {
+        padding-right: 0px;
+    }
+}
+
+table > thead > tr > th {
+    padding: 8px;
+}
+
+table > tbody > tr {
+    border-top: 1px solid #ddd;
+}
+
+    table > tbody > tr > td {
+        padding: 25px 8px;
+    }
+
+.cart-item-img {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.cart-item-img > img {
+    width: 100%;
+    max-height: 200px;
+    max-width: 200px;
+}
+
+.cart-item-name > a {
+    transition: .25s ease-in;
+    color: black;
+}
+
+    .cart-item-name > a:hover {
+        transition: .25s ease-in;
+        color: #d8a247;
+    }
+
+.cart-item-delete > span:hover {
+    cursor: pointer;
+}

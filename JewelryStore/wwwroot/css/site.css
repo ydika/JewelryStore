@@ -78,3 +78,80 @@ body {
     background-color: #F7F7F7;
     line-height: 60px; /* Vertically center the text there */
 }
+
+/* Number Input
+-------------------------------------------------- */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+input[type='number'] {
+    -moz-appearance: textfield;
+}
+
+.cart-plus-minus {
+    position: relative;
+    width: 78px;
+    text-align: left;
+}
+
+    .cart-plus-minus > .qtybutton {
+        transition: 0.25s ease-in;
+        border-bottom: 1px solid #E5E5E5;
+        border-right: 1px solid #E5E5E5;
+        border-top: 1px solid #E5E5E5;
+        cursor: pointer;
+        height: 24px;
+        position: absolute;
+        text-align: center;
+        width: 30px;
+    }
+
+    .cart-plus-minus > .cart-plus-minus-box {
+        border: 1px solid #E5E5E5;
+        height: 48px;
+        text-align: center;
+        width: 48px;
+    }
+
+        .cart-plus-minus > .cart-plus-minus-box:focus-visible {
+            outline: #d8a247 auto 1px;
+        }
+
+.quantity > label {
+    margin-right: 15px;
+}
+
+.quantity .cart-plus-minus {
+    display: inline-block;
+}
+
+    .quantity .cart-plus-minus > .qtybutton.dec {
+        bottom: 0;
+        right: 0;
+    }
+
+        .quantity .cart-plus-minus > .qtybutton.dec:before {
+            content: '-';
+        }
+
+    .quantity .cart-plus-minus > .qtybutton.inc {
+        border-bottom: none;
+        top: 0;
+        right: 0;
+    }
+
+        .quantity .cart-plus-minus > .qtybutton.inc:before {
+            content: '+';
+        }
+
+    .quantity .cart-plus-minus > .qtybutton:hover {
+        transition: 0.25s ease-in;
+        background: #EBEBEB;
+    }
+
+    .quantity .cart-plus-minus > .qtybutton.disable {
+        pointer-events: none;
+        opacity: 0.4;
+    }

@@ -1,0 +1,51 @@
+﻿@model List<CartModel>
+@section Css {
+    <link rel="stylesheet" href="~/inline/css/cart.css" />
+}
+<div class="container mt-4">
+    <div class="cart">
+        <div class="title">
+            <h3>Корзина</h3>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th class="cart-item-img">Фотография</th>
+                    <th>Название</th>
+                    <th>Цена</th>
+                    <th>Количество</th>
+                    <th>Итого</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody data-bind="foreach: cartContent">
+                <tr>
+                    <td class="cart-item-img">
+                        <img data-bind="attr:{src: jewelry.imageSrc, alt: jewelry.name}" />
+                    </td>
+                    <td class="cart-item-name">
+                        <a data-bind="attr:{href: jewelry.url}, text: jewelry.name"></a>
+                    </td>
+                    <td data-bind="text: 'BYN ' + jewelry.price"></td>
+                    <td>
+                        <div class="quantity">
+                            <div class="cart-plus-minus">
+                                <input class="cart-plus-minus-box" type="number" data-bind="attr:{value: quantity}, event:{ change: function(){ChangeQuantity(jewelry.id, $(event.currentTarget))} }"
+                                       oninput="NumerickInput($(event.currentTarget))" onfocus="NumerickFocus($(event.currentTarget))">
+                                <div class="inc qtybutton" data-bind="css: { 'disable': quantity === 5 }" onclick="NumerickClick($(event.currentTarget))"></div>
+                                <div class="dec qtybutton" data-bind="css: { 'disable': quantity === 1 }" onclick="NumerickClick($(event.currentTarget))"></div>
+                            </div>
+                        </div>
+                    </td>
+                    <td data-bind="text: 'BYN ' + total_price"></td>
+                    <td class="cart-item-delete text-danger" data-bind="click: function(){RemoveFromCart(jewelry.id)}">
+                        <span>✗</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+@section Scripts {
+    <script src="~/inline/js/cart.js"></script>
+}

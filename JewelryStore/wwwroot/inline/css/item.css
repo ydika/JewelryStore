@@ -34,69 +34,6 @@
         box-shadow: none;
     }
 
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-}
-
-input[type='number'] {
-    -moz-appearance: textfield;
-}
-
-.cart-plus-minus {
-    position: relative;
-    width: 76px;
-    text-align: left;
-}
-
-    .cart-plus-minus > .qtybutton {
-        transition: 0.25s ease-in;
-        border-bottom: 1px solid #E5E5E5;
-        border-right: 1px solid #E5E5E5;
-        border-top: 1px solid #E5E5E5;
-        cursor: pointer;
-        height: 23px;
-        position: absolute;
-        text-align: center;
-        width: 28px;
-    }
-
-    .cart-plus-minus > .cart-plus-minus-box {
-        border: 1px solid #E5E5E5;
-        height: 46px;
-        text-align: center;
-        width: 48px;
-    }
-
-.quantity .cart-plus-minus {
-    display: inline-block;
-    margin-left: 15px;
-}
-
-    .quantity .cart-plus-minus > .qtybutton.dec {
-        bottom: 0;
-        right: 0;
-    }
-
-        .quantity .cart-plus-minus > .qtybutton.dec:before {
-            content: '-';
-        }
-
-    .quantity .cart-plus-minus > .qtybutton.inc {
-        border-bottom: none;
-        top: 0;
-        right: 0;
-    }
-
-        .quantity .cart-plus-minus > .qtybutton.inc:before {
-            content: '+';
-        }
-
-    .quantity .cart-plus-minus > .qtybutton:hover {
-        transition: 0.25s ease-in;
-        background: #EBEBEB;
-    }
-
 .form-control:focus {
     border-color: #d8a247;
 }
@@ -112,18 +49,18 @@ input[type='number'] {
         margin-top: 20px;
     }
 
-        .item-buttons > div.cart {
+        .item-buttons > div.cart-action {
             background-color: #333333;
         }
 
-            .item-buttons > div.cart > a {
+            .item-buttons > div.cart-action > a {
                 transition: 0.3s ease-in;
                 display: block;
                 color: white;
                 padding: 10px 15px;
             }
 
-                .item-buttons > div.cart > a:hover {
+                .item-buttons > div.cart-action > a:hover {
                     transition: 0.3s ease-in;
                     background-color: #d8a247;
                 }
