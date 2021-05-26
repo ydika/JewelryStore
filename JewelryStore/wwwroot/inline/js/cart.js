@@ -1,5 +1,6 @@
 ﻿let cart = {
-    cartContent: ko.observable()
+    cartContent: ko.observableArray(),
+    cartIsEmpty: ko.observable()
 };
 ko.applyBindings(cart);
 
@@ -7,25 +8,30 @@ GetCart();
 function GetCart() {
     $.getJSON('/cart/getcart',
         function (data) {
-            cart.cartContent(data);
+            cart.cartContent(data)
+                .cartIsEmpty(data.length > 0 ? false : true);
         }
     );
 }
 
 function RemoveFromCart(value) {
+    $('.cart').addClass('loading');
     $.ajax({
         url: '/cart/remove',
         type: 'POST',
         dataType: 'json',
         data: { 'jewelryid': value },
         success: function (data) {
-            cart.cartContent(data);
+            cart.cartContent(data)
+                .cartIsEmpty(data.length > 0 ? false : true);
+            $('.cart').removeClass('loading');
         }
     });
 }
 
 function ChangeQuantity(jewelryid, obj) {
     let input = obj.closest('.cart-plus-minus').find('input');
+    $('.cart').addClass('loading');
     let quantity = parseInt(input.val()) || 0;
     $.ajax({
         url: '/cart/changequantity',
@@ -34,7 +40,7 @@ function ChangeQuantity(jewelryid, obj) {
         data: { 'jewelryid': jewelryid, 'quantity': quantity },
         success: function (data) {
             cart.cartContent(data);
+            $('.cart').removeClass('loading');
         }
     });
-    lastInputValue = quantity;
 }

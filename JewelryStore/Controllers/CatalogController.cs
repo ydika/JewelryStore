@@ -2,6 +2,7 @@
 using JewelryStore.Services;
 using JewelryStore.ViewModels;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -76,10 +77,12 @@ namespace JewelryStore.Controllers
 
         [HttpGet]
         [Route("{jkind}/[action]")]
+        [ResponseCache(NoStore = true)]
         public JsonResult GetJewelriesCards(string[] o, string jkind = "all", int page = 1)
         {
             dbContext.Jewelries.Include(x => x.Kind).Include(x => x.Discount).Include(x => x.JewelryCharacteristics).Load();
             dbContext.JewelryCharacteristics.Include(x => x.CharacteristicValues).Load();
+            dbContext.Cart.Load();
 
             List<JewelryModel> jewelries = dbContext.Jewelries.ToList();
 

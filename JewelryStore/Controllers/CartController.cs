@@ -36,6 +36,7 @@ namespace JewelryStore.Controllers
         [HttpGet]
         [Authorize]
         [Route("[action]")]
+        [ResponseCache(NoStore = true)]
         public JsonResult GetCart()
         {
             dbContext.Cart.Include(x => x.Jewelry).Load();
@@ -63,7 +64,7 @@ namespace JewelryStore.Controllers
         [HttpPost]
         [Authorize]
         [Route("[action]")]
-        public async Task<JsonResult> Add(int jewelryid, int count = 1)
+        public async Task<JsonResult> Add(int jewelryid)
         {
             await dbContext.Cart.Include(x => x.Jewelry).LoadAsync();
 
@@ -72,7 +73,8 @@ namespace JewelryStore.Controllers
             CartModel coincidence = dbContext.Cart.FirstOrDefault(x => x.ID_User == _userManager.GetUserId(User) && x.ID_Jewelry == jewelryid);
             if (coincidence != null)
             {
-                coincidence.Quantity += count;
+                coincidence.Quantity++;
+                coincidence.TotalPrice = coincidence.Quantity * coincidence.Jewelry.Price;
                 await dbContext.SaveChangesAsync();
             }
             else

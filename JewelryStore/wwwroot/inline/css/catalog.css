@@ -1,4 +1,21 @@
 ﻿/*--------------card--------------*/
+#productsSection {
+    position: relative;
+}
+
+    #productsSection:before {
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        z-index: 1;
+        background: white;
+        opacity: 0;
+        visibility: hidden;
+    }
+
 .jewelry-card {
     border: 1px solid #e5e5e5;
     background-color: white;
@@ -43,12 +60,13 @@
 
 .add-to-cart {
     display: flex;
-    justify-content:center;
+    color: white;
+    justify-content: center;
     align-items: center;
     opacity: 0;
     width: 30px;
     height: 30px;
-    background-color: black;
+    background-color: #333333;
     transform: translate(15px, -50px);
     transition: 0.5s ease-in-out;
 }

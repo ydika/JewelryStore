@@ -155,3 +155,15 @@ input[type='number'] {
         pointer-events: none;
         opacity: 0.4;
     }
+
+/* Loading
+-------------------------------------------------- */
+.loading {
+    user-select: none;
+    pointer-events: none;
+}
+
+    .loading:before {
+        opacity: .75 !important;
+        visibility: visible !important;
+    }

@@ -7,7 +7,7 @@
         <div class="title">
             <h3>Корзина</h3>
         </div>
-        <table>
+        <table data-bind="ifnot: cartIsEmpty">
             <thead>
                 <tr>
                     <th class="cart-item-img">Фотография</th>
@@ -30,7 +30,8 @@
                     <td>
                         <div class="quantity">
                             <div class="cart-plus-minus">
-                                <input class="cart-plus-minus-box" type="number" data-bind="attr:{value: quantity}, event:{ change: function(){ChangeQuantity(jewelry.id, $(event.currentTarget))} }"
+                                <input class="cart-plus-minus-box" type="number"
+                                       data-bind="attr:{value: quantity}, event:{ change: function(){ChangeQuantity(jewelry.id, $(event.currentTarget))} }"
                                        oninput="NumerickInput($(event.currentTarget))" onfocus="NumerickFocus($(event.currentTarget))">
                                 <div class="inc qtybutton" data-bind="css: { 'disable': quantity === 5 }" onclick="NumerickClick($(event.currentTarget))"></div>
                                 <div class="dec qtybutton" data-bind="css: { 'disable': quantity === 1 }" onclick="NumerickClick($(event.currentTarget))"></div>
@@ -44,6 +45,22 @@
                 </tr>
             </tbody>
         </table>
+        <div class="cart-empty" data-bind="if: cartIsEmpty">
+            <div class="cart-empty-title">Ваша корзина пуста =(</div>
+            <div class="cart-empty-description">
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <div>Перейдите в <a asp-controller="Catalog" asp-action="List" asp-route-jkind="All">каталог</a> и добавьте товары.<br></div>
+                }
+                else
+                {
+                    <div>
+                        Перейдите в <a asp-controller="Catalog" asp-action="List" asp-route-jkind="All">каталог</a> и добавьте товары.<br>
+                        Наполняли корзину ранее? <a asp-controller="Account" asp-action="Login">Войдите на сайт</a>, и выбранные вами товары появятся.
+                    </div>
+                }
+            </div>
+        </div>
     </div>
 </div>
 @section Scripts {

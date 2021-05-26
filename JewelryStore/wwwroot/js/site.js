@@ -23,12 +23,11 @@ function NumerickClick(obj) {
 }
 
 function NumerickInput(obj) {
-    let value = parseInt(obj.val()) || 0;
-    if (value > 5 || value < 1) {
-        obj.val(lastValue).change();
-    }
-    else {
-        obj.val(parseInt(obj.val(), 10)).change();
+    let value = parseInt(obj.val(), 10) || 1;
+    if (value > 5) {
+        obj.val(5).change();
+    } else {
+        obj.val(value).change();
     }
 }
 

@@ -42,6 +42,7 @@ $.getJSON('/catalog/getcatalogfilter',
     function (data) {
         filtersSection.characteristics(data);
         $("input:checkbox").click(function () {
+            $('#productsSection').addClass('loading');
             o = [];
             $("input:checkbox:checked").each(function () {
                 o.push($(this).val());
@@ -61,6 +62,7 @@ let jewelriesSection = {
     pagesVisible: ko.observable(),
     selectedNewPage: function NewPage(a) {
         if (currentPage != a) {
+            $('#productsSection').addClass('loading');
             currentPage = a;
             window.scrollTo(0, 0);
             GetJewelries();
@@ -85,7 +87,8 @@ function GetJewelries() {
                 .pages(PageRange(currentPage, data.page_count))
                 .pageCount(data.page_count)
                 .pagesVisible(data.page_count > 1 ? true : false);
-/*                history.pushState({ 'currentPage': currentPage, 'o': o }, '', `?page=${currentPage}`);*/
+            $('#productsSection').removeClass('loading');
+            /*history.pushState({ 'currentPage': currentPage, 'o': o }, '', `?page=${currentPage}`);*/
         }
     });
 }
@@ -97,7 +100,7 @@ function AddToCart(value) {
         dataType: 'json',
         data: { 'jewelryid': value },
         success: function (data) {
-            
+
         }
     });
 }
