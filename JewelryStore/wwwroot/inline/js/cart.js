@@ -2,12 +2,13 @@
     cartContent: ko.observableArray(),
     cartIsEmpty: ko.observable()
 };
-ko.applyBindings(cart);
+ko.applyBindings(cart, document.getElementById('cart'));
 
 GetCart();
 function GetCart() {
     $.getJSON('/cart/getcart',
         function (data) {
+            cartLength.length(data.length);
             cart.cartContent(data)
                 .cartIsEmpty(data.length > 0 ? false : true);
         }
@@ -22,6 +23,7 @@ function RemoveFromCart(value) {
         dataType: 'json',
         data: { 'jewelryid': value },
         success: function (data) {
+            cartLength.length(data.length);
             cart.cartContent(data)
                 .cartIsEmpty(data.length > 0 ? false : true);
             $('.cart').removeClass('loading');

@@ -100,7 +100,7 @@ function AddToCart(value) {
         dataType: 'json',
         data: { 'jewelryid': value },
         success: function (data) {
-
+            cartLength.length(data.length);
         }
     });
 }

@@ -109,3 +109,24 @@
 .dropdown-item:active {
     background-color: #d8a247;
 }
+
+.header-cart {
+    position: relative;
+}
+
+    .header-cart > span {
+        display: flex;
+        position: absolute;
+        align-items: center;
+        justify-content: center;
+        height: 18px;
+        width: 18px;
+        color: white;
+        background-color: red;
+        border-radius: 50%;
+        top: 0px;
+        right: 3px;
+        font-size: 10px;
+        font-weight: 600;
+        line-height: 1;
+    }

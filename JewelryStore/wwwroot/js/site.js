@@ -34,3 +34,19 @@ function NumerickInput(obj) {
 function NumerickFocus(obj) {
     obj.select();
 }
+
+let cartLength = {
+    length: ko.observable()
+};
+ko.applyBindings(cartLength, document.getElementById('itemsInCart'));
+
+if (document.location.pathname != "/cart") {
+    GetCartLength();
+    function GetCartLength() {
+        $.getJSON('/cart/getcartlength',
+            function (data) {
+                cartLength.length(data);
+            }
+        );
+    }
+}

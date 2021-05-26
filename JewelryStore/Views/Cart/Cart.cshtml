@@ -1,9 +1,9 @@
-﻿@model List<CartModel>
+﻿@model List<CartContentModel>
 @section Css {
     <link rel="stylesheet" href="~/inline/css/cart.css" />
 }
 <div class="container mt-4">
-    <div class="cart">
+    <div id="cart" class="cart">
         <div class="title">
             <h3>Корзина</h3>
         </div>
@@ -51,6 +51,9 @@
                 @if (User.Identity.IsAuthenticated)
                 {
                     <div>Перейдите в <a asp-controller="Catalog" asp-action="List" asp-route-jkind="All">каталог</a> и добавьте товары.<br></div>
+                    <div class="cart-empty-img">
+                        <img src="~/images/sleeping-cat.png" />
+                    </div>
                 }
                 else
                 {

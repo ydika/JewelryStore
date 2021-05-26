@@ -20,23 +20,14 @@ namespace JewelryStore.Models
         [ForeignKey("ID_User")]
         public UserModel User { get; set; }
 
-        [JsonIgnore]
-        public int ID_Jewelry { get; set; }
-        [ForeignKey("ID_Jewelry")]
-        public JewelryModel Jewelry { get; set; }
+        public DateTime DateOfCreation { get; set; }
 
-        public DateTime DateOfPlacement { get; set; }
-        public int Quantity { get; set; }
-        [JsonPropertyName("total_price")]
-        public double TotalPrice { get; set; }
+        public List<CartContentModel> CartContent { get; set; }
 
-        public CartModel(string iD_User, int iD_Jewelry, DateTime dateOfPlacement, int quantity, double totalPrice)
+        public CartModel(string iD_User, DateTime dateOfCreation)
         {
             ID_User = iD_User;
-            ID_Jewelry = iD_Jewelry;
-            DateOfPlacement = dateOfPlacement;
-            Quantity = quantity;
-            TotalPrice = totalPrice;
+            DateOfCreation = dateOfCreation;
         }
     }
 }

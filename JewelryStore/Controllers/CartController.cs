@@ -37,10 +37,19 @@ namespace JewelryStore.Controllers
         [Authorize]
         [Route("[action]")]
         [ResponseCache(NoStore = true)]
-        public JsonResult GetCart()
+        public async Task<JsonResult> GetCart()
         {
-            dbContext.Cart.Include(x => x.Jewelry).Load();
-            return Json(dbContext.Cart.Where(x => x.ID_User == _userManager.GetUserId(User)).OrderBy(x => x.ID).ToList());
+            await dbContext.CartContent.Include(x => x.Cart).Include(x => x.Jewelry).LoadAsync();
+            return Json(await dbContext.CartContent.Where(x => x.Cart.ID_User == _userManager.GetUserId(User)).ToListAsync());
+        }
+
+        [HttpGet]
+        [Authorize]
+        [Route("[action]")]
+        [ResponseCache(NoStore = true)]
+        public async Task<JsonResult> GetCartLength()
+        {
+            return Json(await dbContext.CartContent.Where(x => x.Cart.ID_User == _userManager.GetUserId(User)).CountAsync());
         }
 
         [HttpGet]
@@ -48,17 +57,17 @@ namespace JewelryStore.Controllers
         [Route("[action]")]
         public async Task<JsonResult> ChangeQuantity(int jewelryid, int quantity)
         {
-            await dbContext.Cart.Include(x => x.Jewelry).LoadAsync();
+            await dbContext.CartContent.Include(x => x.Cart).Include(x => x.Jewelry).LoadAsync();
 
-            CartModel coincidence = dbContext.Cart.FirstOrDefault(x => x.ID_User == _userManager.GetUserId(User) && x.ID_Jewelry == jewelryid);
+            CartContentModel coincidence = await dbContext.CartContent.FirstOrDefaultAsync(x => x.Cart.ID_User == _userManager.GetUserId(User) && x.ID_Jewelry == jewelryid);
             if (coincidence != null)
             {
                 coincidence.Quantity = quantity;
                 coincidence.TotalPrice = coincidence.Quantity * coincidence.Jewelry.Price;
                 await dbContext.SaveChangesAsync();
             }
-            
-            return Json(dbContext.Cart.Where(x => x.ID_User == _userManager.GetUserId(User)).OrderBy(x => x.ID).ToList());
+
+            return Json(await dbContext.CartContent.Where(x => x.Cart.ID_User == _userManager.GetUserId(User)).OrderBy(x => x.ID).ToListAsync());
         }
 
         [HttpPost]
@@ -66,24 +75,40 @@ namespace JewelryStore.Controllers
         [Route("[action]")]
         public async Task<JsonResult> Add(int jewelryid)
         {
-            await dbContext.Cart.Include(x => x.Jewelry).LoadAsync();
+            await dbContext.Cart.Include(x => x.CartContent).LoadAsync();
+            await dbContext.CartContent.LoadAsync();
 
-            JewelryModel jewelry = dbContext.Jewelries.FirstOrDefault(x => x.ID == jewelryid);
+            string userId = _userManager.GetUserId(User);
 
-            CartModel coincidence = dbContext.Cart.FirstOrDefault(x => x.ID_User == _userManager.GetUserId(User) && x.ID_Jewelry == jewelryid);
-            if (coincidence != null)
+            JewelryModel jewelry = await dbContext.Jewelries.FirstOrDefaultAsync(x => x.ID == jewelryid);
+            CartModel cart = await dbContext.Cart.FirstOrDefaultAsync(x => x.ID_User == userId);
+
+            if (cart != null)
             {
-                coincidence.Quantity++;
-                coincidence.TotalPrice = coincidence.Quantity * coincidence.Jewelry.Price;
-                await dbContext.SaveChangesAsync();
+                CartContentModel coincidence = cart.CartContent.FirstOrDefault(x => x.ID_Jewelry == jewelry.ID);
+                if (coincidence != null)
+                {
+                    coincidence.Quantity++;
+                    coincidence.TotalPrice = coincidence.Quantity * coincidence.Jewelry.Price;
+                    await dbContext.SaveChangesAsync();
+                }
+                else
+                {
+                    await dbContext.CartContent.AddAsync(new CartContentModel(cart.ID, jewelry.ID, DateTime.Now, 1, jewelry.Price));
+                    await dbContext.SaveChangesAsync();
+                }
             }
             else
             {
-                dbContext.Cart.Add(new CartModel(_userManager.GetUserId(User), jewelry.ID, DateTime.Now, 1, jewelry.Price));
+                CartModel newCart = new CartModel(userId, DateTime.Now);
+                await dbContext.Cart.AddAsync(newCart);
+                await dbContext.SaveChangesAsync();
+
+                dbContext.CartContent.Add(new CartContentModel(newCart.ID, jewelry.ID, DateTime.Now, 1, jewelry.Price));
                 await dbContext.SaveChangesAsync();
             }
 
-            return Json(dbContext.Cart.Where(x => x.ID_User == _userManager.GetUserId(User)).OrderBy(x => x.ID).ToList());
+            return Json(await dbContext.CartContent.Where(x => x.Cart.ID_User == _userManager.GetUserId(User)).ToListAsync());
         }
 
         [HttpPost]
@@ -91,17 +116,17 @@ namespace JewelryStore.Controllers
         [Route("[action]")]
         public async Task<JsonResult> Remove(int jewelryid)
         {
-            await dbContext.Cart.Include(x => x.Jewelry).LoadAsync();
+            await dbContext.CartContent.Include(x => x.Cart).Include(x => x.Jewelry).LoadAsync();
 
-            CartModel coincidence = dbContext.Cart.FirstOrDefault(x => x.ID_User == _userManager.GetUserId(User) && x.ID_Jewelry == jewelryid);
+            CartModel cart = await dbContext.Cart.FirstOrDefaultAsync(x => x.ID_User == _userManager.GetUserId(User));
 
-            if (coincidence != null)
-            { 
-                dbContext.Cart.Remove(coincidence);
+            if (cart != null)
+            {
+                dbContext.CartContent.Remove(cart.CartContent.FirstOrDefault(x => x.ID_Jewelry == jewelryid));
                 await dbContext.SaveChangesAsync();
             }
 
-            return Json(dbContext.Cart.Where(x => x.ID_User == _userManager.GetUserId(User)).OrderBy(x => x.ID).ToList());
+            return Json(await dbContext.CartContent.Where(x => x.Cart.ID_User == _userManager.GetUserId(User)).OrderBy(x => x.ID).ToListAsync());
         }
     }
 }

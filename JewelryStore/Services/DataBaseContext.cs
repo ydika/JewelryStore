@@ -13,6 +13,7 @@ namespace JewelryStore.Services
     {
         private readonly IConfiguration configuration;
 
+        public DbSet<CartContentModel> CartContent { get; set; }
         public DbSet<CartModel> Cart { get; set; }
         public DbSet<CharacteristicsModel> Characteristics { get; set; }
         public DbSet<CharacteristicValueModel> CharacteristicValues { get; set; }

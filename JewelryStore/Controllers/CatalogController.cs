@@ -18,18 +18,20 @@ namespace JewelryStore.Controllers
     public class CatalogController : Controller
     {
         private readonly DataBaseContext dbContext;
+        private readonly UserManager<UserModel> _userManager;
 
         private int displayedQuantity = 12;
 
-        public CatalogController(DataBaseContext context)
+        public CatalogController(DataBaseContext context, UserManager<UserModel> userManager)
         {
             dbContext = context;
+            _userManager = userManager;
         }
 
         [Route("{jkind}")]
-        public IActionResult List(string jkind = "all")
+        public async Task<IActionResult> List(string jkind = "all")
         {
-            dbContext.JewelryKinds.Load();
+            await dbContext.JewelryKinds.LoadAsync();
 
             ViewData["Title"] = "Ювелирные изделия купить";
             if (jkind != "all")
@@ -37,7 +39,7 @@ namespace JewelryStore.Controllers
                 ViewData["Title"] = dbContext.JewelryKinds.Where(x => x.EnName == jkind).Select(x => x.RuName).FirstOrDefault() + " купить";
             }
 
-            return View(dbContext.JewelryKinds.ToList());
+            return View(await dbContext.JewelryKinds.ToListAsync());
         }
 
         [Route("{jkind}/{code}")]
@@ -58,7 +60,7 @@ namespace JewelryStore.Controllers
                     if (characteristicValues.Count() > 0)
                     {
                         itemCharacteristics.Add(new ItemCharacteristics(characteristic.Name,
-                                        jewelry.JewelryCharacteristics.Select(x => x.CharacteristicValues).Where(x => x.Characteristic.Name == characteristic.Name).ToList()));  
+                                        jewelry.JewelryCharacteristics.Select(x => x.CharacteristicValues).Where(x => x.Characteristic.Name == characteristic.Name).ToList()));
                     }
                 }
             }
@@ -68,23 +70,21 @@ namespace JewelryStore.Controllers
 
         [HttpGet]
         [Route("[action]")]
-        public JsonResult GetCatalogFilter()
+        public async Task<JsonResult> GetCatalogFilter()
         {
-            dbContext.Characteristics.Include(x => x.CharacteristicValues).Load();
+            await dbContext.Characteristics.Include(x => x.CharacteristicValues).LoadAsync();
 
-            return Json(dbContext.Characteristics.Where(x => x.CharacteristicValues.Count() > 0).ToList());
+            return Json(await dbContext.Characteristics.Where(x => x.CharacteristicValues.Count() > 0).ToListAsync());
         }
 
         [HttpGet]
         [Route("{jkind}/[action]")]
-        [ResponseCache(NoStore = true)]
-        public JsonResult GetJewelriesCards(string[] o, string jkind = "all", int page = 1)
+        public async Task<JsonResult> GetJewelriesCards(string[] o, string jkind = "all", int page = 1)
         {
-            dbContext.Jewelries.Include(x => x.Kind).Include(x => x.Discount).Include(x => x.JewelryCharacteristics).Load();
-            dbContext.JewelryCharacteristics.Include(x => x.CharacteristicValues).Load();
-            dbContext.Cart.Load();
+            await dbContext.Jewelries.Include(x => x.Kind).Include(x => x.Discount).Include(x => x.JewelryCharacteristics).LoadAsync();
+            await dbContext.JewelryCharacteristics.Include(x => x.CharacteristicValues).LoadAsync();
 
-            List<JewelryModel> jewelries = dbContext.Jewelries.ToList();
+            List<JewelryModel> jewelries = await dbContext.Jewelries.ToListAsync();
 
             if (jkind != "all")
             {
