@@ -50,3 +50,23 @@ if (document.location.pathname != "/cart") {
         );
     }
 }
+
+let searchOptions = {
+    options: ko.observable()
+};
+ko.applyBindings(searchOptions, document.getElementById('searchOptions'));
+
+$('#searchInput').on('input', function () {
+    $.getJSON('/catalog/getitemnames?searchName=' + $(this).val(),
+        function (data) {
+            searchOptions.options(data);
+        }
+    );
+});
+
+function ClickOnSearchName(value) {
+    let si = document.getElementById('searchInput');
+    si.value = value;
+    let form = si.parentNode;
+    form.submit();
+}

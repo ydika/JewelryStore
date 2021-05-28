@@ -84,6 +84,53 @@
     box-shadow: none;
 }
 
+    .form-control:focus ~ .search-options-container {
+        visibility: visible;
+    }
+
+.search-options-container {
+    position: relative;
+    visibility: hidden;
+}
+
+    .search-options-container:hover {
+        visibility: visible;
+    }
+
+    .search-options-container .search-options {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        z-index: 1;
+        background-color: white;
+        border: 1px solid #ced4da;
+        border-radius: .25rem;
+        padding: 6px 12px;
+        overflow-y: auto;
+        max-height: 180px;
+        width: 100%;
+        line-height: 18px;
+        list-style-type: none;
+    }
+
+        .search-options-container .search-options > li {
+            flex: 1 0 auto;
+            margin: 5px 0px;
+            font-size: 12px;
+        }
+
+            .search-options-container .search-options > li:hover {
+                cursor: pointer;
+                background-color: #dddddd;
+            }
+
+@media (min-width: 768px) {
+    .search-options-container .search-options > li {
+        font-size: 14px;
+    }
+}
+
+
 .dropdown {
     display: flex;
 }

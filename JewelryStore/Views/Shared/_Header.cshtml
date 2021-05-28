@@ -15,8 +15,15 @@
                     <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">О нас</a>
                 </li>
             </ul>
-            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
-                <input type="search" class="form-control" placeholder="Поиск по каталогу..." aria-label="Search">
+            <form asp-controller="Catalog" asp-action="List" method="get" class="col-12 col-lg-4 mb-3 mb-lg-0 me-lg-3">
+                <input id="searchInput" type="search" name="searchName" class="form-control" placeholder="Поиск по каталогу..." aria-label="Search" autocomplete="off" />
+                <div id="searchOptions" class="search-options-container">
+                    <!-- ko if: options() != "" && options() != null -->
+                    <ul class="search-options" data-bind="foreach: { data: options, as: 'option' }">
+                        <li data-bind="click: function(){ClickOnSearchName(option)}, text: option"></li>
+                    </ul>
+                    <!-- /ko -->
+                </div>
             </form>
             <div class="dropdown text-end">
                 <a id="itemsInCart" class="header-cart" asp-controller="Cart" asp-action="Cart">

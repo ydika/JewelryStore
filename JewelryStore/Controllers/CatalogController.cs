@@ -70,6 +70,20 @@ namespace JewelryStore.Controllers
 
         [HttpGet]
         [Route("[action]")]
+        public async Task<JsonResult> GetItemNames(string searchName)
+        {
+            if (searchName == null || searchName == "")
+            {
+                return Json("");
+            }
+
+            await dbContext.Jewelries.Include(x => x.Discount).LoadAsync();
+
+            return Json(FilterByName(searchName).Select(x => x.Name).Distinct());
+        }
+
+        [HttpGet]
+        [Route("[action]")]
         public async Task<JsonResult> GetCatalogFilter()
         {
             await dbContext.Characteristics.Include(x => x.CharacteristicValues).LoadAsync();
@@ -79,12 +93,24 @@ namespace JewelryStore.Controllers
 
         [HttpGet]
         [Route("{jkind}/[action]")]
-        public async Task<JsonResult> GetJewelriesCards(string[] o, string jkind = "all", int page = 1)
+        public async Task<JsonResult> GetJewelriesCards(string searchName, string[] o, string jkind = "all", int page = 1)
         {
+            List<JewelryModel> jewelries = null;
+
+            if (searchName != null && searchName != "")
+            {
+                await dbContext.Jewelries.Include(x => x.Discount).LoadAsync();
+
+                jewelries = FilterByName(searchName);
+
+                return Json(new CardsViewModel(jewelries.Skip(displayedQuantity * ((page - 1) < 0 ? 0 : page - 1)).Take(displayedQuantity).ToList(),
+                    page, (int)Math.Ceiling((decimal)jewelries.Count() / displayedQuantity)));
+            }
+
             await dbContext.Jewelries.Include(x => x.Kind).Include(x => x.Discount).Include(x => x.JewelryCharacteristics).LoadAsync();
             await dbContext.JewelryCharacteristics.Include(x => x.CharacteristicValues).LoadAsync();
 
-            List<JewelryModel> jewelries = await dbContext.Jewelries.ToListAsync();
+            jewelries = await dbContext.Jewelries.ToListAsync();
 
             if (jkind != "all")
             {
@@ -101,6 +127,22 @@ namespace JewelryStore.Controllers
             jewelries = jewelries.Skip(displayedQuantity * ((page - 1) < 0 ? 0 : page - 1)).Take(displayedQuantity).ToList();
 
             return Json(new CardsViewModel(jewelries, page, pageCount));
+        }
+
+        [NonAction]
+        private List<JewelryModel> FilterByName(string searchName)
+        {
+            char[] delimiterChars = new char[] { ' ', ',', '.', ':', '\t' };
+            var words = searchName.Split(delimiterChars);
+
+            List<JewelryModel> jewelries = dbContext.Jewelries.ToList();
+
+            foreach (string keyword in words)
+            {
+                jewelries = jewelries.Where(p => p.Name.ToUpper().Contains(keyword.ToUpper())).ToList();
+            }
+
+            return jewelries;
         }
     }
 }

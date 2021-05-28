@@ -78,7 +78,7 @@ function GetJewelries() {
         type: 'GET',
         dataType: 'json',
         traditional: true,
-        data: { 'o': o, 'page': currentPage },
+        data: { 'searchName': new URLSearchParams(document.location.search).get('searchName'), 'o': o, 'page': currentPage },
         success: function (data) {
             jewelriesSection
                 .jewelries(data.jewelries)
