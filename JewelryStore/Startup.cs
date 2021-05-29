@@ -30,7 +30,9 @@ namespace JewelryStore
         {
             services.AddDbContext<DataBaseContext>();
 
-            services.AddIdentity<UserModel, IdentityRole>().AddEntityFrameworkStores<DataBaseContext>();
+            services.AddIdentity<UserModel, IdentityRole>()
+                .AddEntityFrameworkStores<DataBaseContext>()
+                .AddDefaultTokenProviders();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>

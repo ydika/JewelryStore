@@ -46,8 +46,18 @@ namespace JewelryStore.Controllers
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await _signInManager.SignInAsync(user, false);
-                    return RedirectToAction("Index", "Home");
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
+                    EmailService emailService = new EmailService();
+                    await emailService.SendEmailAsync(model.Email, "Confirm your account",
+                        "<div style=\"background-color:#F7F6F2;text-align:center;color:#836027;padding-bottom:30px;\">" +
+                        "<div style=\"font-size:40px;margin:0px;\">Glatteis</div>" +
+                        "<img style=\"border:1px solid #836027;width:600px;\" src=\"https://glatteis.herokuapp.com/images/emailpic.png\" alt=\"Ювелирный изделия. На любой вкус\">" +
+                        "<div style=\"font-size:30px;margin-bottom:10px;\"> <u>Подтверждение Email</u></div>" +
+                        $"<div style=\"color:black;font-size:16px;margin-bottom:30px;\">Для подтверждения вашего Email перейдите по <a href={callbackUrl}>ссылке</a>.</div>" +
+                        "<div style=\"font-size:12px;color:red;\">Внимание! Если вы не регестрировались на нашем сайте, то просто проигнорируйте это сообщение.</div></div>");
+
+                    return View("ConfirmEmail");
                 }
                 else
                 {
@@ -58,6 +68,31 @@ namespace JewelryStore.Controllers
                 }
             }
             return View(model);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> ConfirmEmail(string userId, string code)
+        {
+            if (userId == null || code == null)
+            {
+                return View("Error");
+            }
+
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return View("Error");
+            }
+
+            var result = await _userManager.ConfirmEmailAsync(user, code);
+            if (result.Succeeded)
+            {
+                await _signInManager.SignInAsync(user, false);
+
+                return RedirectToAction("Index", "Home");
+            }
+            else return View("Error");
         }
 
         [HttpGet]
@@ -74,6 +109,13 @@ namespace JewelryStore.Controllers
         {
             if (ModelState.IsValid)
             {
+                var user = await _userManager.FindByNameAsync(model.Email);
+                if (user != null && !await _userManager.IsEmailConfirmedAsync(user))
+                {
+                    ModelState.AddModelError(string.Empty, "Вы не подтвердили свой email");
+                    return View(model);
+                }
+
                 var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
                 if (result.Succeeded)
                 {
@@ -87,6 +129,7 @@ namespace JewelryStore.Controllers
             return View(model);
         }
 
+        [HttpGet]
         [Route("[action]")]
         public async Task<IActionResult> Logout()
         {
