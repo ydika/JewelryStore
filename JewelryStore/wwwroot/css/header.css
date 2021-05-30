@@ -177,3 +177,9 @@
         font-weight: 600;
         line-height: 1;
     }
+
+#user > span {
+    color: white;
+    margin-left: 5px;
+    vertical-align: middle;
+}

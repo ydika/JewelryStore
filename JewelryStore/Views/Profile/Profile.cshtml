@@ -1,0 +1,32 @@
+﻿@section Css {
+    <link rel="stylesheet" href="~/inline/css/profile.css" />
+    <link rel="stylesheet" href="~/inline/css/register-login.css" />
+}
+<div class="container">
+    <div class="row mt-4">
+        <div class="col-lg-3">
+            <ul class="profile-navigation">
+                <li class="nav-item selected" onclick="GetProfilePartial($(this))">Профиль</li>
+                <li class="nav-item" onclick="GetOrdersPartial($(this))">Заказы</li>
+                @if (User.IsInRole("Admin"))
+                {
+                    <li class="nav-item">
+                        <a asp-controller="DBChangering" asp-action="DataBaseEditor">База данных</a>
+                    </li>
+                }
+                <li class="nav-item">
+                    <a asp-controller="Account" asp-action="Logout">Выход</a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-lg-9">
+            <div id="profilePage" class="profile-container">
+                @await Html.PartialAsync("_Main")
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script src="~/inline/js/profile.js"></script>
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

@@ -1,0 +1,78 @@
+﻿.profile-navigation {
+    list-style-type: none;
+    padding-left: 0px;
+}
+
+    .profile-navigation > li {
+        display: flex;
+        cursor: pointer;
+        transition: 0.25s;
+        border: 1px solid #444444;
+        background: #595959;
+        text-transform: uppercase;
+        color: #ffffff;
+        padding: 10px 20px;
+    }
+
+        .profile-navigation > li:hover {
+            transition: 0.25s;
+            color: #d8a247;
+        }
+
+            .profile-navigation > li:hover > a {
+                transition: 0.25s;
+                color: #d8a247;
+            }
+
+        .profile-navigation > li.selected {
+            background: #d8a247;
+            border-color: #d8a247;
+            color: white !important;
+        }
+
+        .profile-navigation > li > a {
+            color: white;
+            width: 100%;
+        }
+
+.profile-container {
+    border: 1px solid #e5e5e5;
+    background-color: white;
+    padding: 30px;
+}
+
+    .profile-container .profile-name {
+        font-size: 30px;
+    }
+
+    .profile-container .profile-email {
+        font-size: 16px;
+        margin-bottom: 20px;
+    }
+
+    .profile-container .profile-warning {
+        font-size: 14px;
+        margin-top: 20px;
+    }
+
+    .profile-container .login-title {
+        padding-bottom: 15px;
+    }
+
+    .profile-container label {
+        font-size: 14px;
+        margin-bottom: 12px;
+    }
+
+    .profile-container input {
+        width: 100%;
+        border: 1px solid #e5e5e5;
+        padding: 8px;
+        font-size: 14px;
+        color: #888888;
+    }
+
+    .profile-container span {
+        font-size: 12px;
+        color: red;
+    }

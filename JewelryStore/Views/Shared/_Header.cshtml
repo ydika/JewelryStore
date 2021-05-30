@@ -26,27 +26,25 @@
                 </div>
             </form>
             <div class="dropdown text-end">
-                <a id="itemsInCart" class="header-cart" asp-controller="Cart" asp-action="Cart">
+                <a class="header-cart" asp-controller="Cart" asp-action="Cart">
                     <img src="~/images/icons/shopping-bag.svg" />
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        <!-- ko if: length() > 0 -->
-                        <span data-bind="text: length"></span>
-                        <!-- /ko -->
-                    }
-                </a>
-                <a href="javascript: undefined;" id="user" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="/images/icons/user.svg" alt="Аккаунт">
+                    <span id="itemsInCart">@await Component.InvokeAsync("CartItemCount")</span>
                 </a>
                 @if (User.Identity.IsAuthenticated)
                 {
+                    <a href="javascript: undefined;" id="user" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="/images/icons/user.svg" alt="Аккаунт">@await Component.InvokeAsync("UserName")
+                    </a>
                     <ul class="dropdown-menu text-small" aria-labelledby="user">
                         <li>
-                            <a href="javascript: undefined;" class="dropdown-item">Профиль</a>
+                            <a asp-controller="Profile" asp-action="Profile" class="dropdown-item">Профиль</a>
                         </li>
-                        <li>
-                            <a href="javascript: undefined;" class="dropdown-item">Настройки</a>
-                        </li>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li>
+                                <a asp-controller="DBChangering" asp-action="DataBaseEditor" class="dropdown-item">База данных</a>
+                            </li>
+                        }
                         <li>
                             <a asp-controller="Account" asp-action="Logout" class="dropdown-item">Выйти</a>
                         </li>
@@ -54,6 +52,9 @@
                 }
                 else
                 {
+                    <a href="javascript: undefined;" id="user" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="/images/icons/user.svg" alt="Аккаунт">
+                    </a>
                     <ul class="dropdown-menu text-small" aria-labelledby="user">
                         <li>
                             <a asp-controller="Account" asp-action="Login" class="dropdown-item">Войти</a>

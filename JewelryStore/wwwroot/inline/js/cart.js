@@ -8,11 +8,14 @@ GetCart();
 function GetCart() {
     $.getJSON('/cart/getcart',
         function (data) {
-            cartLength.length(data.length);
             cart.cartContent(data)
                 .cartIsEmpty(data.length > 0 ? false : true);
         }
     );
+}
+
+if ($('#itemsInCart').text() === "") {
+    $('#itemsInCart').hide();
 }
 
 function RemoveFromCart(value) {
@@ -23,7 +26,12 @@ function RemoveFromCart(value) {
         dataType: 'json',
         data: { 'jewelryid': value },
         success: function (data) {
-            cartLength.length(data.length);
+            $.get("/cart/getcartitemcount", function (data) {
+                $('#itemsInCart').html(data);
+                if (data === "") {
+                    $('#itemsInCart').hide();
+                }
+            });
             cart.cartContent(data)
                 .cartIsEmpty(data.length > 0 ? false : true);
             $('.cart').removeClass('loading');

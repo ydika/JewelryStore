@@ -5,7 +5,7 @@
 <div class="container d-flex mt-3">
     <div class="login-form m-auto">
         <h4 class="login-title">Вход в аккаунт</h4>
-        <form method="post" asp-controller="Account" asp-action="Login">
+        <form method="post" asp-controller="Account" asp-action="Login" asp-antiforgery="true">
             <div class="row login-content">
                 <div class="validation" asp-validation-summary="ModelOnly"></div>
                 <div class="col-12 col-md-12">

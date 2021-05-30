@@ -30,6 +30,10 @@
 ////        },
 ////    );
 ////}
+if ($('#itemsInCart').text() === "") {
+    $('#itemsInCart').hide();
+}
+
 let o = [];
 let currentPage = 1;
 
@@ -100,7 +104,8 @@ function AddToCart(value) {
         dataType: 'json',
         data: { 'jewelryid': value },
         success: function (data) {
-            cartLength.length(data.length);
+            $('#itemsInCart').html(data);
+            $('#itemsInCart').show();
         }
     });
 }

@@ -1,0 +1,21 @@
+﻿body {
+    margin: 0px;
+}
+
+.editor-menu {
+    width: 280px;
+    height: calc(100vh - 78px);
+    border-right: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+@media (max-width: 991px) {
+    .editor-menu {
+        height: calc(100vh - 204px);
+    }
+}
+
+@media (max-width: 768px) {
+    .editor-menu {
+        height: calc(100vh - 199.5px);
+    }
+}

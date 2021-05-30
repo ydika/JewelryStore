@@ -52,7 +52,7 @@
 
     .login-other > a:hover {
         transition: all 0.3s ease-in;
-        color: #cda557;
+        color: #d8a247;
     }
 
     .login-other > div > label {
@@ -71,7 +71,7 @@
 
     .accept-register:hover {
         transition: all 0.3s ease-in;
-        background-color: #cda557;
+        background-color: #d8a247;
     }
 
 .remember-input {

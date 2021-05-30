@@ -1,0 +1,41 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    @await Html.PartialAsync("_Metatag")
+    <title>База данных</title>
+    @await Html.PartialAsync("_Css")
+    <link rel="stylesheet" href="~/inline/css/dbeditor.css" />
+</head>
+<body>
+    @await Html.PartialAsync("_Header")
+    <main role="main">
+        <div class="d-flex flex-column flex-shrink-0 p-3 bg-light editor-menu">
+            <div class="d-flex align-items-center mb-3 mb-md-0 me-md-auto">
+                <span class="fs-4">База данных</span>
+            </div>
+            <hr>
+            <ul class="nav nav-pills flex-column mb-auto">
+                <li>
+                    <a href="#" class="nav-link active" aria-current="page">Изделия</a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link link-dark" aria-current="page">Характеристика/значение</a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link link-dark" aria-current="page">Виды изделий</a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link link-dark" aria-current="page">Скидки</a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link link-dark">Пользователи</a>
+                </li>
+            </ul>
+        </div>
+    </main>
+    @await Html.PartialAsync("_Scripts")
+</body>
+</html>

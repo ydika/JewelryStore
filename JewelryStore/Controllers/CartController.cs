@@ -2,6 +2,7 @@
 using JewelryStore.Services;
 using JewelryStore.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
 namespace JewelryStore.Controllers
@@ -47,9 +49,9 @@ namespace JewelryStore.Controllers
         [Authorize]
         [Route("[action]")]
         [ResponseCache(NoStore = true)]
-        public async Task<JsonResult> GetCartLength()
+        public IActionResult GetCartItemCount()
         {
-            return Json(await dbContext.CartContent.Where(x => x.Cart.ID_User == _userManager.GetUserId(User)).CountAsync());
+            return ViewComponent("CartItemCount");
         }
 
         [HttpGet]
@@ -73,7 +75,7 @@ namespace JewelryStore.Controllers
         [HttpPost]
         [Authorize]
         [Route("[action]")]
-        public async Task<JsonResult> Add(int jewelryid)
+        public async Task<IActionResult> Add(int jewelryid)
         {
             await dbContext.Cart.Include(x => x.CartContent).LoadAsync();
             await dbContext.CartContent.LoadAsync();
@@ -108,7 +110,7 @@ namespace JewelryStore.Controllers
                 await dbContext.SaveChangesAsync();
             }
 
-            return Json(await dbContext.CartContent.Where(x => x.Cart.ID_User == _userManager.GetUserId(User)).ToListAsync());
+            return ViewComponent("CartItemCount");
         }
 
         [HttpPost]

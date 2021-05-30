@@ -41,14 +41,17 @@ namespace JewelryStore.Controllers
         {
             if (ModelState.IsValid)
             {
-                UserModel user = new UserModel { Email = model.Email, UserName = model.Email };
+                UserModel user = new UserModel { FirstName = model.FirstName, SecondName = model.SecondName, Email = model.Email, UserName = model.Email };
 
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    await _userManager.AddToRoleAsync(user, "User");
+
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
                     EmailService emailService = new EmailService();
+                    
                     await emailService.SendEmailAsync(model.Email, "Confirm your account",
                         "<div style=\"background-color:#F7F6F2;text-align:center;color:#836027;padding-bottom:30px;\">" +
                         "<div style=\"font-size:40px;margin:0px;\">Glatteis</div>" +

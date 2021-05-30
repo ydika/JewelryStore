@@ -35,22 +35,6 @@ function NumerickFocus(obj) {
     obj.select();
 }
 
-let cartLength = {
-    length: ko.observable()
-};
-ko.applyBindings(cartLength, document.getElementById('itemsInCart'));
-
-if (document.location.pathname != "/cart") {
-    GetCartLength();
-    function GetCartLength() {
-        $.getJSON('/cart/getcartlength',
-            function (data) {
-                cartLength.length(data);
-            }
-        );
-    }
-}
-
 let searchOptions = {
     options: ko.observable()
 };
@@ -63,6 +47,10 @@ $('#searchInput').on('input', function () {
         }
     );
 });
+
+if ($('#itemsInCart').text() === "") {
+    $('#itemsInCart').hide();
+}
 
 function ClickOnSearchName(value) {
     let si = document.getElementById('searchInput');

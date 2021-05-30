@@ -1,0 +1,40 @@
+﻿@model ChangeAccountDataViewModel
+<div class="profile-name">@Model.FirstName @Model.SecondName</div>
+<div class="profile-email">@Model.Email</div>
+<div class="profile-container">
+    <h4 class="login-title">Данные аккаунта</h4>
+    <form method="post" asp-controller="Profile" asp-action="ChangeAccountData" asp-antiforgery="true">
+        <div class="row login-content">
+            <div class="validation" asp-validation-summary="ModelOnly"></div>
+            <div class="col-md-6 col-12">
+                <label asp-for="FirstName">Ваше имя</label>
+                <input type="text" asp-for="FirstName" value="@Model.FirstName" />
+                <span asp-validation-for="FirstName" />
+            </div>
+            <div class="col-md-6 col-12">
+                <label asp-for="SecondName">Ваша фамилия</label>
+                <input type="text" asp-for="SecondName" value="@Model.SecondName" />
+                <span asp-validation-for="SecondName" />
+            </div>
+            <div class="col-12">
+                <label asp-for="OldPassword">Ваш старый пароль</label>
+                <input asp-for="OldPassword" />
+                <span asp-validation-for="OldPassword" />
+            </div>
+            <div class="col-12">
+                <label asp-for="Password">Ваш новый пароль</label>
+                <input asp-for="Password" />
+                <span asp-validation-for="Password" />
+            </div>
+            <div class="col-12">
+                <label asp-for="PasswordConfirm">Повторите пароль</label>
+                <input asp-for="PasswordConfirm" />
+                <span asp-validation-for="PasswordConfirm" />
+            </div>
+            <div class="col-12">
+                <input type="submit" value="Подтвердить" class="accept-register" />
+            </div>
+        </div>
+    </form>
+</div>
+<div class="profile-warning">(вы не Юрий Дикан? <a asp-controller="Account" asp-action="Logout">Выйти</a>)</div>

@@ -5,20 +5,30 @@
 <div class="container d-flex mt-3">
     <div class="login-form m-auto">
         <h4 class="login-title">Регистрация аккаунта</h4>
-        <form method="post" asp-controller="Account" asp-action="Register">
+        <form method="post" asp-controller="Account" asp-action="Register" asp-antiforgery="true">
             <div class="row login-content">
                 <div class="validation" asp-validation-summary="ModelOnly"></div>
                 <div class="col-md-6 col-12">
+                    <label asp-for="FirstName">Ваше имя</label>
+                    <input type="text" asp-for="FirstName" />
+                    <span asp-validation-for="FirstName" />
+                </div>
+                <div class="col-md-6 col-12">
+                    <label asp-for="SecondName">Ваша фамилия</label>
+                    <input type="text" asp-for="SecondName" />
+                    <span asp-validation-for="SecondName" />
+                </div>
+                <div class="col-12">
                     <label asp-for="Email">Ваш Email</label>
                     <input type="text" asp-for="Email" />
                     <span asp-validation-for="Email" />
                 </div>
-                <div class="col-md-6 col-12">
+                <div class="col-12">
                     <label asp-for="Password">Ваш пароль</label>
                     <input asp-for="Password" />
                     <span asp-validation-for="Password" />
                 </div>
-                <div class="col-md-12">
+                <div class="col-12">
                     <label asp-for="PasswordConfirm">Повторите пароль</label>
                     <input asp-for="PasswordConfirm" />
                     <span asp-validation-for="PasswordConfirm" />
