@@ -48,17 +48,7 @@ namespace JewelryStore.Controllers
                 {
                     await _userManager.AddToRoleAsync(user, "User");
 
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
-                    EmailService emailService = new EmailService();
-                    
-                    await emailService.SendEmailAsync(model.Email, "Confirm your account",
-                        "<div style=\"background-color:#F7F6F2;text-align:center;color:#836027;padding-bottom:30px;\">" +
-                        "<div style=\"font-size:40px;margin:0px;\">Glatteis</div>" +
-                        "<img style=\"border:1px solid #836027;width:600px;\" src=\"https://glatteis.herokuapp.com/images/emailpic.png\" alt=\"Ювелирный изделия. На любой вкус\">" +
-                        "<div style=\"font-size:30px;margin-bottom:10px;\"> <u>Подтверждение Email</u></div>" +
-                        $"<div style=\"color:black;font-size:16px;margin-bottom:30px;\">Для подтверждения вашего Email перейдите по <a href={callbackUrl}>ссылке</a>.</div>" +
-                        "<div style=\"font-size:12px;color:red;\">Внимание! Если вы не регестрировались на нашем сайте, то просто проигнорируйте это сообщение.</div></div>");
+                    await SendEmailConfirm(await _userManager.FindByEmailAsync(model.Email), model.Email);
 
                     return View("ConfirmEmail");
                 }
@@ -115,7 +105,8 @@ namespace JewelryStore.Controllers
                 var user = await _userManager.FindByNameAsync(model.Email);
                 if (user != null && !await _userManager.IsEmailConfirmedAsync(user))
                 {
-                    ModelState.AddModelError(string.Empty, "Вы не подтвердили свой email");
+                    ModelState.AddModelError(string.Empty, "Вы не подтвердили Email. Для подтверждения Email перейдите по ссылке, которую мы отправили на вашу электронную почту.");
+                    await SendEmailConfirm(user, model.Email);
                     return View(model);
                 }
 
@@ -126,10 +117,27 @@ namespace JewelryStore.Controllers
                 }
                 else
                 {
+                    await _userManager.AccessFailedAsync(user);
                     ModelState.AddModelError("", "Неправильный логин и (или) пароль");
                 }
             }
             return View(model);
+        }
+
+        [NonAction]
+        public async Task SendEmailConfirm(UserModel user, string email)
+        {
+            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
+            EmailService emailService = new EmailService();
+
+            await emailService.SendEmailAsync(email, "Confirm your account",
+                "<div style=\"background-color:#F7F6F2;text-align:center;color:#836027;padding-bottom:30px;\">" +
+                "<div style=\"font-size:40px;margin:0px;\">Glatteis</div>" +
+                "<img style=\"border:1px solid #836027;width:600px;\" src=\"https://glatteis.herokuapp.com/images/emailpic.png\" alt=\"Ювелирный изделия. На любой вкус\">" +
+                "<div style=\"font-size:30px;margin-bottom:10px;\"> <u>Подтверждение Email</u></div>" +
+                $"<div style=\"color:black;font-size:16px;margin-bottom:30px;\">Для подтверждения вашего Email перейдите по <a href={callbackUrl}>ссылке</a>.</div>" +
+                "<div style=\"font-size:12px;color:red;\">Внимание! Если вы не регестрировались на нашем сайте, то просто проигнорируйте это сообщение.</div></div>");
         }
 
         [HttpGet]
