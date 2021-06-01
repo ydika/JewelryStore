@@ -1,0 +1,41 @@
+﻿@model List<JewelryModel>
+<div class="db-container">
+    <div class="title">
+        <h3>Ювелирные изделия</h3>
+    </div>
+    <hr />
+    Тут будут фильтры
+    <hr />
+    <table class="db-table">
+        <thead>
+            <tr>
+                <th>Фотография</th>
+                <th>Название</th>
+                <th>Цена</th>
+                <th>Колво</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td class="table-img">
+                        <img src="@item.ImageSrc" />
+                    </td>
+                    <td class="table-item-name">
+                        <a href="@item.Url">@item.Name</a>
+                    </td>
+                    <td>@item.Price</td>
+                    <td>@item.Quantity</td>
+                    <td class="table-item-edit">
+                        <span>✎</span>
+                    </td>
+                    <td class="table-item-delete text-danger">
+                        <span>✗</span>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
