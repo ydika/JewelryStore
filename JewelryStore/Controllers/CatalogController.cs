@@ -36,7 +36,7 @@ namespace JewelryStore.Controllers
             ViewData["Title"] = "Ювелирные изделия купить";
             if (jkind != "all")
             {
-                ViewData["Title"] = dbContext.JewelryKinds.Where(x => x.EnName == jkind).Select(x => x.RuName).FirstOrDefault() + " купить";
+                ViewData["Title"] = dbContext.JewelryKinds.FirstOrDefault(x => x.EnName == jkind).RuName + " купить";
             }
 
             return View(await dbContext.JewelryKinds.ToListAsync());
@@ -49,7 +49,9 @@ namespace JewelryStore.Controllers
             dbContext.JewelryCharacteristics.Load();
             dbContext.Characteristics.Include(x => x.CharacteristicValues).Load();
 
-            JewelryModel jewelry = dbContext.Jewelries.Where(x => x.Code == code).FirstOrDefault();
+            JewelryModel jewelry = dbContext.Jewelries.FirstOrDefault(x => x.Code == code);
+            if (jewelry.JewelryCharacteristics == null) return View(new ItemViewModel(jewelry, null));
+
             List<ItemCharacteristics> itemCharacteristics = new List<ItemCharacteristics>();
             List<CharacteristicValueModel> characteristicValues = null;
             foreach (var characteristic in dbContext.Characteristics.ToList())
@@ -59,8 +61,7 @@ namespace JewelryStore.Controllers
                     characteristicValues = jewelry.JewelryCharacteristics.Select(x => x.CharacteristicValues).Where(x => x.Characteristic.Name == characteristic.Name).ToList();
                     if (characteristicValues.Count() > 0)
                     {
-                        itemCharacteristics.Add(new ItemCharacteristics(characteristic.Name,
-                                        jewelry.JewelryCharacteristics.Select(x => x.CharacteristicValues).Where(x => x.Characteristic.Name == characteristic.Name).ToList()));
+                        itemCharacteristics.Add(new ItemCharacteristics(characteristic.Name, characteristicValues));
                     }
                 }
             }

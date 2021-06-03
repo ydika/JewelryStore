@@ -25,23 +25,38 @@ namespace JewelryStore.Models
         [ForeignKey("ID_Discount")]
         public DiscountModel Discount { get; set; }
 
-        [StringLength(100)]
+        [StringLength(100, ErrorMessage = "Максимальная длина - 100 символов")]
+        [MinLength(5, ErrorMessage = "Минимальная длина названия - 5 символов")]
+        [Required(ErrorMessage = "Не указано название")]
         public string Name { get; set; }
+
         [JsonIgnore]
         [StringLength(200)]
         public string InsertedGemChar { get; set; }
-        public double Price { get; set; }
+
+        [StringLength(10)]
+        [Required(ErrorMessage = "Не указана цена")]
+        [RegularExpression(@"^\d+\.\d{2}$", ErrorMessage = "Цена должна быть вида [0.00]")]
+        public string Price { get; set; }
+
         [JsonIgnore]
         [StringLength(30)]
+        [Required(ErrorMessage = "Не указан код/артикль")]
         public string Code { get; set; }
+
         [JsonIgnore]
+        [Required(ErrorMessage = "Не указано количество")]
         public int Quantity { get; set; }
+
         [StringLength(100)]
-        public string ImageSrc { get; set; }
+        public string ImageSrc { get; set; } = "/images/jewelrys/noimage.png";
+
         [StringLength(200)]
         public string Url { get; set; }
 
         [JsonIgnore]
         public List<JewelryCharacteristicsModel> JewelryCharacteristics { get; set; }
+        [JsonIgnore]
+        public List<CartContentModel> CartContents { get; set; }
     }
 }

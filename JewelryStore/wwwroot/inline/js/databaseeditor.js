@@ -23,13 +23,29 @@ function GetUsersTable(obj) {
     GetTable('getuserstable', obj);
 }
 
+let currentPage = 1;
+function SelectedNewPage(a, obj) {
+    if (currentPage != a) {
+        $('main').addClass('loading');
+        currentPage = a;
+        window.scrollTo(0, 0);
+        GetTable(`/dbchangering/getjewelrystable?page=${a}`, obj);
+    }
+}
+
 function GetTable(url, obj) {
     $.get(`${url}`,
         function (data) {
-            $('.active').addClass('link-dark').removeClass('active');
             $('#dbTable').html(data);
-            $(obj).addClass('active');
+            if (obj != null) {
+                $('.active').addClass('link-dark').removeClass('active');
+                $(obj).addClass('active');
+            }
             $('main').removeClass('loading');
         }
     );
 }
+
+$('form').on('submit', function () {
+    return confirm('Подтвердите выполнение действия.');;
+});

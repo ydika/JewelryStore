@@ -79,6 +79,49 @@ body {
     line-height: 60px; /* Vertically center the text there */
 }
 
+/* Paging
+-------------------------------------------------- */
+.pagination-box {
+    padding: 0px;
+}
+
+    .pagination-box li {
+        cursor: pointer;
+        display: inline-block;
+        position: relative;
+        padding: 21px 21px;
+        background-color: white;
+        border: 1.08px solid #e5e5e5;
+    }
+
+        .pagination-box li > a {
+            padding: 10px 17px;
+            position: absolute;
+            transform: translate(-50%,-50%);
+        }
+
+        .pagination-box li.active {
+            background-color: #d8a247;
+        }
+
+            .pagination-box li.active > a {
+                color: white;
+            }
+
+        .pagination-box li:hover {
+            transition: all 0.3s ease-in;
+            background-color: #d8a247;
+        }
+
+            .pagination-box li:hover > a {
+                transition: all 0.3s ease-in;
+                color: white;
+            }
+
+.text-black {
+    color: black;
+}
+
 /* Table
 -------------------------------------------------- */
 
@@ -200,3 +243,28 @@ input[type='number'] {
         opacity: .75 !important;
         visibility: visible !important;
     }
+
+/* Register/login/create data Forms
+-------------------------------------------------- */
+
+.login-form label, .create-data-form label {
+    font-size: 14px;
+    margin-bottom: 12px;
+}
+
+.login-form input, .create-data-form input {
+    width: 100%;
+    border: 1px solid #e5e5e5;
+    padding: 8px;
+    font-size: 14px;
+    color: #888888;
+}
+
+.login-form span, .create-data-form span {
+    font-size: 12px;
+    color: red;
+}
+
+.login-content > div, .create-data-form div {
+    margin-bottom: 15px;
+}

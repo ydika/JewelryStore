@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
@@ -65,7 +66,7 @@ namespace JewelryStore.Controllers
             if (coincidence != null)
             {
                 coincidence.Quantity = quantity;
-                coincidence.TotalPrice = coincidence.Quantity * coincidence.Jewelry.Price;
+                coincidence.TotalPrice = Math.Round(coincidence.Quantity * double.Parse(coincidence.Jewelry.Price, CultureInfo.InvariantCulture), 2);
                 await dbContext.SaveChangesAsync();
             }
 
@@ -84,6 +85,7 @@ namespace JewelryStore.Controllers
 
             JewelryModel jewelry = await dbContext.Jewelries.FirstOrDefaultAsync(x => x.ID == jewelryid);
             CartModel cart = await dbContext.Cart.FirstOrDefaultAsync(x => x.ID_User == userId);
+            double jewelryPrice = double.Parse(jewelry.Price, CultureInfo.InvariantCulture);
 
             if (cart != null)
             {
@@ -91,12 +93,12 @@ namespace JewelryStore.Controllers
                 if (coincidence != null)
                 {
                     coincidence.Quantity++;
-                    coincidence.TotalPrice = coincidence.Quantity * coincidence.Jewelry.Price;
+                    coincidence.TotalPrice = Math.Round(coincidence.Quantity * double.Parse(coincidence.Jewelry.Price, CultureInfo.InvariantCulture), 2);
                     await dbContext.SaveChangesAsync();
                 }
                 else
                 {
-                    await dbContext.CartContent.AddAsync(new CartContentModel(cart.ID, jewelry.ID, DateTime.Now, 1, jewelry.Price));
+                    await dbContext.CartContent.AddAsync(new CartContentModel(cart.ID, jewelry.ID, DateTime.Now, 1, jewelryPrice));
                     await dbContext.SaveChangesAsync();
                 }
             }
@@ -106,7 +108,7 @@ namespace JewelryStore.Controllers
                 await dbContext.Cart.AddAsync(newCart);
                 await dbContext.SaveChangesAsync();
 
-                dbContext.CartContent.Add(new CartContentModel(newCart.ID, jewelry.ID, DateTime.Now, 1, jewelry.Price));
+                dbContext.CartContent.Add(new CartContentModel(newCart.ID, jewelry.ID, DateTime.Now, 1, jewelryPrice));
                 await dbContext.SaveChangesAsync();
             }
 

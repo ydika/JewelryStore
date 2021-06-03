@@ -1,0 +1,70 @@
+﻿@model EditItemViewModel
+@section Css {
+    <link rel="stylesheet" href="~/inline/css/dbeditor.css" />
+}
+<div class="db-container container">
+    <div class="title">
+        <h3>Изменить Ювелирное изделие</h3>
+    </div>
+    <form class="create-data-form" asp-action="EditDataSave" asp-antiforgery="true" method="post">
+        <div class="validation" asp-validation-summary="ModelOnly"></div>
+        <div class="container">
+            <div class="row">
+                <div class="order-0 col-sm-6">
+                    <div class="row">
+                        <input type="text" name="ID" value="@Model.Jewelry.ID" hidden />
+                        <div class="form-group col-md-6 col-12">
+                            <label class="control-label">Вид изделия: </label>
+                            <select class="form-select" name="ID_Kind" asp-for="Kind.Kind" asp-items="Model.Kind.Kinds"></select>
+                        </div>
+                        <div class="form-group col-md-6 col-12">
+                            <label class="control-label">Скидка на изделие: </label>
+                            <select class="form-select" name="ID_Discount" asp-for="Discount.Discount" asp-items="Model.Discount.Discounts"></select>
+                        </div>
+                        <div>
+                            <label class="control-label">Название изделия:</label>
+                            <input class="form-control" type="text" name="Name" value="@Model.Jewelry.Name" />
+                            <span asp-validation-for="Jewelry.Name" />
+                        </div>
+                        <div>
+                            <label class="control-label">Характеристика вставки:</label>
+                            <input class="form-control" type="text" name="InsertedGemChar" value="@Model.Jewelry.InsertedGemChar" />
+                        </div>
+                        <div>
+                            <label class="control-label">Цена изделия:</label>
+                            <input class="form-control" type="text" name="Price" value="@Model.Jewelry.Price" />
+                            <span asp-validation-for="Jewelry.Price" />
+                        </div>
+                        <div>
+                            <label class="control-label">Код/артикль изделия:</label>
+                            <input class="form-control" type="text" name="Code" value="@Model.Jewelry.Code" />
+                            <span asp-validation-for="Jewelry.Code" />
+                        </div>
+                        <div>
+                            <label class="control-label">Количество изделий:</label>
+                            <input class="form-control" type="number" name="Quantity" value="@Model.Jewelry.Quantity" />
+                            <span asp-validation-for="Jewelry.Quantity" />
+                        </div>
+                    </div>
+                </div>
+                <div class="order-1 col-sm-6">
+                    <div>Для выбора нескольких характеристик на устройствах с большим экраном зажмите Ctrl</div>
+                    @foreach (var c in Model.Characteristics)
+                    {
+                        <div>
+                            <label class="control-label">@c.Name: </label>
+                            <select class="form-select" multiple="multiple" name="characteristics" asp-for="@c.SelectedValue" asp-items="@c.Values"></select>
+                        </div>
+                    }
+                </div>
+                <div class="form-group order-2 col-sm-12">
+                    <input type="submit" value="Сохранить" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+@section Scripts {
+    <script src="~/inline/js/databaseeditor.js"></script>
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

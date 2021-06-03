@@ -14,39 +14,42 @@
                     <li>
                         Код: <span>@Model.Jewelry.Code</span>
                     </li>
-                    @foreach (var jc in Model.Characteristics)
+                    @if (Model.Characteristics != null)
                     {
-                        <li>
-                            @jc.Name:
-                            @if (jc.Name == "Размер")
-                            {
-                                <select class="form-select">
-                                    @foreach (var jcv in jc.Values)
-                                    {
-                                        <option value="@jcv.Value">@jcv.Value</option>
-                                    }
-                                </select>
-                            }
-                            else
-                            {
-                                for (int i = 0; i < jc.Values.Count; i++)
-                                {
-                                    if (i == jc.Values.Count - 1)
-                                    {
-                                        <span>@jc.Values[i].Value</span>
-                                    }
-                                    else
-                                    {
-                                        <span>@jc.Values[i].Value |</span>
-                                    }
-                                }
-                            }
-                        </li>
-                        if (jc.Name == "Вставка")
+                        @foreach (var jc in Model.Characteristics)
                         {
                             <li>
-                                Характеристика вставки: <span>@Model.Jewelry.InsertedGemChar</span>
+                                @jc.Name:
+                                @if (jc.Name == "Размер")
+                                {
+                                    <select class="form-select">
+                                        @foreach (var jcv in jc.Values)
+                                        {
+                                            <option value="@jcv.Value">@jcv.Value</option>
+                                        }
+                                    </select>
+                                }
+                                else
+                                {
+                                    for (int i = 0; i < jc.Values.Count; i++)
+                                    {
+                                        if (i == jc.Values.Count - 1)
+                                        {
+                                            <span>@jc.Values[i].Value</span>
+                                        }
+                                        else
+                                        {
+                                            <span>@jc.Values[i].Value |</span>
+                                        }
+                                    }
+                                }
                             </li>
+                            if (jc.Name == "Вставка")
+                            {
+                                <li>
+                                    Характеристика вставки: <span>@Model.Jewelry.InsertedGemChar</span>
+                                </li>
+                            }
                         }
                     }
                 </ul>

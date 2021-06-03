@@ -9,32 +9,10 @@
         padding-bottom: 15px;
     }
 
-    .login-form label {
-        font-size: 14px;
-        margin-bottom: 12px;
-    }
-
-    .login-form input {
-        width: 100%;
-        border: 1px solid #e5e5e5;
-        padding: 8px;
-        font-size: 14px;
-        color: #888888;
-    }
-
-    .login-form span {
-        font-size: 12px;
-        color: red;
-    }
-
 @media (max-width: 767px) {
     .login-form {
         width: 100%;
     }
-}
-
-.login-content > div {
-    margin-bottom: 15px;
 }
 
 .login-other {
