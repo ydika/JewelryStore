@@ -2,18 +2,22 @@
     position: relative;
 }
 
-    main:before {
-        content: '';
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: 0;
-        bottom: 0;
-        z-index: 1;
-        background: #fff;
-        opacity: 0;
-        visibility: hidden;
-    }
+main:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 1;
+    background: #fff;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.pb-3 {
+    padding-bottom: 0px !important;
+}
 
 body {
     margin: 0px;
@@ -27,6 +31,11 @@ table > tbody > tr > td {
 
 footer {
     display: none;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0px;
 }
 
 .btn {

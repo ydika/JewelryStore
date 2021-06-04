@@ -1,0 +1,38 @@
+﻿@model JewelryKindsModel
+@section Css {
+    <link rel="stylesheet" href="~/inline/css/dbeditor.css" />
+}
+<div class="db-container container">
+    <div class="title">
+        <h3>Новый вид изделия</h3>
+    </div>
+    <form class="create-data-form" asp-action="CreateJewelryKind" asp-antiforgery="true" method="post">
+        <div class="validation" asp-validation-summary="ModelOnly"></div>
+        <div class="container">
+            <div class="row">
+                <div>
+                    <label class="control-label">Название на русском:</label>
+                    <input class="form-control" type="text" asp-for="RuName" value="@Model.RuName" />
+                    <span asp-validation-for="RuName" />
+                </div>
+                <div>
+                    <label class="control-label">Название на английском:</label>
+                    <input class="form-control" type="text" asp-for="EnName" value="@Model.EnName" />
+                    <span asp-validation-for="EnName" />
+                </div>
+                <div>
+                    <label class="control-label">Описание:</label>
+                    <textarea class="form-control" type="text" asp-for="Description" value="@Model.Description"></textarea>
+                    <span asp-validation-for="Description" />
+                </div>
+            </div>
+        </div>
+        <div>
+            <input type="submit" value="Сохранить" class="btn btn-default" />
+        </div>
+    </form>
+</div>
+@section Scripts {
+    <script src="~/inline/js/databaseeditor.js"></script>
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

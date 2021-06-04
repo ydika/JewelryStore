@@ -1,0 +1,78 @@
+﻿@model List<CharacteristicsModel>
+@section Css {
+    <link rel="stylesheet" href="~/inline/css/dbeditor.css" />
+}
+<div class="row m-0">
+    <div class="editor-menu order-0 col-sm-3 col-xl-2">
+        <div class="mb-md-0 me-md-auto">
+            <h5>База данных</h5>
+        </div>
+        <hr>
+        <ul class="nav nav-pills flex-column mb-auto">
+            <li>
+                <a asp-action="JewelrysTable" class="nav-link link-dark">Изделия</a>
+            </li>
+            <li>
+                <a asp-action="CharacteristicsTable" class="nav-link active">Характеристика/значение</a>
+            </li>
+            <li>
+                <a asp-action="JewelryKindsTable" class="nav-link link-dark">Виды изделий</a>
+            </li>
+            <li>
+                <a asp-action="DiscountsTable" class="nav-link link-dark">Скидки</a>
+            </li>
+            <li>
+                <a asp-action="UsersTable" class="nav-link link-dark">Пользователи</a>
+            </li>
+        </ul>
+        <hr />
+    </div>
+    <div id="dbTable" class="order-1 col-sm-9 col-xl-10">
+        <div class="db-container">
+            <div class="title">
+                <h3>Характеристика/значение</h3>
+            </div>
+            <form asp-action="AddCharacteristic" method="post" asp-antiforgery="true">
+                <input class="form-control d-inline-block" style="width: 50%" type="text" name="name" />
+                <input class="btn btn-default mb-2 d-inline-block" style="color: green;" type="submit" value="Добавить характеристику" />
+            </form>
+            @foreach (var c in Model)
+            {
+                <hr />
+                <h5 class="d-inline-block">@c.Name</h5>
+                <form class="d-inline-block" asp-action="DeleteCharacteristic" method="post" asp-antiforgery="true">
+                    <input type="hidden" name="characteristic" value="@c.ID" />
+                    <input class="btn btn-default table-item-delete text-danger mb-2" type="submit" value="✗" />
+                </form>
+                <form class="mb-3" asp-action="DeleteCharacteristicValues" method="post" asp-antiforgery="true">
+                    @if (c.CharacteristicValues.Count() < 1)
+                    {
+                        <div>Нет значений</div>
+                    }
+                    else
+                    {
+                        <ul>
+                            @foreach (var cv in c.CharacteristicValues)
+                            {
+                                <li>
+                                    <input type="checkbox" name="characteristics" value="@cv.ID" /> @cv.Value
+                                </li>
+                            }
+                        </ul>
+                        <div>
+                            <input class="btn btn-default text-danger" type="submit" value="Удалить значения" />
+                        </div>
+                    }
+                </form>
+                <form asp-action="AddCharacteristicValue" method="post" asp-antiforgery="true">
+                    <input type="hidden" name="characteristic" value="@c.ID" />
+                    <input class="form-control" style="width: 50%" type="text" name="name" />
+                    <input class="btn btn-default" type="submit" style="color: green;" value="Добавить значение" />
+                </form>
+            }
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script src="~/inline/js/databaseeditor.js"></script>
+}

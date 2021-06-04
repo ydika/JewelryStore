@@ -29,20 +29,21 @@ namespace JewelryStore.Controllers
             _userManager = userManager;
         }
 
+        [HttpGet]
         [Route("[action]")]
-        public IActionResult DataBaseEditor()
+        public async Task<IActionResult> JewelrysTable(int page = 1)
         {
-            dbContext.Jewelries.Load();
+            await dbContext.Jewelries.LoadAsync();
 
-            List<JewelryModel> jewelries = dbContext.Jewelries.ToList();
+            List<JewelryModel> jewelries = await dbContext.Jewelries.ToListAsync();
 
-            return View(new CardsViewModel(jewelries.OrderByDescending(x => x.ID).Take(displayedQuantity).ToList(), 1,
-                (int)Math.Ceiling((decimal)jewelries.Count() / displayedQuantity)));
+            return View(new CardsViewModel(jewelries.OrderByDescending(x => x.ID).Skip(displayedQuantity * ((page - 1) < 0 ? 0 : page - 1)).Take(displayedQuantity).ToList(),
+                page, (int)Math.Ceiling((decimal)jewelries.Count() / displayedQuantity)));
         }
 
         [HttpGet]
         [Route("[action]")]
-        public async Task<IActionResult> CreateNewData()
+        public async Task<IActionResult> CreateNewJewelry()
         {
             return View(await ShapingEditViewModel(new JewelryModel(), new int[] { }));
         }
@@ -50,7 +51,7 @@ namespace JewelryStore.Controllers
         [HttpPost]
         [Route("[action]")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateNewData(JewelryModel jewelry, int[] characteristics)
+        public async Task<IActionResult> CreateNewJewelry(JewelryModel jewelry, int[] characteristics)
         {
             if (ModelState.IsValid)
             {
@@ -76,7 +77,7 @@ namespace JewelryStore.Controllers
         [HttpPost]
         [Route("[action]")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditData(int id)
+        public async Task<IActionResult> EditJewelryData(int id)
         {
             JewelryModel jewelry = dbContext.Jewelries.Include(x => x.JewelryCharacteristics).FirstOrDefault(x => x.ID == id);
 
@@ -86,7 +87,7 @@ namespace JewelryStore.Controllers
         [HttpPost]
         [Route("[action]")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditDataSave(JewelryModel jewelry, int[] characteristics)
+        public async Task<IActionResult> EditJewelryDataSave(JewelryModel jewelry, int[] characteristics)
         {
             if (ModelState.IsValid)
             {
@@ -171,9 +172,9 @@ namespace JewelryStore.Controllers
         [HttpPost]
         [Route("[action]")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteData(int id)
+        public async Task<IActionResult> DeleteJewelry(int id)
         {
-            JewelryModel jewelry = dbContext.Jewelries.Include(x => x.CartContents).FirstOrDefault(x => x.ID == id);
+            JewelryModel jewelry = await dbContext.Jewelries.Include(x => x.CartContents).FirstOrDefaultAsync(x => x.ID == id);
             dbContext.Jewelries.Remove(jewelry);
             await dbContext.SaveChangesAsync();
 
@@ -182,51 +183,152 @@ namespace JewelryStore.Controllers
 
         [HttpGet]
         [Route("[action]")]
-        public async Task<IActionResult> GetJewelrysTable(int page = 1)
+        public async Task<IActionResult> CharacteristicsTable()
         {
-            await dbContext.Jewelries.LoadAsync();
+            return View(await dbContext.Characteristics.Include(x => x.CharacteristicValues).OrderByDescending(x => x.ID).ToListAsync());
+        }
 
-            List<JewelryModel> jewelries = await dbContext.Jewelries.ToListAsync();
+        [HttpPost]
+        [Route("[action]")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddCharacteristic(string name)
+        {
+            await dbContext.Characteristics.AddAsync(new CharacteristicsModel { Name = name });
+            await dbContext.SaveChangesAsync();
 
-            return PartialView("_JewelrysTable", new CardsViewModel(
-                jewelries.OrderByDescending(x => x.ID).Skip(displayedQuantity * ((page - 1) < 0 ? 0 : page - 1)).Take(displayedQuantity).ToList(),
-                page, (int)Math.Ceiling((decimal)jewelries.Count() / displayedQuantity)));
+            return RedirectToAction("CharacteristicsTable");
+        }
+
+        [HttpPost]
+        [Route("[action]")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddCharacteristicValue(int characteristic, string name)
+        {
+            await dbContext.CharacteristicValues.AddAsync(new CharacteristicValueModel { ID_Characteristic = characteristic, Value = name });
+            await dbContext.SaveChangesAsync();
+
+            return RedirectToAction("CharacteristicsTable");
+        }
+
+        [HttpPost]
+        [Route("[action]")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteCharacteristic(int characteristic)
+        {
+            CharacteristicsModel charact = await dbContext.Characteristics.Include(x => x.CharacteristicValues).FirstOrDefaultAsync(x => x.ID == characteristic);
+            dbContext.CharacteristicValues.RemoveRange(charact.CharacteristicValues.ToList());
+            dbContext.Remove(charact);
+            await dbContext.SaveChangesAsync();
+
+            return RedirectToAction("CharacteristicsTable");
+        }
+
+        [HttpPost]
+        [Route("[action]")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteCharacteristicValues(int[] characteristics)
+        {
+            for (int i = 0; i < characteristics.Length; i++)
+            {
+                dbContext.CharacteristicValues.RemoveRange(dbContext.CharacteristicValues.Where(x => x.ID == characteristics[i]).ToList());
+            }
+            await dbContext.SaveChangesAsync();
+
+            return RedirectToAction("CharacteristicsTable");
         }
 
         [HttpGet]
         [Route("[action]")]
-        public async Task<IActionResult> GetCharacteristicsTable()
-        {
-            await dbContext.Characteristics.Include(x => x.CharacteristicValues).LoadAsync();
-
-            return PartialView("_CharacteristicsTable", await dbContext.Characteristics.ToListAsync());
-        }
-
-        [HttpGet]
-        [Route("[action]")]
-        public async Task<IActionResult> GetJewelryKindsTable()
+        public async Task<IActionResult> JewelryKindsTable()
         {
             await dbContext.JewelryKinds.LoadAsync();
 
-            return PartialView("_JewelryKinds", await dbContext.JewelryKinds.ToListAsync());
+            return View(await dbContext.JewelryKinds.ToListAsync());
         }
 
         [HttpGet]
         [Route("[action]")]
-        public async Task<IActionResult> GetDiscountsTable()
+        public IActionResult CreateJewelryKind()
+        {
+            return View(new JewelryKindsModel());
+        }
+
+        [HttpPost]
+        [Route("[action]")]
+        public async Task<IActionResult> CreateJewelryKind(JewelryKindsModel kind, int[] characteristics)
+        {
+            if (ModelState.IsValid)
+            {
+                JewelryKindsModel coincidence = dbContext.JewelryKinds.FirstOrDefault(x => x.EnName == kind.EnName || x.RuName == kind.RuName);
+                if (coincidence == null)
+                {
+                    kind.EnName = kind.EnName.Replace(' ', '-').ToLower();
+
+                    await dbContext.JewelryKinds.AddAsync(kind);
+                    await dbContext.SaveChangesAsync();
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Указанный вами код/артикль уже используется!");
+
+                    return View(kind);
+                }
+            }
+
+            return RedirectToAction("JewelryKindsTable");
+        }
+
+        [HttpPost]
+        [Route("[action]")]
+        public async Task<IActionResult> EditJewelryKind(int id)
+        {
+            return View(await dbContext.JewelryKinds.FirstOrDefaultAsync(x => x.ID == id));
+        }
+
+        [HttpPost]
+        [Route("[action]")]
+        public async Task<IActionResult> EditJewelryKindSave(JewelryKindsModel kind)
+        {
+            if (ModelState.IsValid)
+            {
+                kind.EnName = kind.EnName.Replace(' ', '-').ToLower();
+
+                dbContext.JewelryKinds.Add(kind);
+                dbContext.Entry(kind).State = EntityState.Modified;
+
+                await dbContext.SaveChangesAsync();
+            }
+
+            return RedirectToAction("JewelryKindsTable");
+        }
+
+        [HttpPost]
+        [Route("[action]")]
+        public async Task<IActionResult> DeleteJewelryKind(int id)
+        {
+            JewelryKindsModel kind = await dbContext.JewelryKinds.FirstOrDefaultAsync(x => x.ID == id);
+            dbContext.JewelryKinds.Remove(kind);
+            await dbContext.SaveChangesAsync();
+
+            return RedirectToAction("JewelryKindsTable");
+        }
+
+        [HttpGet]
+        [Route("[action]")]
+        public async Task<IActionResult> DiscountsTable()
         {
             await dbContext.Discounts.LoadAsync();
 
-            return PartialView("_DiscountsTable", await dbContext.Discounts.ToListAsync());
+            return View(await dbContext.Discounts.ToListAsync());
         }
 
         [HttpGet]
         [Route("[action]")]
-        public async Task<IActionResult> GetUsersTable()
+        public async Task<IActionResult> UsersTable()
         {
             await dbContext.Users.LoadAsync();
 
-            return PartialView("_UsersTable", await dbContext.Users.ToListAsync());
+            return View(await dbContext.Users.ToListAsync());
         }
     }
 }

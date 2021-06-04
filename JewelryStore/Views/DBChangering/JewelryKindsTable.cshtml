@@ -1,0 +1,77 @@
+﻿@model List<JewelryKindsModel>
+@section Css {
+    <link rel="stylesheet" href="~/inline/css/dbeditor.css" />
+}
+<div class="row m-0">
+    <div class="editor-menu order-0 col-sm-3 col-xl-2">
+        <div class="mb-md-0 me-md-auto">
+            <h5>База данных</h5>
+        </div>
+        <hr>
+        <ul class="nav nav-pills flex-column mb-auto">
+            <li>
+                <a asp-action="JewelrysTable" class="nav-link link-dark">Изделия</a>
+            </li>
+            <li>
+                <a asp-action="CharacteristicsTable" class="nav-link link-dark">Характеристика/значение</a>
+            </li>
+            <li>
+                <a asp-action="JewelryKindsTable" class="nav-link active">Виды изделий</a>
+            </li>
+            <li>
+                <a asp-action="DiscountsTable" class="nav-link link-dark">Скидки</a>
+            </li>
+            <li>
+                <a asp-action="UsersTable" class="nav-link link-dark">Пользователи</a>
+            </li>
+        </ul>
+        <hr />
+    </div>
+    <div id="dbTable" class="order-1 col-sm-9 col-xl-10">
+        <div class="db-container">
+            <div class="title">
+                <h3>Виды ювелирных изделий</h3>
+                <a asp-action="CreateJewelryKind">Добавить новую запись</a>
+            </div>
+            <hr />
+            <table class="db-table">
+                <thead>
+                    <tr>
+                        <th>Название на русском</th>
+                        <th>Название на английском</th>
+                        <th>Описание</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var k in Model)
+                    {
+                        <tr>
+                            <td class="table-img">@k.RuName</td>
+                            <td class="table-item-name">@k.EnName</td>
+                            <td>@k.Description</td>
+                            <td>
+                                <form asp-action="EditJewelryKind" method="post" asp-antiforgery="true">
+                                    <div class="form-group">
+                                        <input type="number" name="id" value="@k.ID" hidden />
+                                        <input type="submit" class="btn btn-default table-item-edit" value="✎" />
+                                    </div>
+                                </form>
+                            </td>
+                            <td>
+                                <form asp-action="DeleteJewelryKind" method="post" asp-antiforgery="true">
+                                    <div class="form-group">
+                                        <input type="number" name="id" value="@k.ID" hidden />
+                                        <input type="submit" class="btn btn-default table-item-delete text-danger" value="✗" />
+                                    </div>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script src="~/inline/js/databaseeditor.js"></script>
+}
