@@ -44,59 +44,29 @@ namespace JewelryStore.Controllers
         [Route("[action]")]
         public async Task<IActionResult> CreateNewData()
         {
-            ViewBag.Kinds = new SelectList(await dbContext.JewelryKinds.ToListAsync(), "ID", "RuName");
-            ViewBag.Discounts = new SelectList(await dbContext.Discounts.ToListAsync(), "ID", "Amount");
-
-            await dbContext.Characteristics.Include(x => x.CharacteristicValues).LoadAsync();
-
-            List<ItemCharacteristics> itemCharacteristics = new List<ItemCharacteristics>();
-            List<CharacteristicValueModel> characteristicValues = null;
-            foreach (var characteristic in dbContext.Characteristics.ToList())
-            {
-
-                if (characteristic.CharacteristicValues.Count() > 0)
-                {
-                    characteristicValues = dbContext.CharacteristicValues.Where(x => x.Characteristic.Name == characteristic.Name).ToList();
-                    if (characteristicValues.Count() > 0)
-                    {
-                        itemCharacteristics.Add(new ItemCharacteristics(characteristic.Name, characteristicValues));
-                    }
-                }
-            }
-
-            return View(new ItemViewModel(new JewelryModel(), itemCharacteristics));
+            return View(await ShapingEditViewModel(new JewelryModel(), new int[] { }));
         }
 
         [HttpPost]
         [Route("[action]")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateNewData(JewelryModel model, int[] characteristics)
+        public async Task<IActionResult> CreateNewData(JewelryModel jewelry, int[] characteristics)
         {
             if (ModelState.IsValid)
             {
-                JewelryModel jewelry = dbContext.Jewelries.FirstOrDefault(x => x.Code == model.Code);
-                if (jewelry == null)
+                JewelryModel coincidence = dbContext.Jewelries.FirstOrDefault(x => x.Code == jewelry.Code);
+                if (coincidence == null)
                 {
-                    List<JewelryCharacteristicsModel> jewelryCharacteristics = new List<JewelryCharacteristicsModel>();
-                    for (int i = 0; i < characteristics.Length; i++)
-                    {
-                        jewelryCharacteristics.Add(new JewelryCharacteristicsModel { ID_CharacteristicValue = characteristics[i] });
-                    }
-                    model.Code = model.Code.ToLower();
-                    model.JewelryCharacteristics = jewelryCharacteristics;
-                    model.Url = $"/catalog/{dbContext.JewelryKinds.FirstOrDefault(x => x.ID == model.ID_Kind).EnName}/{model.Code}";
+                    jewelry = ShapingJewelryModel(jewelry, characteristics);
 
-                    await dbContext.Jewelries.AddAsync(model);
+                    await dbContext.Jewelries.AddAsync(jewelry);
                     await dbContext.SaveChangesAsync();
                 }
                 else
                 {
                     ModelState.AddModelError(string.Empty, "Указанный вами код/артикль уже используется!");
 
-                    ViewBag.Kinds = new SelectList(await dbContext.JewelryKinds.ToListAsync(), "ID", "RuName");
-                    ViewBag.Discounts = new SelectList(await dbContext.Discounts.ToListAsync(), "ID", "Amount");
-
-                    return View(model);
+                    return View(await ShapingEditViewModel(jewelry, characteristics));
                 }
             }
 
@@ -108,64 +78,94 @@ namespace JewelryStore.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditData(int id)
         {
-            await dbContext.Jewelries.Include(x => x.JewelryCharacteristics).LoadAsync();
-            await dbContext.Characteristics.Include(x => x.CharacteristicValues).LoadAsync();
+            JewelryModel jewelry = dbContext.Jewelries.Include(x => x.JewelryCharacteristics).FirstOrDefault(x => x.ID == id);
 
-            JewelryModel jewelry = dbContext.Jewelries.FirstOrDefault(x => x.ID == id);
-
-            List<SelectedItemCharacteristics> selectedItemCharacteristics = new List<SelectedItemCharacteristics>();
-            List<CharacteristicValueModel> characteristicValues = await dbContext.CharacteristicValues.ToListAsync();
-            List<string> characteristics = dbContext.Characteristics.Select(x => x.Name).ToList();
-            foreach (var characteristic in characteristics)
-            {
-                if (characteristic.Count() > 0)
-                {
-                    if (characteristicValues.Where(x => x.Characteristic.Name == characteristic).ToList().Count() > 0)
-                    {
-                        selectedItemCharacteristics.Add(new SelectedItemCharacteristics(characteristic,
-                            jewelry.JewelryCharacteristics.Where(x => x.CharacteristicValues.Characteristic.Name == characteristic).Select(x => x.CharacteristicValues.ID.ToString()).ToList(),
-                            characteristicValues.Where(x => x.Characteristic.Name == characteristic).Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.Value }).ToList()));
-                    }
-                }
-            }
-
-            SelectedKind selectedKind = new SelectedKind(jewelry.ID_Kind.ToString(), await dbContext.JewelryKinds.Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.RuName }).ToListAsync());
-            SelectedDiscount selectedDiscount = new SelectedDiscount(jewelry.ID_Discount.ToString(), await dbContext.Discounts.Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.Amount.ToString() }).ToListAsync());
-
-            return View(new EditItemViewModel(jewelry, selectedItemCharacteristics, selectedKind, selectedDiscount));
+            return View(await ShapingEditViewModel(jewelry, jewelry.JewelryCharacteristics.Select(x => x.ID_CharacteristicValue).ToArray()));
         }
 
         [HttpPost]
         [Route("[action]")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditDataSave(JewelryModel model, int[] characteristics)
+        public async Task<IActionResult> EditDataSave(JewelryModel jewelry, int[] characteristics)
         {
             if (ModelState.IsValid)
             {
-                List<JewelryCharacteristicsModel> jewelryCharacteristics = new List<JewelryCharacteristicsModel>();
-                for (int i = 0; i < characteristics.Length; i++)
-                {
-                    jewelryCharacteristics.Add(new JewelryCharacteristicsModel { ID_CharacteristicValue = characteristics[i] });
-                }
+                dbContext.JewelryCharacteristics.RemoveRange(dbContext.JewelryCharacteristics.Where(x => x.ID_Jewelry == jewelry.ID).ToList());
 
-                JewelryModel jewelry = dbContext.Jewelries.FirstOrDefault(x => x.ID == model.ID);
-                jewelry.ID_Kind = model.ID_Kind;
-                jewelry.ID_Discount = model.ID_Discount;
-                jewelry.Name = model.Name;
-                jewelry.InsertedGemChar = model.InsertedGemChar;
-                jewelry.Price = model.Price;
-                jewelry.Quantity = model.Quantity;
-                jewelry.Code = model.Code.ToLower();
-                jewelry.JewelryCharacteristics = jewelryCharacteristics;
-                jewelry.Url = $"/catalog/{dbContext.JewelryKinds.FirstOrDefault(x => x.ID == model.ID_Kind).EnName}/{model.Code}";
+                jewelry = ShapingJewelryModel(jewelry, characteristics);
+                dbContext.Jewelries.Add(jewelry);
+                dbContext.Entry(jewelry).State = EntityState.Modified;
 
-                dbContext.JewelryCharacteristics.RemoveRange(dbContext.JewelryCharacteristics.Where(x => x.ID_Jewelry == model.ID).ToList());
-
-                dbContext.Jewelries.Update(jewelry);
                 await dbContext.SaveChangesAsync();
             }
 
             return RedirectToAction("DataBaseEditor");
+        }
+
+        [NonAction]
+        private JewelryModel ShapingJewelryModel(JewelryModel jewelry, int[] characteristics)
+        {
+            List<JewelryCharacteristicsModel> jewelryCharacteristics = new List<JewelryCharacteristicsModel>();
+
+            for (int i = 0; i < characteristics.Length; i++)
+            {
+                jewelryCharacteristics.Add(new JewelryCharacteristicsModel { ID_CharacteristicValue = characteristics[i] });
+            }
+
+            jewelry.Code = jewelry.Code.ToLower();
+            jewelry.JewelryCharacteristics = jewelryCharacteristics;
+            jewelry.Url = $"/catalog/{dbContext.JewelryKinds.FirstOrDefault(x => x.ID == jewelry.ID_Kind).EnName}/{jewelry.Code}";
+
+            return jewelry;
+        }
+
+        [NonAction]
+        private async Task<EditItemViewModel> ShapingEditViewModel(JewelryModel jewelry, int[] characteristics)
+        {
+            List<SelectedItemCharacteristics> selectedItemCharacteristics = new List<SelectedItemCharacteristics>();
+            List<CharacteristicValueModel> dbCharacteristicValues = await dbContext.CharacteristicValues.Include(x => x.Characteristic).ToListAsync();
+            List<CharacteristicValueModel> characteristicValues = null;
+            List<CharacteristicValueModel> receivedCharacteristics = null;
+            List<string> characteristicsNames = dbCharacteristicValues.Select(x => x.Characteristic.Name).Distinct().ToList();
+
+            foreach (var characteristic in characteristicsNames)
+            {
+                characteristicValues = dbCharacteristicValues.Where(x => x.Characteristic.Name == characteristic).ToList();
+                if (characteristicValues.Count() > 0)
+                {
+                    if (jewelry.JewelryCharacteristics == null)
+                    {
+                        if (characteristics.Length > 0)
+                        {
+                            receivedCharacteristics = new List<CharacteristicValueModel>();
+                            for (int i = 0; i < characteristics.Length; i++)
+                            {
+                                receivedCharacteristics.Add(dbCharacteristicValues.FirstOrDefault(x => x.ID == characteristics[i]));
+                            }
+                            selectedItemCharacteristics.Add(new SelectedItemCharacteristics(characteristic, receivedCharacteristics.Select(x => x.ID.ToString()).ToList(),
+                                characteristicValues.Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.Value }).ToList()));
+                        }
+                        else
+                        {
+                            selectedItemCharacteristics.Add(new SelectedItemCharacteristics(characteristic, new List<string>(),
+                                characteristicValues.Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.Value }).ToList()));
+                        }
+                    }
+                    else
+                    {
+                        selectedItemCharacteristics.Add(new SelectedItemCharacteristics(characteristic,
+                            jewelry.JewelryCharacteristics.Where(x => x.CharacteristicValues.Characteristic.Name == characteristic).Select(x => x.CharacteristicValues.ID.ToString()).ToList(),
+                            characteristicValues.Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.Value }).ToList()));
+                    }
+                }
+            }
+
+            SelectedKind selectedKind = new SelectedKind(jewelry.ID_Kind.ToString(),
+                await dbContext.JewelryKinds.Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.RuName }).ToListAsync());
+            SelectedDiscount selectedDiscount = new SelectedDiscount(jewelry.ID_Discount.ToString(),
+                await dbContext.Discounts.Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.Amount.ToString() }).ToListAsync());
+
+            return new EditItemViewModel(jewelry, selectedItemCharacteristics, selectedKind, selectedDiscount);
         }
 
         [HttpPost]

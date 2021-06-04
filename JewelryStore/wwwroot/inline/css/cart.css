@@ -65,7 +65,7 @@
     }
 
     .cart-item-delete {
-        padding-right: 0px;
+        padding: 0px;
         font-size: 12px !important;
     }
 }

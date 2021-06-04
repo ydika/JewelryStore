@@ -22,42 +22,4 @@ namespace JewelryStore.ViewModels
             Discount = discount;
         }
     }
-
-    public class SelectedItemCharacteristics
-    {
-        public string Name { get; set; }
-        public List<string> SelectedValue { get; set; }
-        public List<SelectListItem> Values { get; set; }
-
-        public SelectedItemCharacteristics(string name, List<string> selectedValue, List<SelectListItem> values)
-        {
-            Name = name;
-            SelectedValue = selectedValue;
-            Values = values;
-        }
-    }
-
-    public class SelectedKind
-    {
-        public string Kind { get; set; }
-        public List<SelectListItem> Kinds { get; set; }
-
-        public SelectedKind(string kind, List<SelectListItem> kinds)
-        {
-            Kind = kind;
-            Kinds = kinds;
-        }
-    }
-
-    public class SelectedDiscount
-    {
-        public string Discount { get; set; }
-        public List<SelectListItem> Discounts { get; set; }
-
-        public SelectedDiscount(string discount, List<SelectListItem> discounts)
-        {
-            Discount = discount;
-            Discounts = discounts;
-        }
-    }
 }

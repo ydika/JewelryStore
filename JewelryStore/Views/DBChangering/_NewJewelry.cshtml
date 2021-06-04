@@ -1,0 +1,25 @@
+﻿@model JewelryModel
+<div>
+    <label class="control-label">Название изделия:</label>
+    <input class="form-control" type="text" asp-for="Name" value="@Model.Name" />
+    <span asp-validation-for="Name" />
+</div>
+<div>
+    <label class="control-label">Характеристика вставки:</label>
+    <input class="form-control" type="text" asp-for="InsertedGemChar" value="@Model.InsertedGemChar" />
+</div>
+<div>
+    <label class="control-label">Цена изделия:</label>
+    <input class="form-control" type="text" asp-for="Price" value="@Model.Price" />
+    <span asp-validation-for="Price" />
+</div>
+<div>
+    <label class="control-label">Код/артикль изделия:</label>
+    <input class="form-control" type="text" asp-for="Code" value="@Model.Code" />
+    <span asp-validation-for="Code" />
+</div>
+<div>
+    <label class="control-label">Количество изделий:</label>
+    <input class="form-control" type="number" asp-for="Quantity" value="@Model.Quantity" />
+    <span asp-validation-for="Quantity" />
+</div>

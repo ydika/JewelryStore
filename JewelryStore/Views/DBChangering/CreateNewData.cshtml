@@ -1,4 +1,4 @@
-﻿@model ItemViewModel
+﻿@model EditItemViewModel
 @section Css {
     <link rel="stylesheet" href="~/inline/css/dbeditor.css" />
 }
@@ -14,52 +14,17 @@
                     <div class="row">
                         <div class="form-group col-md-6 col-12">
                             <label class="control-label">Вид изделия: </label>
-                            <select class="form-select" name="ID_Kind" asp-items="ViewBag.Kinds"></select>
+                            <select class="form-select" name="ID_Kind" asp-for="Kind.Kind" asp-items="Model.Kind.Kinds"></select>
                         </div>
                         <div class="form-group col-md-6 col-12">
                             <label class="control-label">Скидка на изделие: </label>
-                            <select class="form-select" name="ID_Discount" asp-items="ViewBag.Discounts"></select>
+                            <select class="form-select" name="ID_Discount" asp-for="Discount.Discount" asp-items="Model.Discount.Discounts"></select>
                         </div>
-                        <div>
-                            <label class="control-label">Название изделия:</label>
-                            <input class="form-control" type="text" name="Name" />
-                            <span asp-validation-for="Jewelry.Name" />
-                        </div>
-                        <div>
-                            <label class="control-label">Характеристика вставки:</label>
-                            <input class="form-control" type="text" name="InsertedGemChar" />
-                        </div>
-                        <div>
-                            <label class="control-label">Цена изделия:</label>
-                            <input class="form-control" type="text" name="Price" />
-                            <span asp-validation-for="Jewelry.Price" />
-                        </div>
-                        <div>
-                            <label class="control-label">Код/артикль изделия:</label>
-                            <input class="form-control" type="text" name="Code" />
-                            <span asp-validation-for="Jewelry.Code" />
-                        </div>
-                        <div>
-                            <label class="control-label">Количество изделий:</label>
-                            <input class="form-control" type="number" name="Quantity" />
-                            <span asp-validation-for="Jewelry.Quantity" />
-                        </div>
+                        @await Html.PartialAsync("_NewJewelry", Model.Jewelry)
                     </div>
                 </div>
                 <div class="order-1 col-sm-6">
-                    <div>Для выбора нескольких характеристик на устройствах с большим экраном зажмите Ctrl</div>
-                    @foreach (var c in Model.Characteristics)
-                    {
-                        <div>
-                            <label class="control-label">@c.Name: </label>
-                            <select class="form-select" multiple="multiple" name="characteristics">
-                                @foreach (var cv in c.Values)
-                                {
-                                    <option value="@cv.ID">@cv.Value</option>
-                                }
-                            </select>
-                        </div>
-                    }
+                    @await Html.PartialAsync("_JewelryCharacteristics", Model.Characteristics)
                 </div>
                 <div class="form-group order-2 col-sm-12">
                     <input type="submit" value="Сохранить" class="btn btn-default" />
