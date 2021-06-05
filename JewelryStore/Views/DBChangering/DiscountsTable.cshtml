@@ -21,9 +21,6 @@
             <li>
                 <a asp-action="DiscountsTable" class="nav-link active">Скидки</a>
             </li>
-            <li>
-                <a asp-action="UsersTable" class="nav-link link-dark">Пользователи</a>
-            </li>
         </ul>
         <hr />
     </div>
@@ -31,7 +28,45 @@
         <div id="cart" class="db-container">
             <div class="title">
                 <h3>Скидки на изделия</h3>
+                <a asp-action="CreateDiscount">Добавить новую запись</a>
             </div>
+            <hr />
+            <table class="db-table">
+                <thead>
+                    <tr>
+                        <th>Размер скидки %</th>
+                        <th>Описание</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var d in Model)
+                    {
+                        @if (d.Amount != 0)
+                        {
+                            <tr>
+                                <td class="table-img">@d.Amount</td>
+                                <td class="table-item-name">@d.Description</td>
+                                <td>
+                                    <form asp-action="EditDiscount" method="post" asp-antiforgery="true">
+                                        <div class="form-group">
+                                            <input type="number" name="id" value="@d.ID" hidden />
+                                            <input type="submit" class="btn btn-default table-item-edit" value="✎" />
+                                        </div>
+                                    </form>
+                                </td>
+                                <td>
+                                    <form asp-action="DeleteDiscount" method="post" asp-antiforgery="true">
+                                        <div class="form-group">
+                                            <input type="number" name="id" value="@d.ID" hidden />
+                                            <input type="submit" class="btn btn-default table-item-delete text-danger" value="✗" />
+                                        </div>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

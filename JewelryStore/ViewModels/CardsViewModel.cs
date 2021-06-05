@@ -15,11 +15,22 @@ namespace JewelryStore.ViewModels
         [JsonPropertyName("page_count")]
         public int PageCount { get; set; }
 
+        public double MaxPrice { get; set; }
+        public double MinPrice { get; set; }
+        public string SearchName { get; set; }
+
         public CardsViewModel(List<JewelryModel> jewelries, int currentPage, int pageCount)
         {
             Jewelries = jewelries;
             CurrentPage = currentPage;
             PageCount = pageCount;
+        }
+
+        public CardsViewModel(List<JewelryModel> jewelries, int currentPage, int pageCount, double maxPrice, double minPrice, string searchName) : this(jewelries, currentPage, pageCount)
+        {
+            MaxPrice = maxPrice;
+            MinPrice = minPrice;
+            SearchName = searchName;
         }
     }
 }

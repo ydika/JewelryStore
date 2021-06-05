@@ -21,9 +21,6 @@
             <li>
                 <a asp-action="DiscountsTable" class="nav-link link-dark">Скидки</a>
             </li>
-            <li>
-                <a asp-action="UsersTable" class="nav-link link-dark">Пользователи</a>
-            </li>
         </ul>
         <hr />
     </div>
@@ -34,7 +31,26 @@
                 <a asp-action="CreateNewJewelry">Добавить новую запись</a>
             </div>
             <hr />
-            Тут будут фильтры
+            <form asp-action="JewelrysTable" method="get" asp-antiforgery="false">
+                <div class="form-group row">
+                    <div class="col-12">
+                        <input id="nameSearch" class="form-control" type="search" name="jname" value="@Model.SearchName" placeholder="Поиск по названию" autocomplete="off" />
+                        <div id="jewelryNames" class="search-options-container">
+                            <!-- ko if: names() != "" && names() != null -->
+                            <ul class="search-options" data-bind="foreach: { data: names, as: 'name' }">
+                                <li data-bind="click: function(){ClickOnName(name)}, text: name"></li>
+                            </ul>
+                            <!-- /ko -->
+                        </div>
+                    </div>
+                    <div class="col-7 mt-2 d-flex flex-row align-items-center">
+                        <span class="me-2">Цена:</span>
+                        <input class="form-control mx-md-2" type="number" name="minprice" value="@Model.MinPrice" placeholder="от" autocomplete="off" />
+                        <input class="form-control mx-md-2" type="number" name="maxprice" value="@Model.MaxPrice" placeholder="до" autocomplete="off" />
+                    </div>
+                    <input type="submit" style="" class="btn btn-default border text-success p-1 mt-2" value="Применить фильтры" />
+                </div>
+            </form>
             <hr />
             <table class="db-table">
                 <thead>
@@ -78,14 +94,14 @@
                     }
                 </tbody>
             </table>
-            @if (Model.PageCount > 0)
+            @if (Model.PageCount > 1)
             {
                 <div class="d-flex justify-content-center mt-4">
                     <ul class="pagination-box overflow-auto">
                         @for (int i = 1; i < Model.PageCount + 1; i++)
                         {
                             <li class="@(i == Model.CurrentPage ? "active" : "")">
-                                <a class="text-black" onclick="SelectedNewPage(@i, null)">@i</a>
+                                <a class="text-black" asp-action="JewelrysTable" asp-route-page="@i">@i</a>
                             </li>
                         }
                     </ul>

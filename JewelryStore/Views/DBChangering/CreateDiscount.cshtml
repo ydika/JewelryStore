@@ -1,0 +1,33 @@
+﻿@model DiscountModel
+@section Css {
+    <link rel="stylesheet" href="~/inline/css/dbeditor.css" />
+}
+<div class="db-container container">
+    <div class="title">
+        <h3>Новая скидка</h3>
+    </div>
+    <form class="create-data-form" asp-action="CreateDiscount" asp-antiforgery="true" method="post">
+        <div class="validation" asp-validation-summary="ModelOnly"></div>
+        <div class="container">
+            <div class="row">
+                <div>
+                    <label class="control-label">Размер скидки %:</label>
+                    <input class="form-control" type="number" asp-for="Amount" value="@Model.Amount" />
+                    <span asp-validation-for="Amount" />
+                </div>
+                <div>
+                    <label class="control-label">Описание:</label>
+                    <input class="form-control" type="text" asp-for="Description" value="@Model.Description" />
+                    <span asp-validation-for="Description" />
+                </div>
+            </div>
+        </div>
+        <div>
+            <input type="submit" value="Сохранить" class="btn btn-default" />
+        </div>
+    </form>
+</div>
+@section Scripts {
+    <script src="~/inline/js/databaseeditor.js"></script>
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

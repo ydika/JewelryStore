@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -31,14 +32,28 @@ namespace JewelryStore.Controllers
 
         [HttpGet]
         [Route("[action]")]
-        public async Task<IActionResult> JewelrysTable(int page = 1)
+        public async Task<IActionResult> JewelrysTable(double minprice, double maxprice, int page = 1, string jname = "")
         {
             await dbContext.Jewelries.LoadAsync();
 
             List<JewelryModel> jewelries = await dbContext.Jewelries.ToListAsync();
+            if (minprice != 0 && maxprice != 0 && maxprice > minprice)
+            {
+                jewelries = jewelries.Where(x => double.Parse(x.Price, CultureInfo.InvariantCulture) > minprice && double.Parse(x.Price, CultureInfo.InvariantCulture) < maxprice).ToList();
+            }
+            else
+            {
+                minprice = jewelries.Min(x => double.Parse(x.Price, CultureInfo.InvariantCulture));
+                maxprice = jewelries.Max(x => double.Parse(x.Price, CultureInfo.InvariantCulture));
+            }
+
+            if (jname != null && jname != "")
+            {
+                jewelries = jewelries.Where(p => p.Name.ToUpper().Contains(jname.ToUpper())).ToList();
+            }
 
             return View(new CardsViewModel(jewelries.OrderByDescending(x => x.ID).Skip(displayedQuantity * ((page - 1) < 0 ? 0 : page - 1)).Take(displayedQuantity).ToList(),
-                page, (int)Math.Ceiling((decimal)jewelries.Count() / displayedQuantity)));
+                page, (int)Math.Ceiling((decimal)jewelries.Count() / displayedQuantity), maxprice, minprice, jname));
         }
 
         [HttpGet]
@@ -71,7 +86,7 @@ namespace JewelryStore.Controllers
                 }
             }
 
-            return RedirectToAction("DataBaseEditor");
+            return RedirectToAction("JewelrysTable");
         }
 
         [HttpPost]
@@ -100,7 +115,7 @@ namespace JewelryStore.Controllers
                 await dbContext.SaveChangesAsync();
             }
 
-            return RedirectToAction("DataBaseEditor");
+            return RedirectToAction("JewelrysTable");
         }
 
         [NonAction]
@@ -178,7 +193,7 @@ namespace JewelryStore.Controllers
             dbContext.Jewelries.Remove(jewelry);
             await dbContext.SaveChangesAsync();
 
-            return RedirectToAction("DataBaseEditor");
+            return RedirectToAction("JewelrysTable");
         }
 
         [HttpGet]
@@ -324,11 +339,82 @@ namespace JewelryStore.Controllers
 
         [HttpGet]
         [Route("[action]")]
-        public async Task<IActionResult> UsersTable()
+        public IActionResult CreateDiscount()
         {
-            await dbContext.Users.LoadAsync();
+            return View(new DiscountModel());
+        }
 
-            return View(await dbContext.Users.ToListAsync());
+        [HttpPost]
+        [Route("[action]")]
+        public async Task<IActionResult> CreateDiscount(DiscountModel discount)
+        {
+            if (ModelState.IsValid)
+            {
+                DiscountModel coincidence = dbContext.Discounts.FirstOrDefault(x => x.Amount == discount.Amount);
+                if (coincidence == null)
+                {
+                    await dbContext.Discounts.AddAsync(discount);
+                    await dbContext.SaveChangesAsync();
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Указанный размер скидки уже существует!");
+
+                    return View(discount);
+                }
+            }
+
+            return RedirectToAction("DiscountsTable");
+        }
+
+        [HttpPost]
+        [Route("[action]")]
+        public async Task<IActionResult> EditDiscount(int id)
+        {
+            return View(await dbContext.Discounts.FirstOrDefaultAsync(x => x.ID == id));
+        }
+
+        [HttpPost]
+        [Route("[action]")]
+        public async Task<IActionResult> EditDiscountSave(DiscountModel discount)
+        {
+            if (ModelState.IsValid)
+            {
+                DiscountModel coincidence = dbContext.Discounts.FirstOrDefault(x => x.Amount == discount.Amount);
+                if (coincidence == null)
+                {
+                    dbContext.Discounts.Add(discount);
+                    dbContext.Entry(discount).State = EntityState.Modified;
+
+                    await dbContext.SaveChangesAsync();
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Указанный размер скидки уже существует!");
+
+                    return View("EditDiscount", discount);
+                }
+            }
+
+            return RedirectToAction("DiscountsTable");
+        }
+
+        [HttpPost]
+        [Route("[action]")]
+        public async Task<IActionResult> DeleteDiscount(int id)
+        {
+            List<JewelryModel> jewelries = dbContext.Jewelries.Where(x => x.ID_Discount == id).ToList();
+            foreach (var j in jewelries)
+            {
+                j.ID_Discount = 1;
+            }
+            dbContext.Jewelries.UpdateRange(jewelries);
+
+            DiscountModel discount = await dbContext.Discounts.FirstOrDefaultAsync(x => x.ID == id);
+            dbContext.Discounts.Remove(discount);
+            await dbContext.SaveChangesAsync();
+
+            return RedirectToAction("DiscountsTable");
         }
     }
 }
