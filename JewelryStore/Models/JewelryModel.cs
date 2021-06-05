@@ -15,10 +15,10 @@ namespace JewelryStore.Models
         public int ID { get; set; }
 
         [JsonIgnore]
-        public int ID_Kind { get; set; }
+        public int ID_Subspecies { get; set; }
         [JsonIgnore]
-        [ForeignKey("ID_Kind")]
-        public JewelryKindsModel Kind { get; set; }
+        [ForeignKey("ID_Subspecies")]
+        public SubspeciesModel Subspecies { get; set; }
 
         [JsonIgnore]
         public int ID_Discount { get; set; }

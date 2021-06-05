@@ -1,21 +1,45 @@
 ﻿@model List<JewelryKindsModel>
 <aside id="filters">
     <div class="filter-block-category">
-        <h5 class="filter-block-name text-white">Категории</h5>
+        <h5 class="filter-block-name text-white">Тип изделий</h5>
         <ul class="navbar-nav flex-grow-1">
-            <li class="nav-item">
-                <a class="nav-link p-0 text-dark" asp-route-jkind="all" title="Все изделия">
-                    <img src="/images/icons/all.svg" width="24" height="24">
-                    <span class="align-middle">Все</span>
-                </a>
-            </li>
             @foreach (var kind in Model)
             {
                 <li class="nav-item">
-                    <a class="nav-link p-0 text-dark" asp-route-jkind="@kind.EnName" title="@kind.RuName">
-                        <img src="@kind.IconSrc" width="24" height="24">
-                        <span class="align-middle">@kind.RuName</span>
-                    </a>
+                    @if (kind.Subspecies.Count() > 0)
+                    {
+                        <button class="btn btn-toggle d-flex align-items-center rounded collapsed p-0 border-0" data-bs-toggle="collapse" data-bs-target="#@kind.EnName" aria-expanded="false">
+                            @kind.RuName
+                        </button>
+                        <div class="collapse" id="@kind.EnName">
+                            <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                <li>
+                                    <a class="nav-link p-0 text-dark" asp-route-jkind="@kind.EnName" asp-route-subspecies="all" title="Все изделия">
+                                        <span class="align-middle">Все @kind.RuName</span>
+                                    </a>
+                                </li>
+                                @foreach (var subspecies in kind.Subspecies)
+                                {
+                                    @if (subspecies.Jewelries.Count() > 0)
+                                    {
+                                        <li>
+                                            <a asp-route-jkind="@kind.EnName" asp-route-subspecies="@subspecies.EnName" class="link-dark rounded">
+                                                <span>
+                                                    @subspecies.RuName
+                                                </span>
+                                            </a>
+                                        </li>
+                                    }
+                                }
+                            </ul>
+                        </div>
+                    }
+                    else
+                    {
+                        <a class="nav-link p-0 text-dark" asp-route-jkind="@kind.EnName" asp-route-subspecies="all" title="@kind.RuName">
+                            <span class="align-middle">@kind.RuName</span>
+                        </a>
+                    }
                 </li>
             }
         </ul>

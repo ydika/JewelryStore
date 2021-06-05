@@ -75,14 +75,16 @@ let jewelriesSection = {
 };
 ko.applyBindings(jewelriesSection, document.getElementById('productsSection'));
 
+let queryString;
 GetJewelries();
 function GetJewelries() {
+    queryString = new URLSearchParams(document.location.search);
     $.ajax({
         url: document.location.pathname + '/getjewelriescards',
         type: 'GET',
         dataType: 'json',
         traditional: true,
-        data: { 'searchName': new URLSearchParams(document.location.search).get('searchName'), 'o': o, 'page': currentPage },
+        data: { 'subspecies': queryString.get('subspecies'), 'searchName': queryString.get('searchName'), 'o': o, 'page': currentPage },
         success: function (data) {
             jewelriesSection
                 .jewelries(data.jewelries)

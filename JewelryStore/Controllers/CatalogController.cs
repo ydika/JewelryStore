@@ -29,20 +29,14 @@ namespace JewelryStore.Controllers
         }
 
         [Route("{jkind}")]
-        public async Task<IActionResult> List(string jkind = "all")
+        [Route("{jkind}/{subspecies}")]
+        public async Task<IActionResult> List()
         {
-            await dbContext.JewelryKinds.LoadAsync();
-
-            ViewData["Title"] = "Ювелирные изделия купить";
-            if (jkind != "all")
-            {
-                ViewData["Title"] = dbContext.JewelryKinds.FirstOrDefault(x => x.EnName == jkind).RuName + " купить";
-            }
-
-            return View(await dbContext.JewelryKinds.ToListAsync());
+            await dbContext.Subspecies.Include(x => x.Jewelries).LoadAsync();
+            return View(await dbContext.JewelryKinds.Include(x => x.Subspecies).ToListAsync());
         }
 
-        [Route("{jkind}/{code}")]
+        [Route("{jkind}/{subspecies}/{code}")]
         public IActionResult Item(string code)
         {
             dbContext.Jewelries.Include(x => x.Discount).Load();
@@ -94,7 +88,8 @@ namespace JewelryStore.Controllers
 
         [HttpGet]
         [Route("{jkind}/[action]")]
-        public async Task<JsonResult> GetJewelriesCards(string searchName, string[] o, string jkind = "all", int page = 1)
+        [Route("{jkind}/{subspecies}/[action]")]
+        public async Task<JsonResult> GetJewelriesCards(string subspecies, string searchName, string[] o, string jkind = "list", int page = 1)
         {
             List<JewelryModel> jewelries = null;
 
@@ -108,14 +103,18 @@ namespace JewelryStore.Controllers
                     page, (int)Math.Ceiling((decimal)jewelries.Count() / displayedQuantity)));
             }
 
-            await dbContext.Jewelries.Include(x => x.Kind).Include(x => x.Discount).Include(x => x.JewelryCharacteristics).LoadAsync();
+            await dbContext.Jewelries.Include(x => x.Subspecies.Kind).Include(x => x.Discount).Include(x => x.JewelryCharacteristics).LoadAsync();
             await dbContext.JewelryCharacteristics.Include(x => x.CharacteristicValues).LoadAsync();
 
             jewelries = await dbContext.Jewelries.ToListAsync();
 
-            if (jkind != "all")
+            if (jkind != "list")
             {
-                jewelries = jewelries.Where(x => x.Kind.EnName.ToLower() == jkind).ToList();
+                jewelries = jewelries.Where(x => x.Subspecies.Kind.EnName.ToLower() == jkind).ToList();
+                if (subspecies != null && subspecies != "" && subspecies != "all")
+                {
+                    jewelries = jewelries.Where(x => x.Subspecies.EnName.ToLower() == subspecies).ToList();
+                }
             }
 
             for (int i = 0; i < o.Length; i++)

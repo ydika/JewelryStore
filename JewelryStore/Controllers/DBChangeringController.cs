@@ -37,9 +37,9 @@ namespace JewelryStore.Controllers
             await dbContext.Jewelries.LoadAsync();
 
             List<JewelryModel> jewelries = await dbContext.Jewelries.ToListAsync();
-            if (minprice != 0 && maxprice != 0 && maxprice > minprice)
+            if (minprice != 0 && maxprice != 0 && maxprice >= minprice)
             {
-                jewelries = jewelries.Where(x => double.Parse(x.Price, CultureInfo.InvariantCulture) > minprice && double.Parse(x.Price, CultureInfo.InvariantCulture) < maxprice).ToList();
+                jewelries = jewelries.Where(x => double.Parse(x.Price, CultureInfo.InvariantCulture) >= minprice && double.Parse(x.Price, CultureInfo.InvariantCulture) <= maxprice).ToList();
             }
             else
             {
@@ -94,7 +94,7 @@ namespace JewelryStore.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditJewelryData(int id)
         {
-            JewelryModel jewelry = dbContext.Jewelries.Include(x => x.JewelryCharacteristics).FirstOrDefault(x => x.ID == id);
+            JewelryModel jewelry = dbContext.Jewelries.Include(x => x.JewelryCharacteristics).Include(x => x.Subspecies).FirstOrDefault(x => x.ID == id);
 
             return View(await ShapingEditViewModel(jewelry, jewelry.JewelryCharacteristics.Select(x => x.ID_CharacteristicValue).ToArray()));
         }
@@ -130,7 +130,8 @@ namespace JewelryStore.Controllers
 
             jewelry.Code = jewelry.Code.ToLower();
             jewelry.JewelryCharacteristics = jewelryCharacteristics;
-            jewelry.Url = $"/catalog/{dbContext.JewelryKinds.FirstOrDefault(x => x.ID == jewelry.ID_Kind).EnName}/{jewelry.Code}";
+            SubspeciesModel subspecies = dbContext.Subspecies.Include(x => x.Kind).FirstOrDefault(x => x.ID == jewelry.ID_Subspecies);
+            jewelry.Url = $"/catalog/{subspecies.Kind.EnName}/{subspecies.EnName}/{jewelry.Code}";
 
             return jewelry;
         }
@@ -176,8 +177,9 @@ namespace JewelryStore.Controllers
                 }
             }
 
-            SelectedKind selectedKind = new SelectedKind(jewelry.ID_Kind.ToString(),
-                await dbContext.JewelryKinds.Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.RuName }).ToListAsync());
+            List<SubspeciesModel> subspecies = await dbContext.Subspecies.ToListAsync();
+            SelectedKind selectedKind = new SelectedKind(jewelry.Subspecies == null ? subspecies.FirstOrDefault().ID.ToString() : jewelry.Subspecies.ID.ToString(),
+                subspecies.Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.RuName }).ToList());
             SelectedDiscount selectedDiscount = new SelectedDiscount(jewelry.ID_Discount.ToString(),
                 await dbContext.Discounts.Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.Amount.ToString() }).ToListAsync());
 
