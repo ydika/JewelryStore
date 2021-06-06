@@ -34,28 +34,61 @@ if ($('#itemsInCart').text() === "") {
     $('#itemsInCart').hide();
 }
 
+let minPrice = document.getElementById("minPrice");
+let maxPrice = document.getElementById("maxPrice");
+const sliders = document.querySelectorAll('input[type="range"]');
+
+sliders[0].addEventListener('input', (e) => {
+    if (+sliders[0].value > +sliders[1].value) {
+        sliders[1].value = +sliders[0].value;
+    }
+    UpdateSliderResult(sliders[0].value, sliders[1].value);
+});
+
+sliders[1].addEventListener('input', (e) => {
+    if (+sliders[1].value < +sliders[0].value) {
+        sliders[0].value = +sliders[1].value;
+    }
+    UpdateSliderResult(sliders[0].value, sliders[1].value);
+});
+
+sliders.forEach((slider) => {
+    slider.addEventListener('change', () => {
+        GetJewelries();
+    })
+});
+
+minPrice.oninput = function () {
+    sliders[0].value = this.value;
+    if (+sliders[0].value > +sliders[1].value) {
+        sliders[1].value = +sliders[0].value;
+        UpdateSliderResult(sliders[0].value, sliders[1].value);
+    }
+    GetJewelries();
+}
+
+maxPrice.oninput = function () {
+    sliders[1].value = this.value;
+    if (+sliders[1].value < +sliders[0].value) {
+        sliders[1].value = +sliders[0].value;
+        UpdateSliderResult(sliders[0].value, sliders[1].value);
+    }
+    GetJewelries();
+}
+
+function UpdateSliderResult(minP, maxP) {
+    minPrice.value = minP;
+    maxPrice.value = maxP;
+}
+
 let o = [];
 let currentPage = 1;
 
-let filtersSection = {
-    characteristics: ko.observable()
-};
-ko.applyBindings(filtersSection, document.getElementById('filterSection'));
-
-$.getJSON('/catalog/getcatalogfilter',
-    function (data) {
-        filtersSection.characteristics(data);
-        $("input:checkbox").click(function () {
-            $('#productsSection').addClass('loading');
-            o = [];
-            $("input:checkbox:checked").each(function () {
-                o.push($(this).val());
-            });
-            currentPage = 1;
-            GetJewelries();
-        });
-    }
-);
+$("input:checkbox").click(function () {
+    $('#productsSection').addClass('loading');
+    currentPage = 1;
+    GetJewelries();
+});
 
 let jewelriesSection = {
     jewelries: ko.observable(),
@@ -79,12 +112,16 @@ let queryString;
 GetJewelries();
 function GetJewelries() {
     queryString = new URLSearchParams(document.location.search);
+    o = [];
+    $("input:checkbox:checked").each(function () {
+        o.push($(this).val());
+    });
     $.ajax({
         url: document.location.pathname + '/getjewelriescards',
         type: 'GET',
         dataType: 'json',
         traditional: true,
-        data: { 'subspecies': queryString.get('subspecies'), 'searchName': queryString.get('searchName'), 'o': o, 'page': currentPage },
+        data: { 'subspecies': queryString.get('subspecies'), 'searchName': queryString.get('searchName'), 'o': o, 'page': currentPage, 'minPrice': sliders[0].value, 'maxPrice': sliders[1].value },
         success: function (data) {
             jewelriesSection
                 .jewelries(data.jewelries)
@@ -135,4 +172,16 @@ $("#showCatalogSidebar").click(function () {
 $("#bgCatalogSidebar").click(function () {
     $('#filters').removeClass('opened');
     $('#bgCatalogSidebar').fadeOut();
+});
+
+$(".filter-block .show-button").click(function () {
+    $(this).hide();
+    $(this).siblings(".hiden-block").slideDown();
+    $(this).siblings(".hide-button").show();
+});
+
+$(".filter-block .hide-button").click(function () {
+    $(this).hide();
+    $(this).siblings(".hiden-block").slideUp();
+    $(this).siblings(".show-button").show();
 });

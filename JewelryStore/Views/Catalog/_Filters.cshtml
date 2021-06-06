@@ -1,9 +1,9 @@
-﻿@model List<JewelryKindsModel>
+﻿@model FiltersViewModel
 <aside id="filters">
     <div class="filter-block-category">
         <h5 class="filter-block-name text-white">Тип изделий</h5>
         <ul class="navbar-nav flex-grow-1">
-            @foreach (var kind in Model)
+            @foreach (var kind in Model.JewelryKinds)
             {
                 <li class="nav-item">
                     @if (kind.Subspecies.Count() > 0)
@@ -23,7 +23,7 @@
                                     @if (subspecies.Jewelries.Count() > 0)
                                     {
                                         <li>
-                                            <a asp-route-jkind="@kind.EnName" asp-route-subspecies="@subspecies.EnName" class="link-dark rounded">
+                                            <a asp-route-jkind="@kind.EnName" asp-route-subspecies="@subspecies.EnName" class="link-dark rounded" title="@subspecies.RuName">
                                                 <span>
                                                     @subspecies.RuName
                                                 </span>
@@ -44,17 +44,63 @@
             }
         </ul>
     </div>
-    <!-- ko foreach: characteristics -->
     <div class="filter-block mt-4">
-        <h5 data-bind="text: name"></h5>
-        <ul class="navbar-nav flex-grow-1" data-bind="foreach: characteristic_values">
-            <li class="nav-item">
-                <input type="checkbox" data-bind="attr: {value: value}" />
-                <span class="align-middle" data-bind="text: value"></span>
-            </li>
-        </ul>
+        <h5 class="price-title">Цена</h5>
+        <div class="range-slider-container">
+            <input type="range" min="0" step="1" max="@Model.MaxPrice" value="@Model.MinPrice">
+            <input type="range" min="0" step="1" max="@Model.MaxPrice" value="@Model.MaxPrice">
+        </div>
+        <div class="range-slider-result">
+            <span>Цена:</span>
+            <div class="d-flex flex-row align-items-center">
+                <span class="me-1">от</span>
+                <input id="minPrice" class="form-control" type="number" value="@Model.MinPrice">
+                <span class="mx-1">до</span>
+                <input id="maxPrice" class="form-control" type="number" value="@Model.MaxPrice">
+            </div>
+        </div>
     </div>
-    <!-- /ko -->
+    @foreach (var c in Model.Characteristics)
+    {
+        <div class="filter-block mt-4">
+            <h5>@c.Name</h5>
+            @if (c.CharacteristicValues.Count() > 5)
+            {
+                <div class="visible-block">
+                    @for (int i = 0; i < 5; i++)
+                    {
+                        <div class="filter-option">
+                            <input type="checkbox" value="@c.CharacteristicValues[i].Value" />
+                            <span class="align-middle">@c.CharacteristicValues[i].Value</span>
+                        </div>
+                    }
+                </div>
+                <div class="hiden-block" style="display: none;">
+                    @for (int i = 5; i < c.CharacteristicValues.Count(); i++)
+                    {
+                        <div class="filter-option">
+                            <input type="checkbox" value="@c.CharacteristicValues[i].Value" />
+                            <span class="align-middle">@c.CharacteristicValues[i].Value</span>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="visible-block">
+                    @for (int i = 0; i < c.CharacteristicValues.Count(); i++)
+                    {
+                        <div class="filter-option">
+                            <input type="checkbox" value="@c.CharacteristicValues[i].Value" />
+                            <span class="align-middle">@c.CharacteristicValues[i].Value</span>
+                        </div>
+                    }
+                </div>
+            }
+            <div class="show-button">Показать все</div>
+            <div class="hide-button" style="display: none;">Свернуть</div>
+        </div>
+    }
 </aside>
 <div id="showCatalogSidebar" class="position-fixed justify-content-center bg-dark text-white p-2 open-sidebar-button">Фильтры</div>
 <div id="bgCatalogSidebar" class="position-fixed bg-sidebar" style="display: none;"></div>

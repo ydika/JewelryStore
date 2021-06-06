@@ -6,6 +6,8 @@
     <div class="title">
         <h3>Новое Ювелирное изделие</h3>
     </div>
+    <a asp-action="JewelrysTable">вернуться назад</a>
+    <hr />
     <form class="create-data-form" asp-action="CreateNewJewelry" asp-antiforgery="true" method="post">
         <div class="validation" asp-validation-summary="ModelOnly"></div>
         <div class="container">

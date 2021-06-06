@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -33,7 +34,14 @@ namespace JewelryStore.Controllers
         public async Task<IActionResult> List()
         {
             await dbContext.Subspecies.Include(x => x.Jewelries).LoadAsync();
-            return View(await dbContext.JewelryKinds.Include(x => x.Subspecies).ToListAsync());
+            List<JewelryModel> jewelries = await dbContext.Jewelries.ToListAsync();
+
+            return View(new FiltersViewModel(
+                await dbContext.JewelryKinds.Include(x => x.Subspecies).ToListAsync(),
+                await dbContext.Characteristics.Include(x => x.CharacteristicValues).Where(x => x.CharacteristicValues.Count() > 0).ToListAsync(),
+                jewelries.Max(x => double.Parse(x.Price, CultureInfo.InvariantCulture)),
+                jewelries.Min(x => double.Parse(x.Price, CultureInfo.InvariantCulture))
+            ));
         }
 
         [Route("{jkind}/{subspecies}/{code}")]
@@ -74,22 +82,13 @@ namespace JewelryStore.Controllers
 
             await dbContext.Jewelries.Include(x => x.Discount).LoadAsync();
 
-            return Json(FilterByName(searchName).Select(x => x.Name).Distinct());
-        }
-
-        [HttpGet]
-        [Route("[action]")]
-        public async Task<JsonResult> GetCatalogFilter()
-        {
-            await dbContext.Characteristics.Include(x => x.CharacteristicValues).LoadAsync();
-
-            return Json(await dbContext.Characteristics.Where(x => x.CharacteristicValues.Count() > 0).ToListAsync());
+            return Json(FilterByName(searchName).Select(x => x.Name).Distinct().Take(5));
         }
 
         [HttpGet]
         [Route("{jkind}/[action]")]
         [Route("{jkind}/{subspecies}/[action]")]
-        public async Task<JsonResult> GetJewelriesCards(string subspecies, string searchName, string[] o, string jkind = "list", int page = 1)
+        public async Task<JsonResult> GetJewelriesCards(int maxPrice, int minPrice, string subspecies, string searchName, string[] o, string jkind = "list", int page = 1)
         {
             List<JewelryModel> jewelries = null;
 
@@ -98,9 +97,6 @@ namespace JewelryStore.Controllers
                 await dbContext.Jewelries.Include(x => x.Discount).LoadAsync();
 
                 jewelries = FilterByName(searchName);
-
-                return Json(new CardsViewModel(jewelries.Skip(displayedQuantity * ((page - 1) < 0 ? 0 : page - 1)).Take(displayedQuantity).ToList(),
-                    page, (int)Math.Ceiling((decimal)jewelries.Count() / displayedQuantity)));
             }
 
             await dbContext.Jewelries.Include(x => x.Subspecies.Kind).Include(x => x.Discount).Include(x => x.JewelryCharacteristics).LoadAsync();
@@ -117,9 +113,22 @@ namespace JewelryStore.Controllers
                 }
             }
 
-            for (int i = 0; i < o.Length; i++)
+            if (minPrice != 0 && maxPrice != 0 && maxPrice >= minPrice)
             {
-                jewelries = jewelries.Where(x => x.JewelryCharacteristics.Select(x => x.CharacteristicValues.Value).Contains(o[i])).ToList();
+                jewelries = jewelries.Where(x => double.Parse(x.Price, CultureInfo.InvariantCulture) >= minPrice && double.Parse(x.Price, CultureInfo.InvariantCulture) <= maxPrice).ToList();
+            }
+
+            if (o.Length > 0)
+            {
+                List<JewelryModel> buff = new List<JewelryModel>();
+                for (int i = 0; i < o.Length; i++)
+                {
+                    foreach (var item in jewelries.Where(x => x.JewelryCharacteristics.Select(x => x.CharacteristicValues.Value).Contains(o[i])).ToList())
+                    {
+                        buff.Add(item);
+                    }
+                }
+                jewelries = buff.Distinct().ToList();
             }
 
             int pageCount = (int)Math.Ceiling((decimal)jewelries.Count() / displayedQuantity);

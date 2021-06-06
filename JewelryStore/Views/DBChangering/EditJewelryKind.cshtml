@@ -6,6 +6,8 @@
     <div class="title">
         <h3>Новый вид изделия</h3>
     </div>
+    <a asp-action="JewelryKindsTable">вернуться назад</a>
+    <hr />
     <form class="create-data-form" asp-action="EditJewelryKindSave" asp-antiforgery="true" method="post">
         <div class="validation" asp-validation-summary="ModelOnly"></div>
         <div class="container">
@@ -26,6 +28,18 @@
                     <textarea class="form-control" type="text" asp-for="Description" value="@Model.Description"></textarea>
                     <span asp-validation-for="Description" />
                 </div>
+                @if (Model.Subspecies != null)
+                {
+                    <div>Для удаления отметьте необходимые поля</div>
+                    <div>
+                        @foreach (var s in Model.Subspecies)
+                        {
+                            <input type="checkbox" name="sDelete" value="@s.ID" style="width: 3%" />@s.RuName<br />
+                        }
+                    </div>
+                    <div id="subspeciesInputs0"></div>
+                }
+                <input class="btn btn-default" style="color: green; width: 50%" onclick="AddSubspeciesInput()" value="Добавить подвид">
             </div>
         </div>
         <div>

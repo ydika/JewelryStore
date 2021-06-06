@@ -86,7 +86,8 @@ namespace JewelryStore.Controllers
                 }
             }
 
-            return RedirectToAction("JewelrysTable");
+            ModelState.AddModelError(string.Empty, "Запись успешно добавлена!");
+            return View(await ShapingEditViewModel(new JewelryModel(), characteristics));
         }
 
         [HttpPost]
@@ -115,7 +116,8 @@ namespace JewelryStore.Controllers
                 await dbContext.SaveChangesAsync();
             }
 
-            return RedirectToAction("JewelrysTable");
+            ModelState.AddModelError(string.Empty, "Запись успешно обновлена!");
+            return View("EditJewelryData", await ShapingEditViewModel(jewelry, characteristics));
         }
 
         [NonAction]
@@ -178,7 +180,7 @@ namespace JewelryStore.Controllers
             }
 
             List<SubspeciesModel> subspecies = await dbContext.Subspecies.ToListAsync();
-            SelectedKind selectedKind = new SelectedKind(jewelry.Subspecies == null ? subspecies.FirstOrDefault().ID.ToString() : jewelry.Subspecies.ID.ToString(),
+            SelectedKind selectedKind = new SelectedKind(jewelry.ID_Subspecies.ToString(),
                 subspecies.Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.RuName }).ToList());
             SelectedDiscount selectedDiscount = new SelectedDiscount(jewelry.ID_Discount.ToString(),
                 await dbContext.Discounts.Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.Amount.ToString() }).ToListAsync());
@@ -299,24 +301,43 @@ namespace JewelryStore.Controllers
         [Route("[action]")]
         public async Task<IActionResult> EditJewelryKind(int id)
         {
-            return View(await dbContext.JewelryKinds.FirstOrDefaultAsync(x => x.ID == id));
+            return View(await dbContext.JewelryKinds.Include(x => x.Subspecies).FirstOrDefaultAsync(x => x.ID == id));
         }
 
         [HttpPost]
         [Route("[action]")]
-        public async Task<IActionResult> EditJewelryKindSave(JewelryKindsModel kind)
+        public async Task<IActionResult> EditJewelryKindSave(JewelryKindsModel kind, string[] sRuName, string[] sEnName, int[] sDelete)
         {
             if (ModelState.IsValid)
             {
-                kind.EnName = kind.EnName.Replace(' ', '-').ToLower();
+                if (sDelete.Length > 0)
+                {
+                    for (int i = 0; i < sDelete.Length; i++)
+                    {
+                        dbContext.Subspecies.RemoveRange(dbContext.Subspecies.Where(x => x.ID == sDelete[i]).ToList());
+                    }
+                }
 
+                List<SubspeciesModel> subspecies = new List<SubspeciesModel>();
+                for (int i = 0; i < sRuName.Length; i++)
+                {
+                    if (sRuName[i] != null && sEnName[i] != null)
+                    {
+                        subspecies.Add(new SubspeciesModel { ID_Kind = kind.ID, RuName = sRuName[i], EnName = sEnName[i] });
+                    }
+                }
+
+                kind.EnName = kind.EnName.Replace(' ', '-').ToLower();
+                dbContext.Subspecies.AddRange(subspecies);
                 dbContext.JewelryKinds.Add(kind);
                 dbContext.Entry(kind).State = EntityState.Modified;
 
                 await dbContext.SaveChangesAsync();
             }
 
-            return RedirectToAction("JewelryKindsTable");
+            ModelState.AddModelError(string.Empty, "Данные успешно обновлены");
+
+            return View("EditJewelryKind", await dbContext.JewelryKinds.Include(x => x.Subspecies).FirstOrDefaultAsync(x => x.ID == kind.ID));
         }
 
         [HttpPost]
