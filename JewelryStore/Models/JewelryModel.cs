@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Globalization;
 using System.Linq;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
@@ -37,7 +38,11 @@ namespace JewelryStore.Models
         [StringLength(10)]
         [Required(ErrorMessage = "Не указана цена")]
         [RegularExpression(@"^\d+\.\d{2}$", ErrorMessage = "Цена должна быть вида [0.00]")]
-        public string Price { get; set; }
+        private string price;
+        public string Price { 
+            get => Math.Round(double.Parse(price, CultureInfo.InvariantCulture) * (1 - double.Parse(Discount.Amount.ToString()) / 100), 2).ToString("0.00"); 
+            set => price = value; 
+        }
 
         [JsonIgnore]
         [StringLength(30)]
@@ -58,5 +63,7 @@ namespace JewelryStore.Models
         public List<JewelryCharacteristicsModel> JewelryCharacteristics { get; set; }
         [JsonIgnore]
         public List<CartContentModel> CartContents { get; set; }
+
+        public List<JewelrySizeModel> JewelrySizes { get; set; }
     }
 }

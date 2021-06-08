@@ -42,7 +42,7 @@ namespace JewelryStore.Controllers
         [ResponseCache(NoStore = true)]
         public async Task<JsonResult> GetCart()
         {
-            return Json(await dbContext.CartContent.Include(x => x.Cart).Include(x => x.Jewelry.Discount).Where(x => x.Cart.ID_User == _userManager.GetUserId(User)).ToListAsync());
+            return Json(await dbContext.CartContent.Include(x => x.Cart).Include(x => x.Jewelry.Discount).Include(x => x.Jewelry.JewelrySizes).Where(x => x.Cart.ID_User == _userManager.GetUserId(User)).ToListAsync());
         }
 
         [HttpGet]
@@ -64,8 +64,7 @@ namespace JewelryStore.Controllers
             if (coincidence != null)
             {
                 coincidence.Quantity = quantity;
-                coincidence.TotalPrice = Math.Round(coincidence.Quantity * (double.Parse(coincidence.Jewelry.Price, CultureInfo.InvariantCulture) 
-                    * (1 - double.Parse(coincidence.Jewelry.Discount.Amount.ToString()) / 100)), 2);
+                coincidence.TotalPrice = Math.Round(coincidence.Quantity * double.Parse(coincidence.Jewelry.Price), 2).ToString("0.00");
                 await dbContext.SaveChangesAsync();
             }
 
@@ -81,7 +80,7 @@ namespace JewelryStore.Controllers
 
             JewelryModel jewelry = await dbContext.Jewelries.Include(x => x.Discount).FirstOrDefaultAsync(x => x.ID == jewelryid);
             CartModel cart = await dbContext.Cart.Include(x => x.CartContent).FirstOrDefaultAsync(x => x.ID_User == userId);
-            double jewelryPrice = Math.Round(double.Parse(jewelry.Price, CultureInfo.InvariantCulture) * (1 - double.Parse(jewelry.Discount.Amount.ToString()) / 100), 2);
+            string jewelryPrice = Math.Round(double.Parse(jewelry.Price), 2).ToString("0.00");
 
             if (cart != null)
             {
@@ -89,8 +88,7 @@ namespace JewelryStore.Controllers
                 if (coincidence != null)
                 {
                     coincidence.Quantity++;
-                    coincidence.TotalPrice = Math.Round(coincidence.Quantity * (double.Parse(coincidence.Jewelry.Price, CultureInfo.InvariantCulture) 
-                        * (1 - double.Parse(coincidence.Jewelry.Discount.Amount.ToString()) / 100)), 2);
+                    coincidence.TotalPrice = Math.Round(coincidence.Quantity * double.Parse(coincidence.Jewelry.Price), 2).ToString("0.00");
                     await dbContext.SaveChangesAsync();
                 }
                 else

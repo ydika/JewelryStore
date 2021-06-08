@@ -3,67 +3,85 @@
     <link rel="stylesheet" href="~/inline/css/item.css" />
 }
 <div class="container mt-4">
-    <div class="row">
-        <div class="col-md-4 col-lg-4">
-            <img class="item-img" src="@Model.Jewelry.ImageSrc" />
-        </div>
-        <div class="col-md-8 col-lg-8">
-            <div class="item-characteristic">
-                <h5 class="item-title">@Model.Jewelry.Name</h5>
-                <ul class="navbar-nav item-gold-characterisitc">
-                    <li>
-                        Код: <span>@Model.Jewelry.Code</span>
-                    </li>
-                    @if (Model.Characteristics != null)
-                    {
-                        @foreach (var jc in Model.Characteristics)
-                        {
-                            <li>
-                                @jc.Name:
-                                @if (jc.Name == "Размер")
-                                {
-                                    <select class="form-select">
-                                        @foreach (var jcv in jc.Values)
-                                        {
-                                            <option value="@jcv.Value">@jcv.Value</option>
-                                        }
-                                    </select>
-                                }
-                                else
-                                {
-                                    for (int i = 0; i < jc.Values.Count; i++)
-                                    {
-                                        if (i == jc.Values.Count - 1)
-                                        {
-                                            <span>@jc.Values[i].Value</span>
-                                        }
-                                        else
-                                        {
-                                            <span>@jc.Values[i].Value |</span>
-                                        }
-                                    }
-                                }
-                            </li>
-                            if (jc.Name == "Вставка")
-                            {
-                                <li>
-                                    Характеристика вставки: <span>@Model.Jewelry.InsertedGemChar</span>
-                                </li>
-                            }
-                        }
-                    }
-                </ul>
-                <div class="quantity">
-                    <label>Количество:</label>
-                    <div class="cart-plus-minus">
-                        <input class="cart-plus-minus-box" value="1" type="number">
-                        <div class="inc qtybutton"></div>
-                        <div class="dec qtybutton"></div>
+    <div class="item-characteristic">
+        <div class="fs-5 mb-3 pb-2 align-items-center d-flex flex-row" style="border-bottom: 1px solid #e5e5e5;">
+            <a class="fs-3 item-navigation-link" href="javascript: undefined;" onclick="history.back()">🠔</a>
+            <div class="d-flex text-center align-items-center" style="flex: 1 0 auto">
+                <div style="flex: 1 0 auto">
+                    <div class="d-sm-inline">
+                        <a class="item-navigation-link" asp-action="List" asp-route-jkind="list">Каталог</a> /
+                        <a class="item-navigation-link" asp-action="List" asp-route-jkind="@Model.Jewelry.Subspecies.Kind.EnName" asp-route-subspecies="all">@Model.Jewelry.Subspecies.Kind.RuName</a> /
+                    </div>
+                    <div class="d-sm-inline">
+                        <a class="item-navigation-link" asp-action="List" asp-route-subspecies="@Model.Jewelry.Subspecies.EnName">@Model.Jewelry.Subspecies.RuName</a> /
+                        <a class="link-dark">@Model.Jewelry.Code</a>
                     </div>
                 </div>
-                <div class="item-buttons">
-                    <div class="cart-action">
-                        <a href="#">Добавить в корзину</a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 col-lg-4">
+                <img class="item-img" src="@Model.Jewelry.ImageSrc" />
+            </div>
+            <div class="col-md-8 col-lg-8">
+                <div class="item-characteristic">
+                    <h5 class="item-title">@Model.Jewelry.Name</h5>
+                    <ul class="navbar-nav item-gold-characterisitc">
+                        <li>
+                            Код: <span>@Model.Jewelry.Code</span>
+                        </li>
+                        @if (Model.Characteristics != null)
+                        {
+                            @foreach (var jc in Model.Characteristics)
+                            {
+                                <li>
+                                    @jc.Name:
+                                    @if (jc.Name == "Размер")
+                                    {
+                                        <select class="form-select">
+                                            @foreach (var jcv in jc.Values)
+                                            {
+                                                <option value="@jcv.Value">@jcv.Value</option>
+                                            }
+                                        </select>
+                                    }
+                                    else
+                                    {
+                                        for (int i = 0; i < jc.Values.Count; i++)
+                                        {
+                                            if (i == jc.Values.Count - 1)
+                                            {
+                                                <span>@jc.Values[i].Value</span>
+                                            }
+                                            else
+                                            {
+                                                <span>@jc.Values[i].Value |</span>
+                                            }
+                                        }
+                                    }
+                                </li>
+                                if (jc.Name == "Вставка")
+                                {
+                                    <li>
+                                        Характеристика вставки: <span>@Model.Jewelry.InsertedGemChar</span>
+                                    </li>
+                                }
+                            }
+                        }
+                    </ul>
+                    <div class="quantity">
+                        <label>Количество:</label>
+                        <div class="cart-plus-minus">
+                            <input class="cart-plus-minus-box" value="1" type="number">
+                            <div class="inc qtybutton"></div>
+                            <div class="dec qtybutton"></div>
+                        </div>
+                    </div>
+                    <div>Цена: @Model.Jewelry.Price</div>
+                    <div class="item-buttons">
+                        <div class="cart-action">
+                            <a href="#">Добавить в корзину</a>
+                        </div>
                     </div>
                 </div>
             </div>

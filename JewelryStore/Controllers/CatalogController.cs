@@ -34,29 +34,25 @@ namespace JewelryStore.Controllers
         public async Task<IActionResult> List()
         {
             await dbContext.Subspecies.Include(x => x.Jewelries).LoadAsync();
-            List<JewelryModel> jewelries = await dbContext.Jewelries.ToListAsync();
+            List<JewelryModel> jewelries = await dbContext.Jewelries.Include(x => x.Discount).ToListAsync();
 
             return View(new FiltersViewModel(
                 await dbContext.JewelryKinds.Include(x => x.Subspecies).ToListAsync(),
                 await dbContext.Characteristics.Include(x => x.CharacteristicValues).Where(x => x.CharacteristicValues.Count() > 0).ToListAsync(),
-                jewelries.Max(x => double.Parse(x.Price, CultureInfo.InvariantCulture)),
-                jewelries.Min(x => double.Parse(x.Price, CultureInfo.InvariantCulture))
+                jewelries.Max(x => double.Parse(x.Price)),
+                jewelries.Min(x => double.Parse(x.Price))
             ));
         }
 
         [Route("{jkind}/{subspecies}/{code}")]
         public IActionResult Item(string code)
         {
-            dbContext.Jewelries.Include(x => x.Discount).Load();
-            dbContext.JewelryCharacteristics.Load();
-            dbContext.Characteristics.Include(x => x.CharacteristicValues).Load();
-
-            JewelryModel jewelry = dbContext.Jewelries.FirstOrDefault(x => x.Code == code);
+            JewelryModel jewelry = dbContext.Jewelries.Include(x => x.Discount).Include(x => x.JewelryCharacteristics).Include(x => x.Subspecies.Kind).FirstOrDefault(x => x.Code == code);
             if (jewelry.JewelryCharacteristics == null) return View(new ItemViewModel(jewelry, null));
 
             List<ItemCharacteristics> itemCharacteristics = new List<ItemCharacteristics>();
             List<CharacteristicValueModel> characteristicValues = null;
-            foreach (var characteristic in dbContext.Characteristics.ToList())
+            foreach (var characteristic in dbContext.Characteristics.Include(x => x.CharacteristicValues).ToList())
             {
                 if (characteristic.CharacteristicValues.Count() > 0)
                 {
@@ -92,17 +88,17 @@ namespace JewelryStore.Controllers
         {
             List<JewelryModel> jewelries = null;
 
-            if (searchName != null && searchName != "")
-            {
-                await dbContext.Jewelries.Include(x => x.Discount).LoadAsync();
-
-                jewelries = FilterByName(searchName);
-            }
-
-            await dbContext.Jewelries.Include(x => x.Subspecies.Kind).Include(x => x.Discount).Include(x => x.JewelryCharacteristics).LoadAsync();
+            await dbContext.Jewelries.Include(x => x.Subspecies.Kind).Include(x => x.Discount).Include(x => x.JewelryCharacteristics).Include(x => x.JewelrySizes).LoadAsync();
             await dbContext.JewelryCharacteristics.Include(x => x.CharacteristicValues).LoadAsync();
 
-            jewelries = await dbContext.Jewelries.OrderByDescending(x => x.ID).ToListAsync();
+            if (searchName != null && searchName != "")
+            {
+                jewelries = FilterByName(searchName);
+            }
+            else
+            {
+                jewelries = await dbContext.Jewelries.OrderByDescending(x => x.ID).ToListAsync();
+            }
 
             if (jkind != "list")
             {
@@ -115,7 +111,7 @@ namespace JewelryStore.Controllers
 
             if (minPrice != 0 && maxPrice != 0 && maxPrice >= minPrice)
             {
-                jewelries = jewelries.Where(x => double.Parse(x.Price, CultureInfo.InvariantCulture) >= minPrice && double.Parse(x.Price, CultureInfo.InvariantCulture) <= maxPrice).ToList();
+                jewelries = jewelries.Where(x => double.Parse(x.Price) >= minPrice && double.Parse(x.Price) <= maxPrice).ToList();
             }
 
             if (o.Length > 0)

@@ -1,4 +1,18 @@
-﻿$('.quantity .cart-plus-minus > div').on('click', function () {
+﻿if ($('#itemsInCart').text() === "") {
+    $('#itemsInCart').hide();
+}
+
+$.get("/cart/getcartitemcount", function (data) {
+    if (data === "") {
+        $('#itemsInCart').hide();
+    }
+    else {
+        $('#itemsInCart').html(data);
+        $('#itemsInCart').show();
+    }
+});
+
+$('.quantity .cart-plus-minus > div').on('click', function () {
     NumerickClick($(this));
 });
 

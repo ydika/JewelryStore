@@ -1,4 +1,14 @@
-﻿.item-img {
+﻿.item-navigation-link {
+    transition: 0.3s ease-in;
+    color: #212529;
+}
+
+    .item-navigation-link:hover {
+        transition: 0.3s ease-in;
+        color: #d8a247;
+    }
+
+.item-img {
     border: 1px solid #E5E5E5;
     width: 100%;
 }

@@ -26,7 +26,7 @@
                     <td class="cart-item-name">
                         <a data-bind="attr:{href: jewelry.url}, text: jewelry.name"></a>
                     </td>
-                    <td data-bind="text: 'BYN ' + (jewelry.price * (1 - jewelry.discount.amount / 100))"></td>
+                    <td data-bind="text: 'BYN ' + jewelry.price"></td>
                     <td>
                         <div class="quantity">
                             <div class="cart-plus-minus">
@@ -50,7 +50,7 @@
             <div class="cart-empty-description">
                 @if (User.Identity.IsAuthenticated)
                 {
-                    <div>Перейдите в <a asp-controller="Catalog" asp-action="List" asp-route-jkind="All">каталог</a> и добавьте товары.<br></div>
+                    <div>Перейдите в <a asp-controller="Catalog" asp-action="List" asp-route-jkind="list">каталог</a> и добавьте товары.<br></div>
                     <div class="cart-empty-img">
                         <img src="~/images/sleeping-cat.png" />
                     </div>
@@ -58,7 +58,7 @@
                 else
                 {
                     <div>
-                        Перейдите в <a asp-controller="Catalog" asp-action="List" asp-route-jkind="All">каталог</a> и добавьте товары.<br>
+                        Перейдите в <a asp-controller="Catalog" asp-action="List" asp-route-jkind="list">каталог</a> и добавьте товары.<br>
                         Наполняли корзину ранее? <a asp-controller="Account" asp-action="Login">Войдите на сайт</a>, и выбранные вами товары появятся.
                     </div>
                 }

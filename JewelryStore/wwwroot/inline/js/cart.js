@@ -26,14 +26,12 @@ function RemoveFromCart(value) {
         dataType: 'json',
         data: { 'jewelryid': value },
         success: function (data) {
-            $.get("/cart/getcartitemcount", function (data) {
-                $('#itemsInCart').html(data);
-                if (data === "") {
-                    $('#itemsInCart').hide();
-                }
-            });
             cart.cartContent(data)
                 .cartIsEmpty(data.length > 0 ? false : true);
+            $('#itemsInCart').html(data.length);
+            if (!cart.cartIsEmpty || data.length === 0) {
+                $('#itemsInCart').hide();
+            }
             $('.cart').removeClass('loading');
         }
     });

@@ -30,10 +30,6 @@
 ////        },
 ////    );
 ////}
-if ($('#itemsInCart').text() === "") {
-    $('#itemsInCart').hide();
-}
-
 let minPrice = document.getElementById("minPrice");
 let maxPrice = document.getElementById("maxPrice");
 const sliders = document.querySelectorAll('input[type="range"]');
@@ -147,6 +143,10 @@ function AddToCart(value) {
             $('#itemsInCart').show();
         }
     });
+}
+
+function GoTo(url) {
+    document.location.href = url;
 }
 
 function PageRange(current, count) {
