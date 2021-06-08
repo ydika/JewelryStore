@@ -116,6 +116,16 @@
         top: -10px;
     }
 
+.card-discount {
+    position: absolute;
+    z-index: 1;
+    top: 15px;
+    right: 15px;
+    background-color: red;
+    padding: 2px 7px;
+    color: white;
+}
+
 /*--------------filter--------------*/
 .filter-block {
     border: 1px solid #e5e5e5;

@@ -33,40 +33,44 @@
                 <input class="form-control d-inline-block" style="width: 50%" type="text" name="name" />
                 <input class="btn btn-default mb-2 d-inline-block" style="color: green;" type="submit" value="Добавить характеристику" />
             </form>
-            @foreach (var c in Model)
-            {
-                <hr />
-                <h5 class="d-inline-block">@c.Name</h5>
-                <form class="d-inline-block" asp-action="DeleteCharacteristic" method="post" asp-antiforgery="true">
-                    <input type="hidden" name="characteristic" value="@c.ID" />
-                    <input class="btn btn-default table-item-delete text-danger mb-2" type="submit" value="✗" />
-                </form>
-                <form class="mb-3" asp-action="DeleteCharacteristicValues" method="post" asp-antiforgery="true">
-                    @if (c.CharacteristicValues.Count() < 1)
-                    {
-                        <div>Нет значений</div>
-                    }
-                    else
-                    {
-                        <ul>
-                            @foreach (var cv in c.CharacteristicValues)
+            <div class="row">
+                @foreach (var c in Model)
+                {
+                    <div class="col-4">
+                        <hr />
+                        <h5 class="d-inline-block">@c.Name</h5>
+                        <form class="d-inline-block" asp-action="DeleteCharacteristic" method="post" asp-antiforgery="true">
+                            <input type="hidden" name="characteristic" value="@c.ID" />
+                            <input class="btn btn-default table-item-delete text-danger mb-2" type="submit" value="✗" />
+                        </form>
+                        <form class="mb-3" asp-action="DeleteCharacteristicValues" method="post" asp-antiforgery="true">
+                            @if (c.CharacteristicValues.Count() < 1)
                             {
-                                <li>
-                                    <input type="checkbox" name="characteristics" value="@cv.ID" /> @cv.Value
-                                </li>
+                                <div>Нет значений</div>
                             }
-                        </ul>
-                        <div>
-                            <input class="btn btn-default text-danger" type="submit" value="Удалить значения" />
-                        </div>
-                    }
-                </form>
-                <form asp-action="AddCharacteristicValue" method="post" asp-antiforgery="true">
-                    <input type="hidden" name="characteristic" value="@c.ID" />
-                    <input class="form-control" style="width: 50%" type="text" name="name" />
-                    <input class="btn btn-default" type="submit" style="color: green;" value="Добавить значение" />
-                </form>
-            }
+                            else
+                            {
+                                <ul>
+                                    @foreach (var cv in c.CharacteristicValues)
+                                    {
+                                        <li>
+                                            <input type="checkbox" name="characteristics" value="@cv.ID" /> @cv.Value
+                                        </li>
+                                    }
+                                </ul>
+                                <div>
+                                    <input class="btn btn-default text-danger" type="submit" value="Удалить значения" />
+                                </div>
+                            }
+                        </form>
+                        <form asp-action="AddCharacteristicValue" method="post" asp-antiforgery="true">
+                            <input type="hidden" name="characteristic" value="@c.ID" />
+                            <input class="form-control" style="width: 50%" type="text" name="name" />
+                            <input class="btn btn-default" type="submit" style="color: green;" value="Добавить значение" />
+                        </form>
+                    </div>
+                }
+            </div>
         </div>
     </div>
 </div>

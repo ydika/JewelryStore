@@ -102,7 +102,7 @@ namespace JewelryStore.Controllers
             await dbContext.Jewelries.Include(x => x.Subspecies.Kind).Include(x => x.Discount).Include(x => x.JewelryCharacteristics).LoadAsync();
             await dbContext.JewelryCharacteristics.Include(x => x.CharacteristicValues).LoadAsync();
 
-            jewelries = await dbContext.Jewelries.ToListAsync();
+            jewelries = await dbContext.Jewelries.OrderByDescending(x => x.ID).ToListAsync();
 
             if (jkind != "list")
             {

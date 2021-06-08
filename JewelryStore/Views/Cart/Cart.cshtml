@@ -26,7 +26,7 @@
                     <td class="cart-item-name">
                         <a data-bind="attr:{href: jewelry.url}, text: jewelry.name"></a>
                     </td>
-                    <td data-bind="text: 'BYN ' + jewelry.price"></td>
+                    <td data-bind="text: 'BYN ' + (jewelry.price * (1 - jewelry.discount.amount / 100))"></td>
                     <td>
                         <div class="quantity">
                             <div class="cart-plus-minus">

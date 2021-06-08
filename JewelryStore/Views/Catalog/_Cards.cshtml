@@ -1,6 +1,9 @@
 ﻿<div class="row" data-bind="foreach: jewelries">
     <div class="col-12 col-sm-6 col-xl-4 mb-4">
         <a class="text-black jewelry-card" title="Посмотреть подробнее" data-bind="attr:{href: url}">
+            <!-- ko if: discount.amount > 0 -->
+            <div class="card-discount" data-bind="text: discount.amount + '%'"></div>
+            <!-- /ko -->
             <div class="card-image">
                 <img data-bind="attr:{src: imageSrc, alt: name}" />
                 <div class="actions">
@@ -13,7 +16,7 @@
                 <h6 data-bind="text: name"></h6>
             </div>
             <div class="card-price">
-                <span data-bind="text: 'BYN ' + price"></span>
+                <span data-bind="text: 'BYN ' + (price * (1 - discount.amount / 100))"></span>
             </div>
         </a>
     </div>
