@@ -168,7 +168,7 @@ input[type='number'] {
 
 .cart-plus-minus {
     position: relative;
-    width: 78px;
+    width: 63px;
     text-align: left;
 }
 
@@ -178,17 +178,17 @@ input[type='number'] {
         border-right: 1px solid #E5E5E5;
         border-top: 1px solid #E5E5E5;
         cursor: pointer;
-        height: 24px;
+        height: 20.5px;
         position: absolute;
         text-align: center;
-        width: 30px;
+        width: 22px;
     }
 
     .cart-plus-minus > .cart-plus-minus-box {
         border: 1px solid #E5E5E5;
-        height: 48px;
+        height: 41px;
         text-align: center;
-        width: 48px;
+        width: 41px;
     }
 
         .cart-plus-minus > .cart-plus-minus-box:focus-visible {
@@ -231,6 +231,34 @@ input[type='number'] {
         pointer-events: none;
         opacity: 0.4;
     }
+
+@media (max-width: 575px) {
+    .cart-plus-minus {
+        width: 60px;
+    }
+
+        .cart-plus-minus > .cart-plus-minus-box {
+            height: 38px;
+            width: 38px;
+        }
+
+        .cart-plus-minus > .qtybutton {
+            height: 19px;
+            width: 22px;
+        }
+}
+
+/* Discount
+-------------------------------------------------- */
+.card-discount {
+    position: absolute;
+    z-index: 1;
+    top: 15px;
+    right: 15px;
+    background-color: red;
+    padding: 2px 7px;
+    color: white;
+}
 
 /* Loading
 -------------------------------------------------- */

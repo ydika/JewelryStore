@@ -24,5 +24,12 @@ namespace JewelryStore.Models
         public string Size { get; set; }
         [StringLength(10)]
         public string Price { get; set; }
+
+        public JewelrySizeModel(int iD_Jewelry, string size, string price)
+        {
+            ID_Jewelry = iD_Jewelry;
+            Size = size;
+            Price = price;
+        }
     }
 }

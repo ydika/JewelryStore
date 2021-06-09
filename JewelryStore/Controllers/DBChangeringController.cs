@@ -34,17 +34,15 @@ namespace JewelryStore.Controllers
         [Route("[action]")]
         public async Task<IActionResult> JewelrysTable(double minprice, double maxprice, int page = 1, string jname = "")
         {
-            await dbContext.Jewelries.LoadAsync();
-
-            List<JewelryModel> jewelries = await dbContext.Jewelries.ToListAsync();
+            List<JewelryModel> jewelries = await dbContext.Jewelries.Include(x => x.Discount).ToListAsync();
             if (minprice != 0 && maxprice != 0 && maxprice >= minprice)
             {
-                jewelries = jewelries.Where(x => double.Parse(x.Price, CultureInfo.InvariantCulture) >= minprice && double.Parse(x.Price, CultureInfo.InvariantCulture) <= maxprice).ToList();
+                jewelries = jewelries.Where(x => double.Parse(x.Price) >= minprice && double.Parse(x.Price) <= maxprice).ToList();
             }
             else
             {
-                minprice = jewelries.Min(x => double.Parse(x.Price, CultureInfo.InvariantCulture));
-                maxprice = jewelries.Max(x => double.Parse(x.Price, CultureInfo.InvariantCulture));
+                minprice = jewelries.Min(x => double.Parse(x.Price));
+                maxprice = jewelries.Max(x => double.Parse(x.Price));
             }
 
             if (jname != null && jname != "")
@@ -70,11 +68,22 @@ namespace JewelryStore.Controllers
         {
             if (ModelState.IsValid)
             {
-                JewelryModel coincidence = dbContext.Jewelries.FirstOrDefault(x => x.Code == jewelry.Code);
+                JewelryModel coincidence = dbContext.Jewelries.Include(x => x.Discount).FirstOrDefault(x => x.Code == jewelry.Code);
                 if (coincidence == null)
                 {
                     jewelry = ShapingJewelryModel(jewelry, characteristics);
-
+                    List<CharacteristicValueModel> characteristicValues = new List<CharacteristicValueModel>();
+                    for (int i = 0; i < characteristics.Length; i++)
+                    {
+                        characteristicValues.Add(dbContext.CharacteristicValues.Include(x => x.Characteristic).FirstOrDefault(x => x.ID == characteristics[i]));
+                    }
+                    characteristicValues = characteristicValues.Where(x => x.Characteristic.Name == "Размер").ToList();
+                    List<JewelrySizeModel> jewelrySizes = new List<JewelrySizeModel>();
+                    foreach (var item in characteristicValues)
+                    {
+                        jewelrySizes.Add(new JewelrySizeModel(jewelry.ID, item.Value, ""));
+                    }
+                    jewelry.JewelrySizes = jewelrySizes;
                     await dbContext.Jewelries.AddAsync(jewelry);
                     await dbContext.SaveChangesAsync();
                 }
@@ -95,7 +104,7 @@ namespace JewelryStore.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditJewelryData(int id)
         {
-            JewelryModel jewelry = dbContext.Jewelries.Include(x => x.JewelryCharacteristics).Include(x => x.Subspecies).FirstOrDefault(x => x.ID == id);
+            JewelryModel jewelry = dbContext.Jewelries.Include(x => x.JewelryCharacteristics).Include(x => x.Subspecies).Include(x => x.JewelrySizes).FirstOrDefault(x => x.ID == id);
 
             return View(await ShapingEditViewModel(jewelry, jewelry.JewelryCharacteristics.Select(x => x.ID_CharacteristicValue).ToArray()));
         }
@@ -103,20 +112,35 @@ namespace JewelryStore.Controllers
         [HttpPost]
         [Route("[action]")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditJewelryDataSave(JewelryModel jewelry, int[] characteristics)
+        public async Task<IActionResult> EditJewelryDataSave(JewelryModel jewelry, int[] characteristics, string[] sizePrice, string[] sizeValue)
         {
             if (ModelState.IsValid)
             {
                 dbContext.JewelryCharacteristics.RemoveRange(dbContext.JewelryCharacteristics.Where(x => x.ID_Jewelry == jewelry.ID).ToList());
 
-                jewelry = ShapingJewelryModel(jewelry, characteristics);
+                jewelry = ShapingJewelryModel(dbContext.Jewelries.Include(x => x.JewelrySizes).FirstOrDefault(x => x.ID == jewelry.ID), characteristics);
+                List<JewelrySizeModel> jewelrySizes = new List<JewelrySizeModel>();
+                for (int i = 0; i < sizePrice.Length; i++)
+                {
+                    jewelrySizes.Add(new JewelrySizeModel(jewelry.ID, sizeValue[i], sizePrice[i]));
+                }
+                jewelry.JewelrySizes = jewelrySizes; 
                 dbContext.Jewelries.Add(jewelry);
                 dbContext.Entry(jewelry).State = EntityState.Modified;
 
+                for (int i = 0; i < sizePrice.Length; i++)
+                {
+                    if (sizePrice[i] == "" || sizePrice[i] == null)
+                    {
+                        ModelState.AddModelError(string.Empty, "Укажите цены для каждого размера!");
+                        return View("EditJewelryData", await ShapingEditViewModel(jewelry, characteristics));
+                    }
+                }
+
                 await dbContext.SaveChangesAsync();
+                ModelState.AddModelError(string.Empty, "Запись успешно обновлена!");
             }
 
-            ModelState.AddModelError(string.Empty, "Запись успешно обновлена!");
             return View("EditJewelryData", await ShapingEditViewModel(jewelry, characteristics));
         }
 
@@ -193,7 +217,7 @@ namespace JewelryStore.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteJewelry(int id)
         {
-            JewelryModel jewelry = await dbContext.Jewelries.Include(x => x.CartContents).FirstOrDefaultAsync(x => x.ID == id);
+            JewelryModel jewelry = await dbContext.Jewelries.Include(x => x.CartContents).Include(x => x.Discount).FirstOrDefaultAsync(x => x.ID == id);
             dbContext.Jewelries.Remove(jewelry);
             await dbContext.SaveChangesAsync();
 

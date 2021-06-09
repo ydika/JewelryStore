@@ -29,7 +29,17 @@
                 <div class="order-1 col-sm-6">
                     @await Html.PartialAsync("_JewelryCharacteristics", Model.Characteristics)
                 </div>
-                <div class="form-group order-2 col-sm-12">
+                <div class="order-2 col-sm-12">
+                    @foreach (var size in Model.Jewelry.JewelrySizes)
+                    {
+                        <div>
+                            <label class="d-inline-block me-2">Цена для @size.Size размера:</label>
+                            <input type="hidden" name="sizeValue" value="@size.Size" />
+                            <input class="d-inline-block form-control" name="sizePrice" type="number" value="@size.Price" style="width: 50%" />
+                        </div>
+                    }
+                </div>
+                <div class="form-group order-3 col-sm-12">
                     <input type="submit" value="Сохранить" class="btn btn-default" />
                 </div>
             </div>

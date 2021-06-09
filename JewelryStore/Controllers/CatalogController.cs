@@ -47,7 +47,7 @@ namespace JewelryStore.Controllers
         [Route("{jkind}/{subspecies}/{code}")]
         public IActionResult Item(string code)
         {
-            JewelryModel jewelry = dbContext.Jewelries.Include(x => x.Discount).Include(x => x.JewelryCharacteristics).Include(x => x.Subspecies.Kind).FirstOrDefault(x => x.Code == code);
+            JewelryModel jewelry = dbContext.Jewelries.Include(x => x.Discount).Include(x => x.JewelryCharacteristics).Include(x => x.Subspecies.Kind).Include(x => x.JewelrySizes).FirstOrDefault(x => x.Code == code);
             if (jewelry.JewelryCharacteristics == null) return View(new ItemViewModel(jewelry, null));
 
             List<ItemCharacteristics> itemCharacteristics = new List<ItemCharacteristics>();
@@ -59,12 +59,41 @@ namespace JewelryStore.Controllers
                     characteristicValues = jewelry.JewelryCharacteristics.Select(x => x.CharacteristicValues).Where(x => x.Characteristic.Name == characteristic.Name).ToList();
                     if (characteristicValues.Count() > 0)
                     {
-                        itemCharacteristics.Add(new ItemCharacteristics(characteristic.Name, characteristicValues));
+                        itemCharacteristics.Add(new ItemCharacteristics(characteristic.Name, characteristicValues.OrderBy(x => x.ID).ToList()));
                     }
                 }
             }
 
+            List<ItemCharacteristics> jewelrySizes = itemCharacteristics.Where(x => x.Name == "Размер").ToList();
+            if (jewelrySizes.Count() != 0)
+            {
+                var a = jewelry.JewelrySizes.FirstOrDefault(x => x.Size == jewelrySizes.Select(x => x.Values).FirstOrDefault().Select(x => x.Value).FirstOrDefault());
+                if (a != null)
+                {
+                    jewelry.Price = a.Price.ToString();
+                }
+            }
+
             return View(new ItemViewModel(jewelry, itemCharacteristics));
+        }
+
+        [HttpGet]
+        [Route("[action]")]
+        public async Task<JsonResult> GetItemPrice(int jewelryid, int quantity, string size = "16")
+        {
+            JewelryModel jewelry = await dbContext.Jewelries.Include(x => x.Discount).Include(x => x.JewelrySizes).FirstOrDefaultAsync(x => x.ID == jewelryid);
+
+            List<JewelrySizeModel> jewelrySizes = jewelry.JewelrySizes.ToList();
+            if (jewelrySizes.Count() != 0)
+            {
+                JewelrySizeModel first = jewelrySizes.FirstOrDefault(x => x.Size == size);
+                if (first != null)
+                {
+                    jewelry.Price = first.Price;
+                }
+            }
+
+            return Json(Math.Round(double.Parse(jewelry.Price) * quantity, 2).ToString("0.00"));
         }
 
         [HttpGet]

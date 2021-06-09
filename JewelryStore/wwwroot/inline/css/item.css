@@ -8,6 +8,10 @@
         color: #d8a247;
     }
 
+.card-discount {
+    right: 25px !important;
+}
+
 .item-img {
     border: 1px solid #E5E5E5;
     width: 100%;
@@ -20,6 +24,13 @@
     background-color: white;
     height: 100%;
     border: 1px solid #e5e5e5;
+    font-size: 14px;
+}
+
+@media (max-width: 575px) {
+    .item-characteristic {
+        font-size: 12px;
+    }
 }
 
 .item-title {
@@ -59,18 +70,19 @@
         margin-top: 20px;
     }
 
-        .item-buttons > div.cart-action {
+        .item-buttons .cart-action {
             background-color: #333333;
+            margin-right: 10px;
         }
 
-            .item-buttons > div.cart-action > a {
+            .item-buttons .cart-action > a {
                 transition: 0.3s ease-in;
                 display: block;
                 color: white;
                 padding: 10px 15px;
             }
 
-                .item-buttons > div.cart-action > a:hover {
+                .item-buttons .cart-action > a:hover {
                     transition: 0.3s ease-in;
                     background-color: #d8a247;
                 }

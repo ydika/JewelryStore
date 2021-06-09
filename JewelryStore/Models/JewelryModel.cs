@@ -35,12 +35,18 @@ namespace JewelryStore.Models
         [StringLength(200)]
         public string InsertedGemChar { get; set; }
 
+        private string price;
         [StringLength(10)]
         [Required(ErrorMessage = "Не указана цена")]
         [RegularExpression(@"^\d+\.\d{2}$", ErrorMessage = "Цена должна быть вида [0.00]")]
-        private string price;
-        public string Price { 
-            get => Math.Round(double.Parse(price, CultureInfo.InvariantCulture) * (1 - double.Parse(Discount.Amount.ToString()) / 100), 2).ToString("0.00"); 
+        public string Price {
+            get {
+                if (Discount != null)
+                {
+                    return Math.Round(double.Parse(price, CultureInfo.InvariantCulture) * (1 - double.Parse(Discount.Amount.ToString()) / 100), 2).ToString("0.00");
+                }
+                return price;
+            }
             set => price = value; 
         }
 

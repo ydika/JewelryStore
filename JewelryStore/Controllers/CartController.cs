@@ -42,7 +42,18 @@ namespace JewelryStore.Controllers
         [ResponseCache(NoStore = true)]
         public async Task<JsonResult> GetCart()
         {
-            return Json(await dbContext.CartContent.Include(x => x.Cart).Include(x => x.Jewelry.Discount).Include(x => x.Jewelry.JewelrySizes).Where(x => x.Cart.ID_User == _userManager.GetUserId(User)).ToListAsync());
+            List<CartContentModel> cartContents = await dbContext.CartContent.Include(x => x.Cart).Include(x => x.Jewelry.Discount).Include(x => x.Jewelry.JewelrySizes)
+                .Where(x => x.Cart.ID_User == _userManager.GetUserId(User)).ToListAsync();
+
+            foreach (var cartContent in cartContents)
+            {
+                if (cartContent.Size != "")
+                {
+                    cartContent.Jewelry.Price = cartContent.Jewelry.JewelrySizes.FirstOrDefault(x => x.Size == cartContent.Size).Price;
+                }
+            }
+
+            return Json(cartContents);
         }
 
         [HttpGet]
@@ -59,28 +70,62 @@ namespace JewelryStore.Controllers
         [Route("[action]")]
         public async Task<JsonResult> ChangeQuantity(int jewelryid, int quantity)
         {
-            CartContentModel coincidence = await dbContext.CartContent.Include(x => x.Cart).Include(x => x.Jewelry.Discount)
+            CartContentModel coincidence = await dbContext.CartContent.Include(x => x.Cart).Include(x => x.Jewelry.Discount).Include(x => x.Jewelry.JewelrySizes)
                 .FirstOrDefaultAsync(x => x.Cart.ID_User == _userManager.GetUserId(User) && x.ID_Jewelry == jewelryid);
+            string jewelryPrice = "";
             if (coincidence != null)
             {
-                coincidence.Quantity = quantity;
-                coincidence.TotalPrice = Math.Round(coincidence.Quantity * double.Parse(coincidence.Jewelry.Price), 2).ToString("0.00");
+                if (coincidence.Size != "")
+                {
+                    JewelrySizeModel firstJewelry = coincidence.Jewelry.JewelrySizes.FirstOrDefault(x => x.Size == coincidence.Size);
+                    jewelryPrice = firstJewelry.Price.Replace('.', ',');
+                    coincidence.Quantity = quantity;
+                    coincidence.TotalPrice = Math.Round(coincidence.Quantity * double.Parse(jewelryPrice) * (1 - (double)firstJewelry.Jewelry.Discount.Amount / 100), 2).ToString("0.00");
+                }
+                else
+                {
+                    coincidence.Quantity = quantity;
+                    coincidence.TotalPrice = Math.Round(coincidence.Quantity * double.Parse(coincidence.Jewelry.Price), 2).ToString("0.00");
+                }
                 await dbContext.SaveChangesAsync();
             }
 
-            return Json(await dbContext.CartContent.Include(x => x.Jewelry.Discount).Where(x => x.Cart.ID_User == _userManager.GetUserId(User)).OrderBy(x => x.ID).ToListAsync());
+            List<CartContentModel> cartContents = await dbContext.CartContent.Include(x => x.Jewelry.Discount).Include(x => x.Jewelry.JewelrySizes)
+                .Where(x => x.Cart.ID_User == _userManager.GetUserId(User)).OrderBy(x => x.ID).ToListAsync();
+            for (int i = 0; i < cartContents.Count(); i++)
+            {
+                if (cartContents[i].Size != "")
+                {
+                    cartContents[i].Jewelry.Price = cartContents[i].Jewelry.JewelrySizes.FirstOrDefault(x => x.Size == cartContents[i].Size).Price.Replace(',', '.');
+                }
+            }
+
+            return Json(cartContents);
         }
 
         [HttpPost]
         [Authorize]
         [Route("[action]")]
-        public async Task<IActionResult> Add(int jewelryid)
+        public async Task<IActionResult> Add(int jewelryid, int quantity, string size)
         {
             string userId = _userManager.GetUserId(User);
 
-            JewelryModel jewelry = await dbContext.Jewelries.Include(x => x.Discount).FirstOrDefaultAsync(x => x.ID == jewelryid);
+            JewelryModel jewelry = await dbContext.Jewelries.Include(x => x.Discount).Include(x => x.JewelrySizes).FirstOrDefaultAsync(x => x.ID == jewelryid);
             CartModel cart = await dbContext.Cart.Include(x => x.CartContent).FirstOrDefaultAsync(x => x.ID_User == userId);
-            string jewelryPrice = Math.Round(double.Parse(jewelry.Price), 2).ToString("0.00");
+
+            string jewelryPrice = "";
+            if (size != null)
+            {
+                JewelrySizeModel firstSize = jewelry.JewelrySizes.FirstOrDefault(x => x.Size == size);
+                if (firstSize != null)
+                {
+                    jewelryPrice = (double.Parse(firstSize.Price.Replace('.', ',')) * (1 - (double)jewelry.Discount.Amount / 100)).ToString("0.00");
+                }
+            }
+            else
+            {
+                jewelryPrice = Math.Round(double.Parse(jewelry.Price), 2).ToString("0.00");
+            }
 
             if (cart != null)
             {
@@ -93,7 +138,15 @@ namespace JewelryStore.Controllers
                 }
                 else
                 {
-                    await dbContext.CartContent.AddAsync(new CartContentModel(cart.ID, jewelry.ID, DateTime.Now, 1, jewelryPrice));
+                    if (quantity > 0)
+                    {
+                        await dbContext.CartContent.AddAsync(new CartContentModel(cart.ID, jewelry.ID, DateTime.Now, quantity, size ?? ""
+                            , Math.Round(double.Parse(jewelryPrice) * quantity, 2).ToString("0.00")));
+                    }
+                    else
+                    {
+                        await dbContext.CartContent.AddAsync(new CartContentModel(cart.ID, jewelry.ID, DateTime.Now, 1, size ?? "", jewelryPrice));
+                    }
                     await dbContext.SaveChangesAsync();
                 }
             }
@@ -103,7 +156,15 @@ namespace JewelryStore.Controllers
                 await dbContext.Cart.AddAsync(newCart);
                 await dbContext.SaveChangesAsync();
 
-                dbContext.CartContent.Add(new CartContentModel(newCart.ID, jewelry.ID, DateTime.Now, 1, jewelryPrice));
+                if (quantity > 0)
+                {
+                    await dbContext.CartContent.AddAsync(new CartContentModel(newCart.ID, jewelry.ID, DateTime.Now, quantity, size ?? ""
+                        , Math.Round(double.Parse(jewelryPrice) * quantity, 2).ToString("0.00")));
+                }
+                else
+                {
+                    await dbContext.CartContent.AddAsync(new CartContentModel(newCart.ID, jewelry.ID, DateTime.Now, 1, size ?? "", jewelryPrice));
+                }
                 await dbContext.SaveChangesAsync();
             }
 
@@ -125,7 +186,17 @@ namespace JewelryStore.Controllers
                 await dbContext.SaveChangesAsync();
             }
 
-            return Json(await dbContext.CartContent.Include(x => x.Jewelry.Discount).Where(x => x.Cart.ID_User == _userManager.GetUserId(User)).OrderBy(x => x.ID).ToListAsync());
+            List<CartContentModel> cartContents = await dbContext.CartContent.Include(x => x.Jewelry.Discount).Include(x => x.Jewelry.JewelrySizes)
+                .Where(x => x.Cart.ID_User == _userManager.GetUserId(User)).OrderBy(x => x.ID).ToListAsync();
+            for (int i = 0; i < cartContents.Count(); i++)
+            {
+                if (cartContents[i].Size != "")
+                {
+                    cartContents[i].Jewelry.Price = cartContents[i].Jewelry.JewelrySizes.FirstOrDefault(x => x.Size == cartContents[i].Size).Price.Replace(',', '.');
+                }
+            }
+
+            return Json(cartContents);
         }
     }
 }

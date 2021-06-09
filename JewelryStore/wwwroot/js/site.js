@@ -40,8 +40,8 @@ function NumerickInput(obj) {
     let value = parseInt(obj.val(), 10) || 1;
     if (value > 5) {
         obj.val(5).change();
-    } else {
-        obj.val(value).change();
+    } else if (value < 1) {
+        obj.val(1).change();
     }
 }
 

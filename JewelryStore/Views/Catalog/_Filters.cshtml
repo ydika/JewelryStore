@@ -84,6 +84,8 @@
                         </div>
                     }
                 </div>
+                <div class="show-button">Показать еще @(c.CharacteristicValues.Count() - 5)</div>
+                <div class="hide-button" style="display: none;">Скрыть @(c.CharacteristicValues.Count() - 5)</div>
             }
             else
             {
@@ -97,8 +99,6 @@
                     }
                 </div>
             }
-            <div class="show-button">Показать все</div>
-            <div class="hide-button" style="display: none;">Свернуть</div>
         </div>
     }
 </aside>

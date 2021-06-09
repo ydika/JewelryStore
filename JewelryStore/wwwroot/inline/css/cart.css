@@ -40,20 +40,6 @@
         padding: 20px;
     }
 
-    .cart-plus-minus {
-        width: 58px;
-    }
-
-        .cart-plus-minus > .cart-plus-minus-box {
-            height: 36px;
-            width: 36px;
-        }
-
-        .cart-plus-minus > .qtybutton {
-            height: 18px;
-            width: 22px;
-        }
-
     .cart-item-delete {
         font-size: 16px !important;
     }
@@ -95,9 +81,9 @@
     font-size: 20px;
 }
 
-.cart-item-delete > span:hover {
-    cursor: pointer;
-}
+    .cart-item-delete > span:hover {
+        cursor: pointer;
+    }
 
 .cart-empty {
     text-align: center;

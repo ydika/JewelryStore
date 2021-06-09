@@ -27,15 +27,17 @@ namespace JewelryStore.Models
 
         public DateTime DateOfPlacement { get; set; }
         public int Quantity { get; set; }
+        public string Size { get; set; }
         [JsonPropertyName("total_price")]
         public string TotalPrice { get; set; }
 
-        public CartContentModel(int iD_Cart, int iD_Jewelry, DateTime dateOfPlacement, int quantity, string totalPrice)
+        public CartContentModel(int iD_Cart, int iD_Jewelry, DateTime dateOfPlacement, int quantity, string size, string totalPrice)
         {
             ID_Cart = iD_Cart;
             ID_Jewelry = iD_Jewelry;
             DateOfPlacement = dateOfPlacement;
             Quantity = quantity;
+            Size = size;
             TotalPrice = totalPrice;
         }
     }

@@ -20,7 +20,11 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-4 col-lg-4">
+            <div class="col-md-4 col-lg-4 position-relative">
+                @if (Model.Jewelry.Discount.Amount > 0)
+                {
+                    <div class="card-discount">-@Model.Jewelry.Discount.Amount%</div>
+                }
                 <img class="item-img" src="@Model.Jewelry.ImageSrc" />
             </div>
             <div class="col-md-8 col-lg-8">
@@ -38,7 +42,7 @@
                                     @jc.Name:
                                     @if (jc.Name == "Размер")
                                     {
-                                        <select class="form-select">
+                                        <select id="size" onchange="ChangeQuantity(@Model.Jewelry.ID)" class="form-select">
                                             @foreach (var jcv in jc.Values)
                                             {
                                                 <option value="@jcv.Value">@jcv.Value</option>
@@ -69,18 +73,27 @@
                             }
                         }
                     </ul>
-                    <div class="quantity">
-                        <label>Количество:</label>
-                        <div class="cart-plus-minus">
-                            <input class="cart-plus-minus-box" value="1" type="number">
-                            <div class="inc qtybutton"></div>
-                            <div class="dec qtybutton"></div>
+                    <div id="itemPrice" class="item-buttons">
+                        <div>
+                            <div>
+                                Итоговая сумма:
+                                <!-- ko if: price() === null -->
+                                <span>@Model.Jewelry.Price</span>
+                                <!-- /ko -->
+                                <!-- ko ifnot: price() === null -->
+                                <span data-bind="text: price"></span>
+                                <!-- /ko -->
+                            </div>
+                            <div class="cart-action">
+                                <a href="javascript: undefined;" onclick="AddItemToCart(@Model.Jewelry.ID)">Добавить в корзину</a>
+                            </div>
                         </div>
-                    </div>
-                    <div>Цена: @Model.Jewelry.Price</div>
-                    <div class="item-buttons">
-                        <div class="cart-action">
-                            <a href="#">Добавить в корзину</a>
+                        <div class="quantity">
+                            <div class="cart-plus-minus">
+                                <input id="qInput" class="cart-plus-minus-box" type="number" value="1" onchange="ChangeQuantity(@Model.Jewelry.ID)">
+                                <div class="inc qtybutton" data-bind="css: { 'disable': quantity() === 5 }"></div>
+                                <div class="dec qtybutton" data-bind="css: { 'disable': quantity() === 1 }"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -88,3 +101,6 @@
         </div>
     </div>
 </div>
+@section Scripts {
+    <script src="~/inline/js/item.js"></script>
+}
