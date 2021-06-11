@@ -121,7 +121,7 @@ namespace JewelryStore.Controllers
                 JewelrySizeModel firstSize = jewelry.JewelrySizes.FirstOrDefault(x => x.Size == size);
                 if (firstSize != null)
                 {
-                    jewelryPrice = (double.Parse(firstSize.Price.Replace('.', ',')) * (1 - (double)jewelry.Discount.Amount / 100)).ToString("0.00");
+                    jewelryPrice = (double.Parse(firstSize.Price, CultureInfo.InvariantCulture) * (1 - (double)jewelry.Discount.Amount / 100)).ToString("0.00");
                 }
             }
             else
@@ -271,7 +271,7 @@ namespace JewelryStore.Controllers
                     "<th style=\"padding: 8px;\">Название</th>" +
                     "<th style=\"padding: 8px;\">Цена</th>" +
                     "<th style=\"padding: 8px;\">Количество</th>" +
-                    "<th style=\"padding: 8px;\">Итого</th></tr></thead><tbody>";
+                    "<th style=\"padding: 8px;\">Итого</th></tr></thead><tbody style=\"text-align: center;\">";
                 foreach (var orderContent in (await dbContext.Orders.Include(x => x.OrderContents).OrderBy(x => x.ID).LastOrDefaultAsync(x => x.ID_User == userId)).OrderContents.ToList())
                 {
                     emailMessage += "<tr style=\"border-top: 1px solid #ddd;\">" +
@@ -287,24 +287,24 @@ namespace JewelryStore.Controllers
                 await emailService.SendEmailAsync((await dbContext.Users.FirstOrDefaultAsync(x => x.Id == userId)).Email, "Your purchase", emailMessage);
             }
             else
-{
-    return RedirectToAction("List", "Catalog");
-}
+            {
+                return RedirectToAction("List", "Catalog");
+            }
 
-return View(new PurchaseViewModel(purchaseCode, cart));
+            return View(new PurchaseViewModel(purchaseCode, cart));
         }
 
         [NonAction]
-public string GetPurchaseCode(string str)
-{
-    byte[] tmpSource = Encoding.ASCII.GetBytes(str);
-    byte[] tmpHash = new MD5CryptoServiceProvider().ComputeHash(tmpSource);
-    StringBuilder sOutput = new StringBuilder(tmpHash.Length);
-    for (int i = 0; i < tmpHash.Length; i++)
-    {
-        sOutput.Append(tmpHash[i].ToString("X2"));
-    }
-    return sOutput.ToString();
-}
+        public string GetPurchaseCode(string str)
+        {
+            byte[] tmpSource = Encoding.ASCII.GetBytes(str);
+            byte[] tmpHash = new MD5CryptoServiceProvider().ComputeHash(tmpSource);
+            StringBuilder sOutput = new StringBuilder(tmpHash.Length);
+            for (int i = 0; i < tmpHash.Length; i++)
+            {
+                sOutput.Append(tmpHash[i].ToString("X2"));
+            }
+            return sOutput.ToString();
+        }
     }
 }
