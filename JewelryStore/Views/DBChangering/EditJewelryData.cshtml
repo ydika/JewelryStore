@@ -27,7 +27,24 @@
                     </div>
                 </div>
                 <div class="order-1 col-sm-6">
-                    @await Html.PartialAsync("_JewelryCharacteristics", Model.Characteristics)
+                    <div>Для выбора нескольких характеристик на устройствах с большим экраном зажмите Ctrl</div>
+                    @foreach (var c in Model.Characteristics)
+                    {
+                        if (c.Name != "Размер")
+                        {
+                            <div>
+                                <label class="control-label">@c.Name: </label>
+                                <select class="form-select" multiple="multiple" name="characteristics" asp-for="@c.SelectedValue" asp-items="@c.Values"></select>
+                            </div>
+                        }
+                        else
+                        {
+                            <div hidden>
+                                <label class="control-label">@c.Name: </label>
+                                <select class="form-select" multiple="multiple" name="characteristics" asp-for="@c.SelectedValue" asp-items="@c.Values"></select>
+                            </div>
+                        }
+                    }
                 </div>
                 <div class="order-2 col-sm-12">
                     @foreach (var size in Model.Jewelry.JewelrySizes)

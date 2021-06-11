@@ -34,13 +34,13 @@ namespace JewelryStore.Controllers
         public async Task<IActionResult> List()
         {
             await dbContext.Subspecies.Include(x => x.Jewelries).LoadAsync();
-            List<JewelryModel> jewelries = await dbContext.Jewelries.Include(x => x.Discount).ToListAsync();
+            List<JewelryModel> jewelries = await dbContext.Jewelries.Include(x => x.Discount).Where(x => x.Quantity > 0).ToListAsync();
 
             return View(new FiltersViewModel(
                 await dbContext.JewelryKinds.Include(x => x.Subspecies).ToListAsync(),
                 await dbContext.Characteristics.Include(x => x.CharacteristicValues).Where(x => x.CharacteristicValues.Count() > 0).ToListAsync(),
-                jewelries.Max(x => double.Parse(x.Price)),
-                jewelries.Min(x => double.Parse(x.Price))
+                Math.Ceiling(jewelries.Max(x => double.Parse(x.Price))).ToString(),
+                Math.Ceiling(jewelries.Min(x => double.Parse(x.Price))).ToString()
             ));
         }
 
@@ -126,7 +126,7 @@ namespace JewelryStore.Controllers
             }
             else
             {
-                jewelries = await dbContext.Jewelries.OrderByDescending(x => x.ID).ToListAsync();
+                jewelries = await dbContext.Jewelries.Where(x => x.Quantity > 0).OrderByDescending(x => x.ID).ToListAsync();
             }
 
             if (jkind != "list")
@@ -169,7 +169,7 @@ namespace JewelryStore.Controllers
             char[] delimiterChars = new char[] { ' ', ',', '.', ':', '\t' };
             var words = searchName.Split(delimiterChars);
 
-            List<JewelryModel> jewelries = dbContext.Jewelries.ToList();
+            List<JewelryModel> jewelries = dbContext.Jewelries.Where(x => x.Quantity > 0).ToList();
 
             foreach (string keyword in words)
             {

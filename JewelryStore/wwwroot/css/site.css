@@ -153,6 +153,10 @@ table {
     table {
         font-size: 10px;
     }
+
+        table > tbody > tr > td {
+            padding: 15px 4px;
+        }
 }
 
 /* Number Input
@@ -245,6 +249,22 @@ input[type='number'] {
         .cart-plus-minus > .qtybutton {
             height: 19px;
             width: 22px;
+        }
+}
+
+@media (max-width: 390px) {
+    .cart-plus-minus {
+        width: 50px;
+    }
+
+        .cart-plus-minus > .cart-plus-minus-box {
+            height: 33px;
+            width: 33px;
+        }
+
+        .cart-plus-minus > .qtybutton {
+            height: 19px;
+            width: 18px;
         }
 }
 

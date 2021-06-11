@@ -11,10 +11,10 @@ namespace JewelryStore.ViewModels
         public List<JewelryKindsModel> JewelryKinds { get; set; }
         public List<CharacteristicsModel> Characteristics { get; set; }
 
-        public double MaxPrice { get; set; }
-        public double MinPrice { get; set; }
+        public string MaxPrice { get; set; }
+        public string MinPrice { get; set; }
 
-        public FiltersViewModel(List<JewelryKindsModel> jewelryKinds, List<CharacteristicsModel> characteristics, double maxPrice, double minPrice)
+        public FiltersViewModel(List<JewelryKindsModel> jewelryKinds, List<CharacteristicsModel> characteristics, string maxPrice, string minPrice)
         {
             JewelryKinds = jewelryKinds;
             Characteristics = characteristics;

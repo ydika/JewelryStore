@@ -22,6 +22,8 @@ namespace JewelryStore.Services
         public DbSet<JewelryCharacteristicsModel> JewelryCharacteristics { get; set; }
         public DbSet<JewelryKindsModel> JewelryKinds { get; set; }
         public DbSet<JewelrySizeModel> JewelrySizes { get; set; }
+        public DbSet<OrderContentModel> OrderContents { get; set; }
+        public DbSet<OrdersModel> Orders { get; set; }
         public DbSet<SubspeciesModel> Subspecies { get; set; }
 
         public DataBaseContext(IConfiguration configuration)

@@ -1,5 +1,47 @@
-﻿<div>
-    <h1>
-        Ваши заказы будут туть.
-    </h1>
+﻿@model List<OrdersModel>
+<div>
+    <h2 class="pb-3">Ваши заказы</h2>
+    @if (Model == null)
+    {
+        <div>Перейдите в каталог</div>
+    }
+    else
+    {
+        @foreach (var order in Model)
+        {
+            <div>
+                <div>@order.DateOfPlacement</div>
+                <div>Номер заказа: @order.Code</div>
+            </div>
+            <div class="profile-container mb-3">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="cart-item-img">Фотография</th>
+                            <th>Название</th>
+                            <th>Цена</th>
+                            <th class="text-nowrap">Кол-во</th>
+                            <th>Итого</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var content in order.OrderContents)
+                        {
+                            <tr>
+                                <td class="cart-item-img">
+                                    <img src="@content.Jewelry.ImageSrc" alt="@content.Jewelry.Name" />
+                                </td>
+                                <td class="cart-item-name">
+                                    <a href="@content.Jewelry.Url">@content.Jewelry.Name</a>
+                                </td>
+                                <td>BYN @((double.Parse(content.TotalPrice)/@content.Quantity).ToString("0.00"))</td>
+                                <td>@content.Quantity</td>
+                                <td>BYN @content.TotalPrice</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    }
 </div>

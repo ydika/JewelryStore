@@ -1,6 +1,7 @@
 ﻿let cart = {
     cartContent: ko.observableArray(),
-    cartIsEmpty: ko.observable()
+    cartIsEmpty: ko.observable(),
+    totalPrice: ko.observable()
 };
 ko.applyBindings(cart, document.getElementById('cart'));
 
@@ -9,7 +10,8 @@ function GetCart() {
     $.getJSON('/cart/getcart',
         function (data) {
             cart.cartContent(data)
-                .cartIsEmpty(data.length > 0 ? false : true);
+                .cartIsEmpty(data.length > 0 ? false : true)
+                .totalPrice(Sum(data));
         }
     );
 }
@@ -47,8 +49,17 @@ function ChangeQuantity(jewelryid, obj) {
         dataType: 'json',
         data: { 'jewelryid': jewelryid, 'quantity': quantity },
         success: function (data) {
-            cart.cartContent(data);
+            cart.cartContent(data)
+                .totalPrice(Sum(data));
             $('.cart').removeClass('loading');
         }
     });
+}
+
+function Sum(data) {
+    let s = 0;
+    for (i = 0; i < data.length; i++) {
+        s += parseFloat(data[i].total_price.replace(',', '.'));
+    }
+    return s.toFixed(2);
 }

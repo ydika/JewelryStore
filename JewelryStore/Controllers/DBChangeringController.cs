@@ -116,15 +116,26 @@ namespace JewelryStore.Controllers
         {
             if (ModelState.IsValid)
             {
-                dbContext.JewelryCharacteristics.RemoveRange(dbContext.JewelryCharacteristics.Where(x => x.ID_Jewelry == jewelry.ID).ToList());
-
-                jewelry = ShapingJewelryModel(dbContext.Jewelries.Include(x => x.JewelrySizes).FirstOrDefault(x => x.ID == jewelry.ID), characteristics);
                 List<JewelrySizeModel> jewelrySizes = new List<JewelrySizeModel>();
                 for (int i = 0; i < sizePrice.Length; i++)
                 {
                     jewelrySizes.Add(new JewelrySizeModel(jewelry.ID, sizeValue[i], sizePrice[i]));
                 }
-                jewelry.JewelrySizes = jewelrySizes; 
+
+                dbContext.JewelrySizes.RemoveRange(dbContext.JewelrySizes.Where(x => x.ID_Jewelry == jewelry.ID));
+                dbContext.JewelrySizes.AddRange(jewelrySizes);
+
+                if (dbContext.Jewelries.Where(x => x.Code == jewelry.Code).Count() > 1)
+                {
+                    ModelState.AddModelError(string.Empty, "Указанный вами код/артикль уже используется!");
+                    return View("EditJewelryData", await ShapingEditViewModel(jewelry, characteristics));
+                }
+
+                dbContext.JewelryCharacteristics.RemoveRange(dbContext.JewelryCharacteristics.Where(x => x.ID_Jewelry == jewelry.ID).ToList());
+
+                int q = jewelry.Quantity;
+                jewelry = ShapingJewelryModel(jewelry, characteristics);
+                jewelry.Quantity = q;
                 dbContext.Jewelries.Add(jewelry);
                 dbContext.Entry(jewelry).State = EntityState.Modified;
 

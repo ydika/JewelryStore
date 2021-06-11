@@ -1,0 +1,44 @@
+﻿@model PurchaseViewModel
+@section Css {
+    <link rel="stylesheet" href="~/inline/css/cart.css" />
+}
+<div class="container mt-4">
+    <div class="cart">
+        <div class="my-3 pb-2" style="border-bottom: 1px solid #ddd;">
+            <div class="fs-4 text-center pb-4">Спасибо за покупку!</div>
+            <div>На Вашу почту отправлен чек о бронировании. Предоставьте номер заказа в нашем магазине!</div>
+            <div>Номер Вашего заказа: <b>@Model.PurchaseCode</b></div>
+            <div class="cart-total">Итоговая цена: <b>@Model.Cart.CartContent.Sum(x => double.Parse(x.TotalPrice)).ToString("0.00")</b></div>
+        </div>
+        <div class="title">
+            <h3>Ваш заказ</h3>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th class="cart-item-img">Фотография</th>
+                    <th>Название</th>
+                    <th>Цена</th>
+                    <th>Количество</th>
+                    <th>Итого</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var cc in Model.Cart.CartContent)
+                {
+                    <tr>
+                        <td class="cart-item-img">
+                            <img src="@cc.Jewelry.ImageSrc" alt="@cc.Jewelry.Name" />
+                        </td>
+                        <td class="cart-item-name">
+                            <a href="@cc.Jewelry.Url">@cc.Jewelry.Name</a>
+                        </td>
+                        <td>BYN @cc.Jewelry.Price</td>
+                        <td>@cc.Quantity</td>
+                        <td>BYN @cc.TotalPrice</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

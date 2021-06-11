@@ -1,5 +1,4 @@
-﻿@model List<CartContentModel>
-@section Css {
+﻿@section Css {
     <link rel="stylesheet" href="~/inline/css/cart.css" />
 }
 <div class="container mt-4">
@@ -7,7 +6,8 @@
         <div class="title">
             <h3>Корзина</h3>
         </div>
-        <table data-bind="ifnot: cartIsEmpty">
+        <!-- ko ifnot: cartIsEmpty -->
+        <table>
             <thead>
                 <tr>
                     <th class="cart-item-img">Фотография</th>
@@ -44,6 +44,13 @@
                 </tr>
             </tbody>
         </table>
+        <div class="cart-purchase-container">
+            <form method="post" asp-controller="Cart" asp-action="Purchase" asp-antiforgery="true">
+                <input class="cart-purchase" type="submit" value="Забронировать" />
+                <div class="cart-total" data-bind="text: 'Итоговая цена: ' + totalPrice() + ' BYN'"></div>
+            </form>
+        </div>
+        <!-- /ko -->
         <div class="cart-empty" data-bind="if: cartIsEmpty">
             <div class="cart-empty-title">Ваша корзина пуста =(</div>
             <div class="cart-empty-description">

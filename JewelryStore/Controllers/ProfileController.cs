@@ -16,10 +16,12 @@ namespace JewelryStore.Controllers
     [Authorize]
     public class ProfileController : Controller
     {
+        private readonly DataBaseContext dbContext;
         private readonly UserManager<UserModel> _userManager;
 
-        public ProfileController(UserManager<UserModel> userManager)
+        public ProfileController(DataBaseContext context, UserManager<UserModel> userManager)
         {
+            dbContext = context;
             _userManager = userManager;
         }
 
@@ -88,9 +90,12 @@ namespace JewelryStore.Controllers
 
         [HttpGet]
         [Route("[action]")]
-        public IActionResult GetOrders()
+        public async Task<IActionResult> GetOrders()
         {
-            return PartialView("_Order");
+            await dbContext.Jewelries.LoadAsync();
+            List<OrdersModel> userOrders = await dbContext.Orders.Include(x => x.OrderContents).Where(x => x.ID_User == _userManager.GetUserId(User)).OrderByDescending(x => x.ID).ToListAsync();
+
+            return PartialView("_Order", userOrders);
         }
     }
 }
