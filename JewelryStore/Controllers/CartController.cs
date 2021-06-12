@@ -84,9 +84,9 @@ namespace JewelryStore.Controllers
                 if (coincidence.Size != "")
                 {
                     JewelrySizeModel firstJewelry = coincidence.Jewelry.JewelrySizes.FirstOrDefault(x => x.Size == coincidence.Size);
-                    jewelryPrice = firstJewelry.Price.Replace('.', ',');
+                    jewelryPrice = firstJewelry.Price;
                     coincidence.Quantity = quantity;
-                    coincidence.TotalPrice = Math.Round(coincidence.Quantity * double.Parse(jewelryPrice) * (1 - (double)firstJewelry.Jewelry.Discount.Amount / 100), 2).ToString("0.00");
+                    coincidence.TotalPrice = Math.Round(coincidence.Quantity * double.Parse(jewelryPrice, CultureInfo.InvariantCulture) * (1 - (double)firstJewelry.Jewelry.Discount.Amount / 100), 2).ToString("0.00");
                 }
                 else
                 {
@@ -106,7 +106,7 @@ namespace JewelryStore.Controllers
                 }
                 if (cartContents[i].Size != "")
                 {
-                    cartContents[i].Jewelry.Price = cartContents[i].Jewelry.JewelrySizes.FirstOrDefault(x => x.Size == cartContents[i].Size).Price.Replace(',', '.');
+                    cartContents[i].Jewelry.Price = cartContents[i].Jewelry.JewelrySizes.FirstOrDefault(x => x.Size == cartContents[i].Size).Price;
                 }
             }
 
