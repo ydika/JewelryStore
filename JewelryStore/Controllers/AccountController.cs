@@ -147,5 +147,78 @@ namespace JewelryStore.Controllers
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
+
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("[action]")]
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        [Route("[action]")]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByEmailAsync(model.Email);
+                ModelState.AddModelError(string.Empty, "Для сброса пароля перейдите по ссылке в письме, отправленном на Ваш Email.");
+                if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
+                {
+                    return View(model);
+                }
+
+                var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+                var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
+                EmailService emailService = new EmailService();
+                await emailService.SendEmailAsync(model.Email, "Reset Password",
+                    "<div style=\"background-color:#F7F6F2;text-align:center;color:#836027;padding-bottom:30px;\">" +
+                    "<div style=\"font-size:40px;margin:0px;\">Glatteis</div>" +
+                    "<img style=\"border:1px solid #836027;width:600px;\" src=\"https://glatteis.herokuapp.com/images/emailpic.png\" alt=\"Ювелирный изделия. На любой вкус\">" +
+                    "<div style=\"font-size:30px;margin-bottom:10px;\"> <u>Сброс пароля</u></div>" +
+                    $"<div style=\"color:black;font-size:16px;margin-bottom:30px;\">Для сброса пароля пройдите по <a href={callbackUrl}>ссылке</a>.</div>" +
+                    "<div style=\"font-size:12px;color:red;\">Внимание! Если вы не сбрасываете пароль на нашем сайте, то просто проигнорируйте это сообщение.</div></div>");
+            }
+            return View(model);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("[action]")]
+        public IActionResult ResetPassword(string code = null)
+        {
+            return code == null ? View("Error") : View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        [Route("[action]")]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
+            if (result.Succeeded)
+            {
+                await _signInManager.PasswordSignInAsync(model.Email, model.Password, false, false);
+                return RedirectToAction("Index", "Home");
+            }
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+            return View(model);
+        }
     }
 }

@@ -55,7 +55,6 @@ namespace JewelryStore.Models
         [Required(ErrorMessage = "Не указан код/артикль")]
         public string Code { get; set; }
 
-        [JsonIgnore]
         [Required(ErrorMessage = "Не указано количество")]
         public int Quantity { get; set; }
 

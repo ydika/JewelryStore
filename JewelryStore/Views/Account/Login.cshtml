@@ -21,12 +21,15 @@
                 <div class="col-md-12">
                     <input type="submit" value="Войти" class="accept-register" />
                 </div>
-                <div class="login-other">
+                <div class="login-other align-items-center">
                     <div>
                         <input asp-for="RememberMe" class="remember-input" />
                         <label asp-for="RememberMe"></label>
                     </div>
-                    <a asp-controller="Account" asp-action="Register">У вас нет аккаунта?</a>
+                    <div class="d-flex flex-column">
+                        <a asp-controller="Account" asp-action="Register">У вас нет аккаунта?</a>
+                        <a asp-controller="Account" asp-action="ForgotPassword">Забыли пароль?</a>
+                    </div>
                 </div>
             </div>
         </form>

@@ -49,6 +49,10 @@ namespace JewelryStore.Controllers
 
             foreach (var cartContent in cartContents)
             {
+                if (cartContent.Jewelry.Quantity >= 5)
+                {
+                    cartContent.Jewelry.Quantity = 5;
+                }
                 if (cartContent.Size != "")
                 {
                     cartContent.Jewelry.Price = cartContent.Jewelry.JewelrySizes.FirstOrDefault(x => x.Size == cartContent.Size).Price;
@@ -96,6 +100,10 @@ namespace JewelryStore.Controllers
                 .Where(x => x.Cart.ID_User == _userManager.GetUserId(User)).OrderBy(x => x.ID).ToListAsync();
             for (int i = 0; i < cartContents.Count(); i++)
             {
+                if (cartContents[i].Jewelry.Quantity >= 5)
+                {
+                    cartContents[i].Jewelry.Quantity = 5;
+                }
                 if (cartContents[i].Size != "")
                 {
                     cartContents[i].Jewelry.Price = cartContents[i].Jewelry.JewelrySizes.FirstOrDefault(x => x.Size == cartContents[i].Size).Price.Replace(',', '.');
@@ -208,8 +216,22 @@ namespace JewelryStore.Controllers
         {
             string purchaseCode = "";
             string userId = _userManager.GetUserId(User);
-            await dbContext.Jewelries.Include(x => x.JewelrySizes).Include(x => x.Discount).LoadAsync();
+            List<JewelryModel> jewelries = await dbContext.Jewelries.Include(x => x.JewelrySizes).Include(x => x.Discount).ToListAsync();
             CartModel cart = await dbContext.Cart.Include(x => x.CartContent).FirstOrDefaultAsync(x => x.ID_User == userId);
+
+            JewelryModel jewelry = null;
+            foreach (var cartContent in cart.CartContent)
+            {
+                jewelry = jewelries.FirstOrDefault(x => x.ID == cartContent.ID_Jewelry);
+                if (cartContent.Quantity > jewelry.Quantity)
+                {
+                    cartContent.Quantity = jewelry.Quantity;
+                    dbContext.Cart.Add(cart);
+                    dbContext.Entry(cart).State = EntityState.Modified;
+                    await dbContext.SaveChangesAsync();
+                    return View("PurchaseNoJewelry");
+                }
+            }
 
             if (cart != null)
             {
@@ -217,10 +239,10 @@ namespace JewelryStore.Controllers
                 await dbContext.SaveChangesAsync();
                 OrdersModel userOrder = await dbContext.Orders.OrderBy(x => x.ID).LastOrDefaultAsync(x => x.ID_User == userId);
                 List<OrderContentModel> orderContents = new List<OrderContentModel>();
-                JewelryModel jewelry = null;
+                jewelry = null;
                 for (int i = 0; i < cart.CartContent.Count(); i++)
                 {
-                    jewelry = await dbContext.Jewelries.FirstOrDefaultAsync(x => x.ID == cart.CartContent[i].ID_Jewelry);
+                    jewelry = jewelries.FirstOrDefault(x => x.ID == cart.CartContent[i].ID_Jewelry);
                     jewelry.Quantity -= cart.CartContent[i].Quantity;
                     if (jewelry.Quantity < 0)
                     {

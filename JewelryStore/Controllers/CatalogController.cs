@@ -74,6 +74,11 @@ namespace JewelryStore.Controllers
                 }
             }
 
+            if (jewelry.Quantity >= 5)
+            {
+                jewelry.Quantity = 5;
+            }
+
             return View(new ItemViewModel(jewelry, itemCharacteristics));
         }
 
@@ -138,7 +143,7 @@ namespace JewelryStore.Controllers
                 }
             }
 
-            if (minPrice != 0 && maxPrice != 0 && maxPrice >= minPrice)
+            if (minPrice >= 0 && maxPrice >= 0 && maxPrice >= minPrice)
             {
                 jewelries = jewelries.Where(x => double.Parse(x.Price) >= minPrice && double.Parse(x.Price) <= maxPrice).ToList();
             }
@@ -169,7 +174,7 @@ namespace JewelryStore.Controllers
             char[] delimiterChars = new char[] { ' ', ',', '.', ':', '\t' };
             var words = searchName.Split(delimiterChars);
 
-            List<JewelryModel> jewelries = dbContext.Jewelries.Where(x => x.Quantity > 0).ToList();
+            List<JewelryModel> jewelries = dbContext.Jewelries.Where(x => x.Quantity > 0).OrderByDescending(x => x.ID).ToList();
 
             foreach (string keyword in words)
             {

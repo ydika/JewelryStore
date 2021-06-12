@@ -1,4 +1,6 @@
-﻿if ($('#itemsInCart').text() === "") {
+﻿let jewelryQuanitity;
+
+if ($('#itemsInCart').text() === "") {
     $('#itemsInCart').hide();
 }
 
@@ -31,15 +33,15 @@ function NumerickClick(obj) {
         value = value - 1 > 0 ? value - 1 : 1;
     }
     else if (obj.hasClass('inc')) {
-        value = value + 1 < 5 ? value + 1 : 5;
+        value = value + 1 < jewelryQuanitity ? value + 1 : jewelryQuanitity;
     }
     input.val(value).change();
 }
 
 function NumerickInput(obj) {
-    let value = parseInt(obj.val(), 10) || 1;
-    if (value > 5) {
-        obj.val(5).change();
+    let value = parseInt(obj.val(), 10);
+    if (value > jewelryQuanitity) {
+        obj.val(jewelryQuanitity).change();
     } else if (value < 1) {
         obj.val(1).change();
     }
