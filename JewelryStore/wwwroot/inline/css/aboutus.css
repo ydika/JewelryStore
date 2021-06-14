@@ -1,0 +1,83 @@
+﻿.gold-text {
+    color: #d8a247;
+}
+
+.about-us-area {
+    background-color: white;
+    text-align: justify;
+    padding: 30px;
+    box-shadow: 1px 1px 5px 5px rgba(0, 0, 0, 0.1);
+}
+
+    .about-us-area > h2 {
+        margin-bottom: 25px;
+        padding-bottom: 20px;
+        position: relative;
+    }
+
+        .about-us-area > h2:before {
+            background-color: #f4f4f4;
+            bottom: 0;
+            content: "";
+            height: 2px;
+            left: 0;
+            position: absolute;
+            width: 100%;
+        }
+
+        .about-us-area > h2:after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            background: #d8a247;
+            height: 2px;
+            width: 170px;
+        }
+
+    .about-us-area .catalog-link {
+        background: #d8a247;
+        width: 100px;
+        padding: 10px;
+        margin-bottom: 16px;
+        color: #ffffff;
+        text-align: center;
+        transition: all 0.3s ease-in-out;
+    }
+
+        .about-us-area .catalog-link:hover {
+            background: #595959;
+        }
+
+.about-us-image {
+    text-align: center;
+    margin: 40px 0px;
+    padding: 40px 0px;
+    border-top: 1px solid #e5e5e5;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+    .about-us-image > img {
+        max-width: 400px;
+        width: 100%;
+    }
+
+.contact-us {
+    background-color: #f4f4f4;
+    padding: 30px 30px 19px;
+}
+
+    .contact-us .contact-information {
+        margin-bottom: 1rem;
+        border-bottom: 1px solid #e5e5e5;
+    }
+
+        .contact-us .contact-information:last-child {
+            margin-bottom: 0px;
+            border-bottom: none;
+        }
+
+.ya-map {
+    height: 360px;
+    width: 100%;
+}

@@ -1,0 +1,47 @@
+﻿@{
+    ViewData["Title"] = "О нас";
+}
+@section Css {
+    <link rel="stylesheet" href="~/inline/css/aboutus.css" />
+}
+<div class="container mt-4 about-us-area">
+    <h2>Добро пожаловать в магазин <span class="gold-text">Glatteis</span>!</h2>
+    <p>
+        Glatteis создает изделия, отличающиеся утонченной красотой. Созданные вручную украшения характеризует гармония великолепных форм и плавных линий.
+        Работы наших дизайнеров выделяются женственным характером, а качество изделий соответствует строгим стандартам.
+    </p>
+    <p>
+        Компания Glatteis была основана в 2007 году. Мы получили широкую известность благодаря необыкновенному стилю украшений.
+        Представительницы женского пола особенно ценят яркие браслеты Glatteis, изготовленные вручную.
+        Каждое украшение — это результат кропотливой работы мастера, благодаря которой браслет получается неповторимым и уникальным.
+    </p>
+    <a class="nav-link catalog-link" asp-area="" asp-controller="Catalog" asp-action="List" asp-route-jkind="list">Каталог</a>
+    <div class="about-us-image">
+        <img src="/images/aboutsus-bracelet.jpg" />
+    </div>
+    <div class="ya-map">
+        <script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A4713975f37e59fd4c009283415fdbaa15f8f18f8a5e82a5d9927fed974d98342&amp;width=100%&amp;height=100%&amp;lang=ru_RU&amp;scroll=true"></script>
+    </div>
+    <div class="contact-us">
+        <div class="contact-information">
+            <h4>Наш адрес</h4>
+            <p>225406, Республика Беларусь, Брестская обл., г. Барановичи, ул. Советская 69</p>
+        </div>
+        <div class="contact-information">
+            <h4>Номера телефонов</h4>
+            <p class="mb-0">+375 (29) 413-53-53</p>
+            <p class="mb-0">+375 (44) 413-53-53</p>
+            <p>67-66-67</p>
+        </div>
+        <div class="contact-information">
+            <h4>Наш Email</h4>
+            <p class="mb-0">glatteis.herokuapp@gmail.com</p>
+            <p>dikanyuri@tut.by</p>
+        </div>
+        <div class="contact-information">
+            <h4>Время работы</h4>
+            <p class="mb-0">пн-пт: 8:00-20:00</p>
+            <p>сб: 9:00-17:00</p>
+        </div>
+    </div>
+</div>

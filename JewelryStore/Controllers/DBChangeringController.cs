@@ -2,6 +2,7 @@
 using JewelryStore.Services;
 using JewelryStore.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -21,13 +23,15 @@ namespace JewelryStore.Controllers
     {
         private readonly DataBaseContext dbContext;
         private readonly UserManager<UserModel> _userManager;
+        private readonly IWebHostEnvironment _appEnvironment;
 
         private int displayedQuantity = 20;
 
-        public DBChangeringController(DataBaseContext context, UserManager<UserModel> userManager)
+        public DBChangeringController(DataBaseContext context, UserManager<UserModel> userManager, IWebHostEnvironment appEnvironment)
         {
             dbContext = context;
             _userManager = userManager;
+            _appEnvironment = appEnvironment;
         }
 
         [HttpGet]
@@ -64,7 +68,7 @@ namespace JewelryStore.Controllers
         [HttpPost]
         [Route("[action]")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateNewJewelry(JewelryModel jewelry, int[] characteristics)
+        public async Task<IActionResult> CreateNewJewelry(JewelryModel jewelry, int[] characteristics, IFormFile image)
         {
             if (ModelState.IsValid)
             {
@@ -84,6 +88,23 @@ namespace JewelryStore.Controllers
                         jewelrySizes.Add(new JewelrySizeModel(jewelry.ID, item.Value, ""));
                     }
                     jewelry.JewelrySizes = jewelrySizes;
+
+                    string path = "";
+                    if (image != null)
+                    {
+                        path = $"/images/jewelrys/{dbContext.Subspecies.Include(x => x.Kind).FirstOrDefault(x => x.ID == jewelry.ID_Subspecies).Kind.EnName}/{image.FileName}";
+                        using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
+                        {
+                            await image.CopyToAsync(fileStream);
+                        }
+                        FilesModel file = new FilesModel { Name = image.FileName, Path = path };
+
+                        jewelry.ImageSrc = path;
+
+                        await dbContext.Files.AddAsync(file);
+                        await dbContext.SaveChangesAsync();
+                    }
+
                     await dbContext.Jewelries.AddAsync(jewelry);
                     await dbContext.SaveChangesAsync();
                 }

@@ -18,6 +18,7 @@ namespace JewelryStore.Services
         public DbSet<CharacteristicsModel> Characteristics { get; set; }
         public DbSet<CharacteristicValueModel> CharacteristicValues { get; set; }
         public DbSet<DiscountModel> Discounts { get; set; }
+        public DbSet<FilesModel> Files { get; set; }
         public DbSet<JewelryModel> Jewelries { get; set; }
         public DbSet<JewelryCharacteristicsModel> JewelryCharacteristics { get; set; }
         public DbSet<JewelryKindsModel> JewelryKinds { get; set; }

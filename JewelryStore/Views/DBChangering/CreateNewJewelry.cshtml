@@ -1,4 +1,7 @@
 ﻿@model EditItemViewModel
+@{
+    ViewData["Title"] = "Создание изделия";
+}
 @section Css {
     <link rel="stylesheet" href="~/inline/css/dbeditor.css" />
 }
@@ -8,7 +11,7 @@
     </div>
     <a asp-action="JewelrysTable">вернуться назад</a>
     <hr />
-    <form class="create-data-form" asp-action="CreateNewJewelry" asp-antiforgery="true" method="post">
+    <form class="create-data-form" asp-action="CreateNewJewelry" asp-antiforgery="true" enctype="multipart/form-data" method="post">
         <div class="validation" asp-validation-summary="ModelOnly"></div>
         <div class="container">
             <div class="row">
@@ -29,6 +32,7 @@
                     @await Html.PartialAsync("_JewelryCharacteristics", Model.Characteristics)
                 </div>
                 <div class="form-group order-2 col-sm-12">
+                    <input type="file" name="image" />
                     <input type="submit" value="Сохранить" class="btn btn-default" />
                 </div>
             </div>

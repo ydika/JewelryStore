@@ -298,7 +298,7 @@ namespace JewelryStore.Controllers
                 {
                     emailMessage += "<tr style=\"border-top: 1px solid #ddd;\">" +
                         $"<td><img style=\"width: 100%;max-height: 200px;max-width: 200px;\" src=\"https://glatteis.herokuapp.com{orderContent.Jewelry.ImageSrc}\" alt=\"{orderContent.Jewelry.Name}\" /></td>" +
-                        $"<td><a style=\"transition: .25s ease-in;color: black;\" onmouseover=\"this.style.color: #d8a247;\" href=\"{orderContent.Jewelry.Url}\">{orderContent.Jewelry.Name}</a></td>" +
+                        $"<td><a style=\"transition: .25s ease-in;color: black;\" onmouseover=\"this.style.color: #d8a247;\" href=\"https://glatteis.herokuapp.com{orderContent.Jewelry.Url}\">{orderContent.Jewelry.Name}</a></td>" +
                         $"<td>BYN {orderContent.Jewelry.Price}</td>" +
                         $"<td>{orderContent.Quantity}</td>" +
                         $"<td>BYN {orderContent.TotalPrice}</td>" +

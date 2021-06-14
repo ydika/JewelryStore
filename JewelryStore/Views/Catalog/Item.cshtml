@@ -1,4 +1,7 @@
 ﻿@model ItemViewModel
+@{
+    ViewData["Title"] = $"{Model.Jewelry.Name}";
+}
 @section Css {
     <link rel="stylesheet" href="~/inline/css/item.css" />
 }
