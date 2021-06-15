@@ -1,0 +1,21 @@
+﻿.privacy-area {
+    background-color: white;
+    text-align: justify;
+    padding: 30px;
+    box-shadow: 1px 1px 5px 5px rgba(0, 0, 0, 0.1);
+}
+
+    .privacy-area > h2 {
+        margin-bottom: 1rem;
+    }
+
+    .privacy-area ul {
+        list-style: none;
+        padding: 0px;
+    }
+
+@media (max-width: 575px) {
+    .privacy-area {
+        padding: 15px;
+    }
+}

@@ -8,7 +8,7 @@
 <div class="container mt-4">
     <div class="item-characteristic">
         <div class="fs-5 mb-3 pb-2 align-items-center d-flex flex-row" style="border-bottom: 1px solid #e5e5e5;">
-            <a class="fs-3 item-navigation-link" href="javascript: undefined;" onclick="history.back()">🠔</a>
+            <a class="fs-3 item-navigation-link" href="javascript: undefined;" onclick="history.back()">&larr;</a>
             <div class="d-flex text-center align-items-center" style="flex: 1 0 auto">
                 <div style="flex: 1 0 auto">
                     <div class="d-sm-inline">
@@ -96,8 +96,8 @@
                             <div class="quantity">
                                 <div class="cart-plus-minus">
                                     <input id="qInput" class="cart-plus-minus-box" type="number" value="1" onchange="ChangeQuantity(@Model.Jewelry.ID)">
-                                    <div class="inc qtybutton" data-bind="css: { 'disable': quantity() === @Model.Jewelry.Quantity }"></div>
-                                    <div class="dec qtybutton" data-bind="css: { 'disable': quantity() === 1 }"></div>
+                                    <div class="inc qtybutton" data-bind="css: { 'disable': quantity() === @Model.Jewelry.Quantity }">+</div>
+                                    <div class="dec qtybutton" data-bind="css: { 'disable': quantity() === 1 }">-</div>
                                 </div>
                             </div>
                         </div>

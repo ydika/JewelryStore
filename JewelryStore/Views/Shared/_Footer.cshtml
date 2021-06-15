@@ -1,5 +1,44 @@
 ﻿<footer class="border-top footer text-muted">
     <div class="container">
+        <div class="row">
+            <div class="col-md-4 text-wrap footer-brand-name">
+                <span>Glatteis</span>
+                <div class="brand-desc">Тут будет краткое описание магазина</div>
+            </div>
+            <div class="col-md-2">
+                <h3>Каталог</h3>
+                <ul class="list-unstyled links">
+                    <li><a asp-area="" asp-controller="Catalog" asp-action="List" asp-route-jkind="rings" asp-route-subspecies="wedding-rings">Кольца</a></li>
+                    <li><a asp-area="" asp-controller="Catalog" asp-action="List" asp-route-jkind="rings" asp-route-subspecies="wedding-rings">Кольца</a></li>
+                    <li><a asp-area="" asp-controller="Catalog" asp-action="List" asp-route-jkind="rings" asp-route-subspecies="wedding-rings">Кольца</a></li>
+                    <li><a asp-area="" asp-controller="Catalog" asp-action="List" asp-route-jkind="rings" asp-route-subspecies="wedding-rings">Кольца</a></li>
+                    <li><a asp-area="" asp-controller="Catalog" asp-action="List" asp-route-jkind="rings" asp-route-subspecies="wedding-rings">Кольца</a></li>
+                </ul>
+            </div>
+            <div class="col-md-6 text-wrap">
+                <h3>О нас</h3>
+                <ul class="list-unstyled links">
+                    <li>
+                        <img src="/images/icons/address.svg" asp-append-version="true" />
+                        Адрес: 225406, Республика Беларусь, Брестская обл., г. Барановичи, ул. Советская 69
+                    </li>
+                    <li>
+                        <img src="/images/icons/phone-call.svg" asp-append-version="true" />
+                        Телефон: +375 (29) 413-53-53, +375 (44) 413-53-53, 67-66-67
+                    </li>
+                    <li>
+                        <img src="/images/icons/email.svg" asp-append-version="true" />
+                        Email: glatteis.herokuapp@gmail.com
+                    </li>
+                    <li>
+                        <img src="/images/icons/working-time.svg" asp-append-version="true" />
+                        Время работы: пн-пт: 8:00-20:00, сб: 9:00-17:00
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="privacy">
         &copy; 2021 - Glatteis - <a asp-area="" asp-controller="Home" asp-action="Privacy">Политика</a>
     </div>
 </footer>

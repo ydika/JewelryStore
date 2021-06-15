@@ -1,0 +1,76 @@
+﻿.footer {
+    line-height: 1.5 !important;
+}
+
+    .footer .row > div {
+        margin: 1rem 0px;
+    }
+
+    .footer img {
+        width: 24px;
+        height: 24px;
+    }
+
+    .footer p {
+        margin-bottom: 0px;
+    }
+
+ul {
+    padding: 0px;
+    list-style: none;
+}
+
+    ul.list-unstyled > li:not(:last-child) {
+        padding-bottom: 10px;
+    }
+
+.footer-brand-name > span {
+    line-height: 1;
+    font-size: 32px;
+    color: #d8a247;
+}
+
+.privacy {
+    padding: 1.5rem;
+    text-align: center;
+    border-top: 1px solid #e5e5e5;
+}
+
+.footer a {
+    transition: all 0.2s ease-in;
+    color: #595959;
+}
+
+    .footer a:hover {
+        color: #d8a247;
+    }
+
+.brand-desc {
+    margin-top: 5px;
+}
+
+@media (max-width: 1199px) {
+    body {
+        margin-bottom: 344px !important;
+    }
+}
+
+@media (max-width: 991px) {
+    body {
+        margin-bottom: 390px !important;
+    }
+}
+
+@media (max-width: 767px) {
+    body {
+        margin-bottom: 536px !important;
+    }
+
+    .footer {
+        font-size: 12px;
+    }
+
+    .footer .row > div:not(:first-child) {
+        margin: 0px;
+    }
+}

@@ -8,6 +8,16 @@
     padding: 30px;
     box-shadow: 1px 1px 5px 5px rgba(0, 0, 0, 0.1);
 }
+    .about-us-area h4 {
+        display: flex;
+        align-items: center;
+    }
+
+    .about-us-area h4 > img {
+        height: 20px;
+        width: 20px;
+        margin-right: 6px;
+    }
 
     .about-us-area > h2 {
         margin-bottom: 25px;

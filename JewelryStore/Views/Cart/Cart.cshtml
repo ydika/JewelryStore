@@ -33,11 +33,11 @@
                         <div class="quantity">
                             <div class="cart-plus-minus">
                                 <input class="cart-plus-minus-box" type="number"
-                                       data-bind="attr:{value: quantity}, event:{ change: function(){ChangeQuantity(jewelry.id, $(event.currentTarget)); jewelryQuanitity = jewelry.quantity},
+                                       data-bind="attr:{value: quantity}, event:{ change: function(){ChangeQuantity(jewelry.id, $(event.currentTarget));},
                                        focus: function() {jewelryQuanitity = jewelry.quantity} }"
                                        oninput="NumerickInput($(event.currentTarget))" onfocus="NumerickFocus($(event.currentTarget))">
-                                <div class="inc qtybutton" data-bind="css: { 'disable': quantity === jewelry.quantity }" onclick="NumerickClick($(event.currentTarget))"></div>
-                                <div class="dec qtybutton" data-bind="css: { 'disable': quantity === 1 }" onclick="NumerickClick($(event.currentTarget))"></div>
+                                <div class="inc qtybutton" data-bind="css: { 'disable': quantity === 5 }, click: function(){jewelryQuanitity = jewelry.quantity;NumerickClick($(event.currentTarget))}">+</div>
+                                <div class="dec qtybutton" data-bind="css: { 'disable': quantity === 1 }, click: function(){jewelryQuanitity = jewelry.quantity;NumerickClick($(event.currentTarget))}">-</div>
                             </div>
                         </div>
                     </td>

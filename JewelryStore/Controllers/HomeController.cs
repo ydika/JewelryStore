@@ -1,6 +1,8 @@
 ﻿using JewelryStore.Models;
+using JewelryStore.Services;
 using JewelryStore.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -13,15 +15,17 @@ namespace JewelryStore.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly DataBaseContext dbContext;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, DataBaseContext context)
         {
             _logger = logger;
+            dbContext = context;
         }
 
         public IActionResult Index()
         {
-            return View();
+            return View(dbContext.Jewelries.Include(x => x.Discount).Include(x => x.JewelrySizes).ToList());
         }
 
         public IActionResult AboutUs()

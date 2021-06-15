@@ -54,8 +54,6 @@ button.accept-policy {
     line-height: inherit;
 }
 
-/* Sticky footer styles
--------------------------------------------------- */
 html {
     position: relative;
     min-height: 100%;
@@ -63,7 +61,7 @@ html {
 
 body {
     /* Margin bottom by footer height */
-    margin-bottom: 60px;
+    margin-bottom: 323px;
     background-image: url(/images/background/background.jpg);
     background-attachment: fixed;
     /*background-repeat: no-repeat;*/
@@ -208,23 +206,21 @@ input[type='number'] {
 }
 
     .quantity .cart-plus-minus > .qtybutton.dec {
+        display: flex;
+        justify-content: center;
+        align-items: center;
         bottom: 0;
         right: 0;
     }
 
-        .quantity .cart-plus-minus > .qtybutton.dec:before {
-            content: '-';
-        }
-
     .quantity .cart-plus-minus > .qtybutton.inc {
+        display: flex;
+        justify-content: center;
+        align-items: center;
         border-bottom: none;
         top: 0;
         right: 0;
     }
-
-        .quantity .cart-plus-minus > .qtybutton.inc:before {
-            content: '+';
-        }
 
     .quantity .cart-plus-minus > .qtybutton:hover {
         transition: 0.25s ease-in;
@@ -263,7 +259,7 @@ input[type='number'] {
         }
 
         .cart-plus-minus > .qtybutton {
-            height: 19px;
+            height: 16.5px;
             width: 18px;
         }
 }
