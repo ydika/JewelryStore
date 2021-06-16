@@ -31,7 +31,7 @@ namespace JewelryStore.Controllers
 
         [Route("{jkind}")]
         [Route("{jkind}/{subspecies}")]
-        public async Task<IActionResult> List()
+        public async Task<IActionResult> List(string o)
         {
             await dbContext.Subspecies.Include(x => x.Jewelries).LoadAsync();
             List<JewelryModel> jewelries = await dbContext.Jewelries.Include(x => x.Discount).Where(x => x.Quantity > 0).ToListAsync();
@@ -40,7 +40,7 @@ namespace JewelryStore.Controllers
                 await dbContext.JewelryKinds.Include(x => x.Subspecies).ToListAsync(),
                 await dbContext.Characteristics.Include(x => x.CharacteristicValues).Where(x => x.CharacteristicValues.Count() > 0).ToListAsync(),
                 Math.Ceiling(jewelries.Max(x => double.Parse(x.Price))).ToString(),
-                Math.Ceiling(jewelries.Min(x => double.Parse(x.Price))).ToString()
+                Math.Floor(jewelries.Min(x => double.Parse(x.Price))).ToString()
             ));
         }
 

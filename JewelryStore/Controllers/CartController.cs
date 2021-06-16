@@ -220,17 +220,29 @@ namespace JewelryStore.Controllers
             CartModel cart = await dbContext.Cart.Include(x => x.CartContent).FirstOrDefaultAsync(x => x.ID_User == userId);
 
             JewelryModel jewelry = null;
+            bool noJewelry = false;
             foreach (var cartContent in cart.CartContent)
             {
                 jewelry = jewelries.FirstOrDefault(x => x.ID == cartContent.ID_Jewelry);
                 if (cartContent.Quantity > jewelry.Quantity)
                 {
-                    cartContent.Quantity = jewelry.Quantity;
-                    dbContext.Cart.Add(cart);
-                    dbContext.Entry(cart).State = EntityState.Modified;
-                    await dbContext.SaveChangesAsync();
-                    return View("PurchaseNoJewelry");
+                    noJewelry = true;
+                    if (jewelry.Quantity == 0)
+                    {
+                        dbContext.CartContent.Remove(cartContent);
+                    }
+                    else
+                    {
+                        cartContent.Quantity = jewelry.Quantity;
+                        dbContext.Cart.Add(cart);
+                        dbContext.Entry(cart).State = EntityState.Modified;
+                    }
                 }
+            }
+            await dbContext.SaveChangesAsync();
+            if (noJewelry)
+            {
+                return View("PurchaseNoJewelry");
             }
 
             if (cart != null)

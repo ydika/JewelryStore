@@ -17,4 +17,8 @@
 </div>
 @section Scripts {
     <script src="~/inline/js/catalog.js"></script>
+    <script type="text/javascript">
+        var clean_uri = location.protocol + "//" + location.host + location.pathname;
+        window.history.replaceState({}, document.title, clean_uri);
+    </script>
 }

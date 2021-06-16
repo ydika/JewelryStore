@@ -51,19 +51,19 @@ ul {
 
 @media (max-width: 1199px) {
     body {
-        margin-bottom: 344px !important;
+        margin-bottom: 442px !important;
     }
 }
 
 @media (max-width: 991px) {
     body {
-        margin-bottom: 390px !important;
+        margin-bottom: 464px !important;
     }
 }
 
 @media (max-width: 767px) {
     body {
-        margin-bottom: 536px !important;
+        margin-bottom: 537px !important;
     }
 
     .footer {
@@ -72,5 +72,11 @@ ul {
 
     .footer .row > div:not(:first-child) {
         margin: 0px;
+    }
+}
+
+@media (max-width: 575px) {
+    body {
+        margin-bottom: 600px !important;
     }
 }

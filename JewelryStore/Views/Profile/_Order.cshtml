@@ -1,9 +1,9 @@
 ﻿@model List<OrdersModel>
 <div>
     <h2 class="pb-3">Ваши заказы</h2>
-    @if (Model == null)
+    @if (Model == null || Model.Count() == 0)
     {
-        <div>Перейдите в каталог</div>
+        <div>У вас еще нет заказов =(. Перейдите в <a asp-area="" asp-controller="Catalog" asp-action="List" asp-route-jkind="list">каталог</a>.</div>
     }
     else
     {

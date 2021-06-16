@@ -61,7 +61,7 @@ html {
 
 body {
     /* Margin bottom by footer height */
-    margin-bottom: 323px;
+    margin-bottom: 370px;
     background-image: url(/images/background/background.jpg);
     background-attachment: fixed;
     /*background-repeat: no-repeat;*/

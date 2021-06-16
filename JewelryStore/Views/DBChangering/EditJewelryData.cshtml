@@ -18,6 +18,7 @@
                 <div class="order-0 col-sm-6">
                     <div class="row">
                         <input type="text" name="ID" value="@Model.Jewelry.ID" hidden />
+                        <input type="hidden" name="ImageSrc" value="@Model.Jewelry.ImageSrc" />
                         <div class="form-group col-md-6 col-12">
                             <label class="control-label">Вид изделия: </label>
                             <select class="form-select" name="ID_Subspecies" asp-for="Kind.Kind" asp-items="Model.Kind.Kinds"></select>
@@ -49,16 +50,19 @@
                         }
                     }
                 </div>
-                <div class="order-2 col-sm-12">
-                    @foreach (var size in Model.Jewelry.JewelrySizes)
-                    {
-                        <div>
-                            <label class="d-inline-block me-2">Цена для @size.Size размера:</label>
-                            <input type="hidden" name="sizeValue" value="@size.Size" />
-                            <input class="d-inline-block form-control" name="sizePrice" type="number" value="@size.Price" style="width: 50%" />
-                        </div>
-                    }
-                </div>
+                @if (Model.Jewelry.JewelrySizes != null)
+                {
+                    <div class="order-2 col-sm-12">
+                        @foreach (var size in Model.Jewelry.JewelrySizes)
+                        {
+                            <div>
+                                <label class="d-inline-block me-2">Цена для @size.Size размера:</label>
+                                <input type="hidden" name="sizeValue" value="@size.Size" />
+                                <input class="d-inline-block form-control" name="sizePrice" type="number" value="@size.Price" style="width: 50%" />
+                            </div>
+                        }
+                    </div>
+                }
                 <div class="form-group order-3 col-sm-12">
                     <input type="submit" value="Сохранить" class="btn btn-default" />
                 </div>

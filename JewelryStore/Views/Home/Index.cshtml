@@ -1,25 +1,27 @@
-﻿@model List<JewelryModel>
+﻿@model List<JewelrySliderViewModel>
 @{
     ViewData["Title"] = "Купить ювелирные изделия - ювелирный магазин «Glatteis»";
 }
 @section Css {
+    <link rel="stylesheet" href="~/inline/css/index.css" />
+    <link rel="stylesheet" href="~/inline/css/aboutus.css" />
     <link rel="stylesheet" href="~/inline/css/catalog.css" />
 }
-<div id="mainCarouselndicators" class="carousel slide carousel-fade" data-bs-ride="carousel">
+<div id="mainCarouselndicators" class="carousel slide carousel-fade mb-4" data-bs-ride="carousel">
     <div class="carousel-indicators">
         <button type="button" data-bs-target="#mainCarouselndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
         <button type="button" data-bs-target="#mainCarouselndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-        <button type="button" data-bs-target="#mainCarouselndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
     </div>
     <div class="carousel-inner">
         <div class="carousel-item active">
-            <img class="d-block w-100" src="/images/cz-sharm-slajder-na-sajt-novaya-kollekciya-1900h720rh-2-1900x720-015.jpg" alt="Первый слайд" asp-append-version="true">
+            <a asp-controller="Catalog" asp-action="List" asp-route-o="Sokolov">
+                <img class="d-block w-100" src="/images/slider/tsimofey-sokolov.jpg" alt="Первый слайд" asp-append-version="true">
+            </a>
         </div>
         <div class="carousel-item">
-            <img class="d-block w-100" src="/images/cz-sharm-slajder-na-sajt-novaya-kollekciya-1900h720rh-2-1900x720-015.jpg" alt="Второй слайд" asp-append-version="true">
-        </div>
-        <div class="carousel-item">
-            <img class="d-block w-100" src="/images/cz-sharm-slajder-na-sajt-novaya-kollekciya-1900h720rh-2-1900x720-015.jpg" alt="Третий слайд" asp-append-version="true">
+            <a asp-controller="Catalog" asp-action="List" asp-route-o="Parker">
+                <img class="d-block w-100" src="/images/slider/parker.jpg" alt="Второй слайд" asp-append-version="true">
+            </a>
         </div>
     </div>
     <button class="carousel-control-prev" type="button" data-bs-target="#mainCarouselndicators" data-bs-slide="prev">
@@ -32,58 +34,122 @@
     </button>
 </div>
 <div class="container">
-    <div id="jewelrysCarouselIndicators" class="carousel slide" data-bs-interval="false" data-bs-ride="carousel">
-        <div class="carousel-inner h-100">
-            @for (int i = 0; i < Model.Count() / 4; i++)
-            {
-                <div class="carousel-item @(i == 0 ? "active" : "")">
-                    <div class="row h-100">
-                        @for (int y = 0; y < 4; y++)
-                        {
-                            <div class="col-6 col-md-4 col-xl-3 mb-4 @(y == 1 ? "" : y == 2 ? "d-none d-md-block" : y == 3 ? "d-none d-xl-block" : "")">
-                                <a class="text-black jewelry-card" href="@Model[i + y].Url" title="Посмотреть подробнее">
-                                    @if (Model[i + y].Discount.Amount > 0)
-                                    {
-                                        <div class="card-discount">-@Model[i + y].Discount.Amount%</div>
-                                    }
-                                    <div class="card-image">
-                                        <img src="@Model[i + y].ImageSrc" alt="@Model[i + y].Name" />
-                                        <div class="actions">
-                                            @if (Model[i + y].JewelrySizes.Count() == 0)
-                                            {
-                                                <div class="add-to-cart" title="Добавить в корзину" onclick="AddToCart(@Model[i + y].ID)">
-                                                    <img src="~/images/icons/shopping-bag.svg" />
-                                                </div>
-                                            }
-                                            @if (Model[i + y].JewelrySizes.Count() > 0)
-                                            {
-                                                <div class="add-to-cart" title="Добавить в корзину" onclick="GoTo(@Model[i + y].Url)">
-                                                    <img src="~/images/icons/shopping-bag.svg" />
-                                                </div>
-                                            }
+    <div class="jewelry-carousel-block">
+        <h4>Новинки</h4>
+        <div id="newJewelrysCarousel" class="carousel slide jewelry-carousel" data-bs-interval="false" data-bs-ride="carousel">
+            <div class="carousel-inner h-100">
+                @for (int i = 0; i < Model.Count(); i++)
+                {
+                    <div class="carousel-item @(i == 0 ? "active" : "")">
+                        <div class="row h-100">
+                            @for (int y = 0; y < 4; y++)
+                            {
+                                <div class="col-6 col-md-4 col-xl-3 mb-4 @(y == 1 ? "" : y == 2 ? "d-none d-md-block" : y == 3 ? "d-none d-xl-block" : "")">
+                                    <a class="text-black jewelry-card" href="@Model[i].NewJewelries[y].Url" title="Посмотреть подробнее">
+                                        @if (Model[i].NewJewelries[y].Discount.Amount > 0)
+                                        {
+                                            <div class="card-discount">-@Model[i].NewJewelries[y].Discount.Amount%</div>
+                                        }
+                                        <div class="card-image">
+                                            <img src="@Model[i].NewJewelries[y].ImageSrc" alt="@Model[i].NewJewelries[y].Name" />
+                                            <div class="actions">
+                                                @if (Model[i].NewJewelries[y].JewelrySizes.Count() == 0)
+                                                {
+                                                    <div class="add-to-cart" title="Добавить в корзину" onclick="AddToCart(@Model[i].NewJewelries[y].ID)">
+                                                        <img src="~/images/icons/shopping-bag.svg" />
+                                                    </div>
+                                                }
+                                                @if (Model[i].NewJewelries[y].JewelrySizes.Count() > 0)
+                                                {
+                                                    <div class="add-to-cart" title="Добавить в корзину" onclick="GoTo(@Model[i].NewJewelries[y].Url)">
+                                                        <img src="~/images/icons/shopping-bag.svg" />
+                                                    </div>
+                                                }
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="card-content">
-                                        <h6>@Model[i + y].Name</h6>
-                                    </div>
-                                    <div class="card-price">
-                                        <span>BYN @Model[i + y].Price</span>
-                                    </div>
-                                </a>
-                            </div>
-                        }
+                                        <div class="card-content">
+                                            <h6>@Model[i].NewJewelries[y].Name</h6>
+                                        </div>
+                                        <div class="card-price">
+                                            <span>BYN @Model[i].NewJewelries[y].Price</span>
+                                        </div>
+                                    </a>
+                                </div>
+                            }
+                        </div>
                     </div>
-                </div>
-            }
+                }
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#newJewelrysCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Предыдущий</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#newJewelrysCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Следующий</span>
+            </button>
         </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#jewelrysCarouselIndicators" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Предыдущий</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#jewelrysCarouselIndicators" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Следующий</span>
-        </button>
+    </div>
+    <div class="glatteis-block my-4">
+        <h2>Мы выпустили<br />собственную коллекцию!</h2>
+        <h3>Glatteis 2021</h3>
+        <a asp-controller="Catalog" asp-action="List" asp-route-o="GLATTEIS" class="nav-link catalog-link">Просмотреть</a>
+    </div>
+    <div class="jewelry-carousel-block">
+        <h4>Изделия со скидкой</h4>
+        <div id="jewelrysWithDiscountCarousel" class="carousel slide jewelry-carousel" data-bs-interval="false" data-bs-ride="carousel">
+            <div class="carousel-inner h-100">
+                @for (int i = 0; i < Model.Count(); i++)
+                {
+                    <div class="carousel-item @(i == 0 ? "active" : "")">
+                        <div class="row h-100">
+                            @for (int y = 0; y < 4; y++)
+                            {
+                                <div class="col-6 col-md-4 col-xl-3 mb-4 @(y == 1 ? "" : y == 2 ? "d-none d-md-block" : y == 3 ? "d-none d-xl-block" : "")">
+                                    <a class="text-black jewelry-card" href="@Model[i].JewelriesWithDiscount[y].Url" title="Посмотреть подробнее">
+                                        @if (Model[i].JewelriesWithDiscount[y].Discount.Amount > 0)
+                                        {
+                                            <div class="card-discount">-@Model[i].JewelriesWithDiscount[y].Discount.Amount%</div>
+                                        }
+                                        <div class="card-image">
+                                            <img src="@Model[i].JewelriesWithDiscount[y].ImageSrc" alt="@Model[i].JewelriesWithDiscount[y].Name" />
+                                            <div class="actions">
+                                                @if (Model[i].JewelriesWithDiscount[y].JewelrySizes.Count() == 0)
+                                                {
+                                                    <div class="add-to-cart" title="Добавить в корзину" onclick="AddToCart(@Model[i].JewelriesWithDiscount[y].ID)">
+                                                        <img src="~/images/icons/shopping-bag.svg" />
+                                                    </div>
+                                                }
+                                                @if (Model[i].JewelriesWithDiscount[y].JewelrySizes.Count() > 0)
+                                                {
+                                                    <div class="add-to-cart" title="Добавить в корзину" onclick="GoTo(@Model[i].JewelriesWithDiscount[y].Url)">
+                                                        <img src="~/images/icons/shopping-bag.svg" />
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                        <div class="card-content">
+                                            <h6>@Model[i].JewelriesWithDiscount[y].Name</h6>
+                                        </div>
+                                        <div class="card-price">
+                                            <span>BYN @Model[i].JewelriesWithDiscount[y].Price</span>
+                                        </div>
+                                    </a>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#jewelrysWithDiscountCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Предыдущий</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#jewelrysWithDiscountCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Следующий</span>
+            </button>
+        </div>
     </div>
 </div>
 @section Scripts {

@@ -1,0 +1,95 @@
+﻿.glatteis-block {
+    padding: 3rem 1rem;
+    background-image: url(/images/other/jf_w_universo_002-2706.jpg);
+    background-size: cover;
+    min-height: 300px;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+    .glatteis-block .catalog-link {
+        color: white;
+        background: #d8a247;
+        width: 140px;
+        padding: 10px;
+        margin-bottom: 16px;
+        color: #ffffff;
+        text-align: center;
+        transition: all 0.3s ease-in-out;
+    }
+
+        .glatteis-block .catalog-link:hover {
+            background: #595959;
+        }
+
+.jewelry-carousel-block > h4 {
+    position: relative;
+    margin-bottom: 0;
+    text-transform: uppercase;
+    padding-bottom: 1rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #6c757d;
+}
+
+    .jewelry-carousel-block > h4:before {
+        content: "";
+        background-color: #d8a247;
+        height: 2px;
+        width: 160px;
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+    }
+
+.jewelry-carousel {
+    position: relative;
+}
+
+    .jewelry-carousel .carousel-control-prev {
+        position: absolute;
+        max-height: 32px;
+        max-width: 32px;
+        top: -68px;
+        right: 34px;
+        left: auto;
+    }
+
+    .jewelry-carousel .carousel-control-next {
+        position: absolute;
+        max-height: 32px;
+        max-width: 32px;
+        top: -68px;
+        right: 0;
+    }
+
+    .jewelry-carousel > button > span:first-child {
+        background-color: black;
+    }
+
+@media (max-width: 991px) {
+    .glatteis-block {
+        min-height: 200px;
+        padding: 2rem 1rem;
+    }
+
+    .jewelry-carousel .carousel-control-prev, .jewelry-carousel .carousel-control-next,
+    .jewelry-carousel .carousel-control-prev-icon, .jewelry-carousel .carousel-control-next-icon {
+        top: -60px;
+        max-height: 26px !important;
+        max-width: 26px !important;
+    }
+}
+
+@media (max-width: 575px) {
+    .glatteis-block {
+        min-height: 100px;
+        padding: 0.5rem 1rem;
+    }
+
+    .jewelry-carousel .carousel-control-prev, .jewelry-carousel .carousel-control-next,
+    .jewelry-carousel .carousel-control-prev-icon, .jewelry-carousel .carousel-control-next-icon {
+        top: -58px;
+        max-height: 20px !important;
+        max-width: 20px !important;
+    }
+}

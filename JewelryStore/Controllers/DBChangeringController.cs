@@ -92,7 +92,9 @@ namespace JewelryStore.Controllers
                     string path = "";
                     if (image != null)
                     {
-                        path = $"/images/jewelrys/{dbContext.Subspecies.Include(x => x.Kind).FirstOrDefault(x => x.ID == jewelry.ID_Subspecies).Kind.EnName}/{image.FileName}";
+                        string dir = $"/images/jewelrys/{dbContext.Subspecies.Include(x => x.Kind).FirstOrDefault(x => x.ID == jewelry.ID_Subspecies).Kind.EnName}";
+                        path = $"{dir}/{image.FileName}";
+                        if (!Directory.Exists(_appEnvironment.WebRootPath + dir)) Directory.CreateDirectory(_appEnvironment.WebRootPath + dir);
                         using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
                         {
                             await image.CopyToAsync(fileStream);

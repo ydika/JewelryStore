@@ -67,7 +67,7 @@
                                         }
                                     }
                                 </li>
-                                if (jc.Name == "Вставка")
+                                if (jc.Name == "Вставка" && @Model.Jewelry.InsertedGemChar != null && @Model.Jewelry.InsertedGemChar != "")
                                 {
                                     <li>
                                         Характеристика вставки: <span>@Model.Jewelry.InsertedGemChar</span>

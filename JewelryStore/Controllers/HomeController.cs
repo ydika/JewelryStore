@@ -23,9 +23,17 @@ namespace JewelryStore.Controllers
             dbContext = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View(dbContext.Jewelries.Include(x => x.Discount).Include(x => x.JewelrySizes).ToList());
+            List<JewelryModel> jewelries = await dbContext.Jewelries.Include(x => x.Discount).Include(x => x.JewelrySizes).ToListAsync();
+            List<JewelryModel> jewelriesWithDiscount = jewelries.Where(x => x.Discount.Amount > 0).Take(12).ToList();
+
+            List<JewelrySliderViewModel> jewelrySliders = new List<JewelrySliderViewModel>();
+            for (int i = 0; i < jewelriesWithDiscount.Count() / 4; i++)
+            {
+                jewelrySliders.Add(new JewelrySliderViewModel(jewelriesWithDiscount.Skip(i * 4).Take(4).ToList(), jewelries.OrderByDescending(x => x.ID).Skip(i * 4).Take(4).ToList()));
+            }
+            return View(jewelrySliders);
         }
 
         public IActionResult AboutUs()

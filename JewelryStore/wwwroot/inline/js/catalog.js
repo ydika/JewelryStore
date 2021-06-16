@@ -109,6 +109,11 @@ GetJewelries();
 function GetJewelries() {
     queryString = new URLSearchParams(document.location.search);
     o = [];
+    let qsO = queryString.get('o');
+    if (qsO) {
+        o.push(qsO);
+        $(`input:checkbox[value=${qsO}]`).attr("checked", "checked");
+    }
     $("input:checkbox:checked").each(function () {
         o.push($(this).val());
     });
