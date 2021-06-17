@@ -89,9 +89,18 @@
                                     <span data-bind="text: price"></span>
                                     <!-- /ko -->
                                 </div>
-                                <div class="cart-action">
-                                    <a href="javascript: undefined;" onclick="AddItemToCart(@Model.Jewelry.ID)">Добавить в корзину</a>
-                                </div>
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    <div class="cart-action">
+                                        <a href="javascript: undefined;" onclick="AddItemToCart(@Model.Jewelry.ID)">Добавить в корзину</a>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="cart-action">
+                                        <a asp-controller="Account" asp-action="Login">Добавить в корзину</a>
+                                    </div>
+                                }
                             </div>
                             <div class="quantity">
                                 <div class="cart-plus-minus">

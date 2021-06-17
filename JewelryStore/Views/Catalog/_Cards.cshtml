@@ -6,18 +6,29 @@
             <!-- /ko -->
             <div class="card-image">
                 <img data-bind="attr:{src: imageSrc, alt: name}" />
-                <div class="actions">
-                    <!-- ko if: jewelrySizes.length === 0 -->
-                    <div class="add-to-cart" title="Добавить в корзину" data-bind="click: function(){AddToCart(id)}">
-                        <img src="~/images/icons/shopping-bag.svg" />
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <div class="actions">
+                        <!-- ko if: jewelrySizes.length === 0 -->
+                        <div class="add-to-cart" title="Добавить в корзину" data-bind="click: function(){AddToCart(id)}">
+                            <img src="~/images/icons/shopping-bag.svg" />
+                        </div>
+                        <!-- /ko -->
+                        <!-- ko if: jewelrySizes.length > 0 -->
+                        <div class="add-to-cart" title="Добавить в корзину" data-bind="click: function(){GoTo(url)}">
+                            <img src="~/images/icons/shopping-bag.svg" />
+                        </div>
+                        <!-- /ko -->
                     </div>
-                    <!-- /ko -->
-                    <!-- ko if: jewelrySizes.length > 0 -->
-                    <div class="add-to-cart" title="Добавить в корзину" data-bind="click: function(){GoTo(url)}">
-                        <img src="~/images/icons/shopping-bag.svg" />
+                }
+                else
+                {
+                    <div class="actions">
+                        <div class="add-to-cart" title="Добавить в корзину" data-bind="click: function(){GoTo('/account/login')}">
+                            <img src="~/images/icons/shopping-bag.svg" />
+                        </div>
                     </div>
-                    <!-- /ko -->
-                </div>
+                }
             </div>
             <div class="card-content">
                 <h6 data-bind="text: name"></h6>
