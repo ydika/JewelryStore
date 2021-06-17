@@ -1,0 +1,86 @@
+﻿@model List<OrdersModel>
+@section Css {
+    <link rel="stylesheet" href="~/inline/css/dbeditor.css" />
+    <link rel="stylesheet" href="~/inline/css/cart.css" />
+    <link rel="stylesheet" href="~/inline/css/profile.css" />
+    <style>
+        body {
+            margin-bottom: 0px !important;
+        }
+    </style>
+}
+<div class="row m-0">
+    <div class="editor-menu order-0 col-sm-3 col-xl-2">
+        <div class="mb-md-0 me-md-auto">
+            <h5>База данных</h5>
+        </div>
+        <hr>
+        <ul class="nav nav-pills flex-column mb-auto">
+            <li>
+                <a asp-action="JewelrysTable" class="nav-link link-dark">Изделия</a>
+            </li>
+            <li>
+                <a asp-action="CharacteristicsTable" class="nav-link link-dark">Характеристика/значение</a>
+            </li>
+            <li>
+                <a asp-action="JewelryKindsTable" class="nav-link link-dark">Виды изделий</a>
+            </li>
+            <li>
+                <a asp-action="DiscountsTable" class="nav-link link-dark">Скидки</a>
+            </li>
+            <li>
+                <a asp-action="OrdersTable" class="nav-link active">Заказы</a>
+            </li>
+        </ul>
+        <hr />
+    </div>
+    <div id="dbTable" class="order-1 col-sm-9 col-xl-10">
+        <div class="db-container">
+            <div class="title">
+                <h3>Заказы</h3>
+            </div>
+            <hr />
+            <div>
+                @foreach (var order in Model)
+                {
+                    <div>
+                        <div>@order.DateOfPlacement</div>
+                        <div>Номер заказа: @order.Code</div>
+                    </div>
+                    <div class="profile-container mb-3">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th class="cart-item-img">Фотография</th>
+                                    <th>Название</th>
+                                    <th>Цена</th>
+                                    <th class="text-nowrap">Кол-во</th>
+                                    <th>Итого</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var content in order.OrderContents)
+                                {
+                                    <tr>
+                                        <td class="cart-item-img">
+                                            <img src="@content.Jewelry.ImageSrc" alt="@content.Jewelry.Name" />
+                                        </td>
+                                        <td class="cart-item-name">
+                                            <a href="@content.Jewelry.Url">@content.Jewelry.Name</a>
+                                        </td>
+                                        <td>BYN @((double.Parse(content.TotalPrice)/@content.Quantity).ToString("0.00"))</td>
+                                        <td>@content.Quantity</td>
+                                        <td>BYN @content.TotalPrice</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script src="~/inline/js/databaseeditor.js"></script>
+}

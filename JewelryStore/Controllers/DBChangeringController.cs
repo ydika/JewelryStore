@@ -497,5 +497,13 @@ namespace JewelryStore.Controllers
 
             return RedirectToAction("DiscountsTable");
         }
+
+        [HttpGet]
+        [Route("[action]")]
+        public async Task<IActionResult> OrdersTable()
+        {
+            await dbContext.Jewelries.LoadAsync();
+            return View(await dbContext.Orders.Include(x => x.OrderContents).OrderByDescending(x => x.ID).Take(20).ToListAsync());
+        }
     }
 }
