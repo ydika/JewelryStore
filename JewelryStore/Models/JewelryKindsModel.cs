@@ -20,8 +20,6 @@ namespace JewelryStore.Models
         [Required(ErrorMessage = "Не указано английское название")]
         [RegularExpression(@"[\s\-A-z]*", ErrorMessage = "В этом поле могут быть только английские буквы")]
         public string EnName { get; set; }
-        [StringLength(100)]
-        public string IconSrc { get; set; }
         [StringLength(200)]
         [Required(ErrorMessage = "Не указано описание")]
         public string Description { get; set; }
