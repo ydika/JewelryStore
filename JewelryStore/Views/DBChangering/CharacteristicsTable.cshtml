@@ -42,7 +42,7 @@
             <div class="row">
                 @foreach (var c in Model)
                 {
-                    <div class="col-4">
+                    <div class="col-sm-4 col-6">
                         <hr />
                         <h5 class="d-inline-block">@c.Name</h5>
                         <form class="d-inline-block" asp-action="DeleteCharacteristic" method="post" asp-antiforgery="true">

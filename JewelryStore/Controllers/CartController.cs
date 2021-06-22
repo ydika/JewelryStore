@@ -268,7 +268,7 @@ namespace JewelryStore.Controllers
                         ID_Order = userOrder.ID,
                         Quantity = cart.CartContent[i].Quantity,
                         Size = cart.CartContent[i].Size,
-                        TotalPrice = cart.CartContent[i].TotalPrice,
+                        TotalPrice = cart.CartContent[i].TotalPrice.Replace('.', ','),
                         DateOfPlacement = cart.CartContent[i].DateOfPlacement
                     });
                     purchaseCode += cart.CartContent[i].ID_Jewelry.ToString();
