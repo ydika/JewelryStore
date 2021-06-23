@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -93,7 +94,15 @@ namespace JewelryStore.Controllers
         public async Task<IActionResult> GetOrders()
         {
             await dbContext.Jewelries.LoadAsync();
+
             List<OrdersModel> userOrders = await dbContext.Orders.Include(x => x.OrderContents).Where(x => x.ID_User == _userManager.GetUserId(User)).OrderByDescending(x => x.ID).ToListAsync();
+            foreach (var order in userOrders)
+            {
+                foreach (var content in order.OrderContents)
+                {
+                    content.TotalPrice = double.Parse(content.TotalPrice, CultureInfo.InvariantCulture).ToString("0.00");
+                }
+            }
 
             return PartialView("_Order", userOrders);
         }

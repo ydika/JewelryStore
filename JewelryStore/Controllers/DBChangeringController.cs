@@ -252,7 +252,16 @@ namespace JewelryStore.Controllers
         public async Task<IActionResult> DeleteJewelry(int id)
         {
             JewelryModel jewelry = await dbContext.Jewelries.Include(x => x.CartContents).Include(x => x.Discount).FirstOrDefaultAsync(x => x.ID == id);
-            dbContext.Jewelries.Remove(jewelry);
+            if (dbContext.OrderContents.FirstOrDefault(x => x.ID_Jewelry == jewelry.ID) == null)
+            {
+                dbContext.Jewelries.Remove(jewelry);
+            }
+            else
+            {
+                jewelry.Quantity = 0;
+                dbContext.Jewelries.Add(jewelry);
+                dbContext.Entry(jewelry).State = EntityState.Modified;
+            }
             await dbContext.SaveChangesAsync();
 
             return RedirectToAction("JewelrysTable");
@@ -503,7 +512,17 @@ namespace JewelryStore.Controllers
         public async Task<IActionResult> OrdersTable()
         {
             await dbContext.Jewelries.LoadAsync();
-            return View(await dbContext.Orders.Include(x => x.OrderContents).OrderByDescending(x => x.ID).Take(20).ToListAsync());
+
+            List<OrdersModel> orders = await dbContext.Orders.Include(x => x.OrderContents).OrderByDescending(x => x.ID).Take(20).ToListAsync();
+            foreach (var order in orders)
+            {
+                foreach (var content in order.OrderContents)
+                {
+                    content.TotalPrice = double.Parse(content.TotalPrice, CultureInfo.InvariantCulture).ToString("0.00");
+                }
+            }
+
+            return View(orders);
         }
     }
 }
