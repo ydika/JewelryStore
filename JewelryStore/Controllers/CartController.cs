@@ -137,9 +137,12 @@ namespace JewelryStore.Controllers
                 CartContentModel coincidence = cart.CartContent.FirstOrDefault(x => x.ID_Jewelry == jewelry.ID);
                 if (coincidence != null)
                 {
-                    coincidence.Quantity++;
-                    coincidence.TotalPrice = Math.Round(coincidence.Quantity * double.Parse(coincidence.Jewelry.Price), 2).ToString("0.00");
-                    await dbContext.SaveChangesAsync();
+                    if (coincidence.Quantity++ <= coincidence.Jewelry.Quantity && coincidence.Quantity++ <= 5)
+                    {
+                        coincidence.Quantity++;
+                        coincidence.TotalPrice = Math.Round(coincidence.Quantity * double.Parse(coincidence.Jewelry.Price), 2).ToString("0.00");
+                        await dbContext.SaveChangesAsync();
+                    }
                 }
                 else
                 {
