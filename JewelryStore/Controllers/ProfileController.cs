@@ -2,11 +2,9 @@
 using JewelryStore.Services;
 using JewelryStore.ViewModels;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -67,7 +65,7 @@ namespace JewelryStore.Controllers
                 {
                     user.FirstName = model.FirstName;
                     user.SecondName = model.SecondName;
-                    await _userManager.UpdateAsync(user); 
+                    await _userManager.UpdateAsync(user);
                 }
                 if (model.Password != null)
                 {

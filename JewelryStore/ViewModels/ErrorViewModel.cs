@@ -1,5 +1,3 @@
-using System;
-
 namespace JewelryStore.ViewModels
 {
     public class ErrorViewModel

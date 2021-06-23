@@ -1,13 +1,9 @@
 ﻿using JewelryStore.Models;
 using JewelryStore.Services;
-using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
 namespace JewelryStore.ViewComponents

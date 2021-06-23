@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace JewelryStore.Models
 {
@@ -15,7 +12,7 @@ namespace JewelryStore.Models
         public int ID { get; set; }
 
         [JsonIgnore]
-        public int ID_Cart{ get; set; }
+        public int ID_Cart { get; set; }
         [JsonIgnore]
         [ForeignKey("ID_Cart")]
         public CartModel Cart { get; set; }

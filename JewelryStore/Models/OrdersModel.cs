@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace JewelryStore.Models
 {
@@ -17,7 +15,7 @@ namespace JewelryStore.Models
         [ForeignKey("ID_User")]
         public UserModel User { get; set; }
 
-        public DateTime DateOfPlacement{ get; set; }
+        public DateTime DateOfPlacement { get; set; }
         [StringLength(10)]
         public string Code { get; set; }
 

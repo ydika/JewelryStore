@@ -1,15 +1,11 @@
 ﻿using JewelryStore.Models;
 using JewelryStore.Services;
 using JewelryStore.ViewModels;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -118,6 +114,7 @@ namespace JewelryStore.Controllers
         [HttpGet]
         [Route("{jkind}/[action]")]
         [Route("{jkind}/{subspecies}/[action]")]
+        [ResponseCache(NoStore = true)]
         public async Task<JsonResult> GetJewelriesCards(int maxPrice, int minPrice, string subspecies, string searchName, string[] o, string jkind = "list", int page = 1)
         {
             List<JewelryModel> jewelries = null;

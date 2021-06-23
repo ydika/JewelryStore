@@ -26,7 +26,7 @@ namespace JewelryStore.Controllers
         public async Task<IActionResult> Index()
         {
             List<JewelryModel> jewelries = await dbContext.Jewelries.Include(x => x.Discount).Include(x => x.JewelrySizes).ToListAsync();
-            List<JewelryModel> jewelriesWithDiscount = jewelries.Where(x => x.Discount.Amount > 0).Take(12).ToList();
+            List<JewelryModel> jewelriesWithDiscount = jewelries.OrderByDescending(x => x.ID).Where(x => x.Discount.Amount > 0).Take(12).ToList();
 
             List<JewelrySliderViewModel> jewelrySliders = new List<JewelrySliderViewModel>();
             for (int i = 0; i < jewelriesWithDiscount.Count() / 4; i++)
