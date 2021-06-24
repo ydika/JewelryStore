@@ -1,36 +1,4 @@
-﻿////window.onload = function () {
-////    window.setTimeout(
-////        function () {
-////            window.addEventListener(
-////                "popstate",
-////                function (e) {
-////                    $.ajax({
-////                        url: document.location.pathname + '/getjewelriescards',
-////                        type: 'GET',
-////                        dataType: 'json',
-////                        traditional: true,
-////                        data: { 'o': o, 'page': new URLSearchParams(document.location.search).get('page') },
-////                        success: function (data) {
-////                            jewelriesSection
-////                                .jewelries(data.jewelries)
-////                                .jewelriesNotFound(data.jewelries.length > 0 ? false : true)
-////                                .current(data.current_page)
-////                                .pages(PageRange(currentPage, data.page_count))
-////                                .pageCount(data.page_count)
-////                                .pagesVisible(data.page_count > 1 ? true : false);
-////                            if (oldPage != currentPage) {
-////                                window.scrollTo(0, 0);
-////                            }
-////                        }
-////                    });
-////                    e.preventDefault();
-////                },
-////                false
-////            );
-////        },
-////    );
-////}
-let minPrice = document.getElementById("minPrice");
+﻿let minPrice = document.getElementById("minPrice");
 let maxPrice = document.getElementById("maxPrice");
 const sliders = document.querySelectorAll('input[type="range"]');
 
@@ -105,7 +73,10 @@ let jewelriesSection = {
 ko.applyBindings(jewelriesSection, document.getElementById('productsSection'));
 
 let queryString;
-GetJewelries();
+window.onload = function () {
+    GetJewelries();
+};
+
 function GetJewelries() {
     queryString = new URLSearchParams(document.location.search);
     o = [];
@@ -117,24 +88,46 @@ function GetJewelries() {
     $("input:checkbox:checked").each(function () {
         o.push($(this).val());
     });
-    $.ajax({
-        url: document.location.pathname + '/getjewelriescards',
-        type: 'GET',
-        dataType: 'json',
-        traditional: true,
-        data: { 'subspecies': queryString.get('subspecies'), 'searchName': queryString.get('searchName'), 'o': o, 'page': currentPage, 'minPrice': sliders[0].value, 'maxPrice': sliders[1].value },
-        success: function (data) {
-            jewelriesSection
-                .jewelries(data.jewelries)
-                .jewelriesNotFound(data.jewelries.length > 0 ? false : true)
-                .current(data.current_page)
-                .pages(PageRange(currentPage, data.page_count))
-                .pageCount(data.page_count)
-                .pagesVisible(data.page_count > 1 ? true : false);
-            $('#productsSection').removeClass('loading');
-            /*history.pushState({ 'currentPage': currentPage, 'o': o }, '', `?page=${currentPage}`);*/
-        }
-    });
+    if ($(history.state).attr('o') !== null && $(history.state).attr('o') !== undefined) {
+        history.pushState({ 'currentPage': currentPage, 'o': o }, '', `?page=${currentPage}`);
+        $.ajax({
+            url: document.location.pathname + '/getjewelriescards',
+            type: 'GET',
+            dataType: 'json',
+            traditional: true,
+            data: { 'subspecies': queryString.get('subspecies'), 'searchName': queryString.get('searchName'), 'o': history.state.o, 'page': currentPage, 'minPrice': sliders[0].value, 'maxPrice': sliders[1].value },
+            success: function (data) {
+                jewelriesSection
+                    .jewelries(data.jewelries)
+                    .jewelriesNotFound(data.jewelries.length > 0 ? false : true)
+                    .current(data.current_page)
+                    .pages(PageRange(currentPage, data.page_count))
+                    .pageCount(data.page_count)
+                    .pagesVisible(data.page_count > 1 ? true : false);
+                $('#productsSection').removeClass('loading');
+
+            }
+        });
+    } else {
+        $.ajax({
+            url: document.location.pathname + '/getjewelriescards',
+            type: 'GET',
+            dataType: 'json',
+            traditional: true,
+            data: { 'subspecies': queryString.get('subspecies'), 'searchName': queryString.get('searchName'), 'o': o, 'page': currentPage, 'minPrice': sliders[0].value, 'maxPrice': sliders[1].value },
+            success: function (data) {
+                jewelriesSection
+                    .jewelries(data.jewelries)
+                    .jewelriesNotFound(data.jewelries.length > 0 ? false : true)
+                    .current(data.current_page)
+                    .pages(PageRange(currentPage, data.page_count))
+                    .pageCount(data.page_count)
+                    .pagesVisible(data.page_count > 1 ? true : false);
+                $('#productsSection').removeClass('loading');
+                history.pushState({ 'currentPage': currentPage, 'o': o }, '', `?page=${currentPage}`);
+            }
+        });
+    }
 }
 
 function AddToCart(value) {
